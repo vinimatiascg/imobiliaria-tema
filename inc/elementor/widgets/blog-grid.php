@@ -354,7 +354,7 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#B2915A',
 				'selectors' => [
-					'{{WRAPPER}} .imob-read-more-link' => 'color: {{VALUE}} !important;',
+					'{{WRAPPER}} .imob-read-more-link' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -366,7 +366,7 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'default'   => '#9E7E47',
 				'selectors' => [
-					'{{WRAPPER}} .imob-read-more-link:hover' => 'color: {{VALUE}} !important;',
+					'{{WRAPPER}} .imob-read-more-link:hover' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -395,6 +395,21 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 		$query = new \WP_Query( $args );
 
 		if ( $query->have_posts() ) {
+			$widget_id = $this->get_id();
+			$btn_color = ( ! empty( $settings['button_color'] ) && '#2F80ED' !== $settings['button_color'] ) ? $settings['button_color'] : 'var(--accent-color)';
+			$btn_hover_color = ( ! empty( $settings['button_hover_color'] ) && '#1b68cc' !== $settings['button_hover_color'] ) ? $settings['button_hover_color'] : '#9E7E47';
+			?>
+			<style>
+				.elementor-element.elementor-element-<?php echo esc_attr( $widget_id ); ?> .imob-read-more-link,
+				div[data-id="<?php echo esc_attr( $widget_id ); ?>"] .imob-read-more-link {
+					color: <?php echo esc_attr( $btn_color ); ?> !important;
+				}
+				.elementor-element.elementor-element-<?php echo esc_attr( $widget_id ); ?> .imob-read-more-link:hover,
+				div[data-id="<?php echo esc_attr( $widget_id ); ?>"] .imob-read-more-link:hover {
+					color: <?php echo esc_attr( $btn_hover_color ); ?> !important;
+				}
+			</style>
+			<?php
 			echo '<div class="imob-elementor-imovel-grid imob-elementor-post-grid" style="display: grid; gap: 30px;">';
 
 			while ( $query->have_posts() ) {

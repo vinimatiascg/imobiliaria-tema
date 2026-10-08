@@ -4,7 +4,7 @@ Theme URI:
 Author: Antigravity
 Author URI: 
 Description: Tema customizado para Imobiliárias com alta performance, suporte a Elementor e otimizado para SEO técnico.
-Version: 1.1.5
+Version: 1.1.6
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: imobiliaria-tema
@@ -929,6 +929,14 @@ a:hover {
 	padding: 5px 12px !important;
 	border-radius: 6px !important;
 }
+#page .elementor-element .imob-read-more-link,
+#page div[class*="elementor-element"] .imob-read-more-link,
+html body .elementor-element.elementor-element .imob-read-more-link,
+html body div.elementor-element .imob-post-card a.imob-read-more-link,
+.elementor-element .imob-read-more-link,
+.elementor-widget-imob_blog_grid .imob-read-more-link,
+.elementor-widget-imob_post_grid .imob-read-more-link,
+.imob-post-card .imob-read-more-link,
 .imob-read-more-link {
 	color: var(--accent-color) !important;
 	font-weight: 700;
@@ -936,11 +944,19 @@ a:hover {
 	align-items: center;
 	gap: 4px;
 	text-decoration: none;
-	transition: gap 0.2s ease, opacity 0.2s ease;
+	transition: gap 0.2s ease, opacity 0.2s ease, color 0.2s ease;
 }
+#page .elementor-element .imob-read-more-link:hover,
+#page div[class*="elementor-element"] .imob-read-more-link:hover,
+html body .elementor-element.elementor-element .imob-read-more-link:hover,
+html body div.elementor-element .imob-post-card a.imob-read-more-link:hover,
+.elementor-element .imob-read-more-link:hover,
+.elementor-widget-imob_blog_grid .imob-read-more-link:hover,
+.elementor-widget-imob_post_grid .imob-read-more-link:hover,
+.imob-post-card .imob-read-more-link:hover,
 .imob-read-more-link:hover {
 	gap: 7px !important;
-	color: var(--accent-color) !important;
+	color: #9E7E47 !important;
 	opacity: 0.85;
 }
 .imob-post-card .imob-card-date .material-symbols-outlined {

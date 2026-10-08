@@ -4,11 +4,18 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.1.5`
+## 🚀 Versão Atual: `1.1.6`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.1.5** (Atualização Recente)
+#### **Versão 1.1.6** (Atualização Recente)
+- **Correção e Blindagem de Especificidade no Botão "Ler artigo" (`imob_blog_grid`)**:
+  - **Resolução de Conflito com CSS Compilado do Elementor**: Em páginas onde o widget já havia sido salvo anteriormente, o Elementor gerava um seletor estático com `!important` e cor azul legada (`#2F80ED`).
+  - **Injeção de Bloco Scoped Dinâmico**: Adicionado bloco `<style>` renderizado dinamicamente junto ao widget com os seletores exatos `.elementor-element-{{ID}}` e `div[data-id="{{ID}}"]`, garantindo prioridade imediata sobre folhas de estilo compiladas em cache.
+  - **Super Especificidade no `style.css`**: Adicionadas regras ancoradas em `#page` e classes compostas do Elementor para sobrepor qualquer herança de especificidade.
+  - **Remoção de Trava no Painel**: Removido o `!important` dos seletores do controle do Elementor para permitir futuras customizações limpas.
+
+#### **Versão 1.1.5**
 - **Harmonização Visual e Cores no Grid de Posts (`imob_blog_grid`)**:
   - **Badges de Categorias**:
     - Fundo dourado institucional (`var(--accent-color)` / `#B2915A`), borda dourada e tipografia 100% branca (`#FFFFFF`) em estado normal.
