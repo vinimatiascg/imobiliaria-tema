@@ -4,11 +4,18 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.1.2`
+## 🚀 Versão Atual: `1.1.3`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.1.2** (Atualização Recente)
+#### **Versão 1.1.3** (Atualização Recente)
+- **Refinamento do Grid de Posts (`imob_blog_grid` / `imob_post_grid`)**:
+  - **Exibição de Todas as Categorias**: o card agora itera sobre todas as categorias associadas ao post, exibindo um badge individual com `imob_strtoupper()` para cada uma com suporte a quebra de linha fluida (`flex-wrap`).
+  - **Remoção da Data sobre a Imagem**: eliminado o badge de data que ficava sobre a foto para manter o foco total na imagem e nas categorias.
+  - **Remoção de Duplicidades**: retirados o bloco de autor e o contador de comentários, deixando o card mais limpo e objetivo.
+  - **Data Única no Rodapé**: a data de publicação agora é exibida uma única vez no rodapé do card acompanhada do ícone `calendar_today`, alinhada ao botão "Ler artigo".
+
+#### **Versão 1.1.2**
 - **Novo Widget do Elementor: Grid de Posts / Blog (`imob_blog_grid` / `imob_post_grid`)**:
   - Segue fielmente a mesma linguagem visual, arquitetura de componentes e padrão do **Grid de Imóveis**.
   - **Cards Padronizados (`.imob-card`)**: fundo branco, cantos arredondados, sombra suave e efeito de elevação no hover (`translateY(-5px)`).

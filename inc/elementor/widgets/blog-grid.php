@@ -138,31 +138,7 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 		$this->add_control(
 			'show_category_badge',
 			[
-				'label'        => __( 'Exibir Badge de Categoria?', 'imobiliaria-tema' ),
-				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Sim', 'imobiliaria-tema' ),
-				'label_off'    => __( 'Não', 'imobiliaria-tema' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			]
-		);
-
-		$this->add_control(
-			'show_date_badge',
-			[
-				'label'        => __( 'Exibir Badge de Data na Foto?', 'imobiliaria-tema' ),
-				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Sim', 'imobiliaria-tema' ),
-				'label_off'    => __( 'Não', 'imobiliaria-tema' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
-			]
-		);
-
-		$this->add_control(
-			'show_author',
-			[
-				'label'        => __( 'Exibir Nome do Autor?', 'imobiliaria-tema' ),
+				'label'        => __( 'Exibir Badges de Categorias?', 'imobiliaria-tema' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
 				'label_on'     => __( 'Sim', 'imobiliaria-tema' ),
 				'label_off'    => __( 'Não', 'imobiliaria-tema' ),
@@ -192,18 +168,6 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 				'min'       => 5,
 				'max'       => 50,
 				'condition' => [ 'show_excerpt' => 'yes' ],
-			]
-		);
-
-		$this->add_control(
-			'show_features',
-			[
-				'label'        => __( 'Exibir Barra de Ícones (Data/Comentários)?', 'imobiliaria-tema' ),
-				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Sim', 'imobiliaria-tema' ),
-				'label_off'    => __( 'Não', 'imobiliaria-tema' ),
-				'return_value' => 'yes',
-				'default'      => 'yes',
 			]
 		);
 
@@ -440,20 +404,13 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 				?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'imob-card imob-post-card' ); ?>>
 					
-					<!-- THUMBNAIL COM BADGES IDÊNTICAS AO CARD DE IMÓVEL -->
+					<!-- THUMBNAIL COM BADGES DE TODAS AS CATEGORIAS DO POST -->
 					<div class="imob-card-thumb">
 						<?php if ( 'yes' === $settings['show_category_badge'] && ! empty( $categories ) ) : ?>
-							<div class="imob-card-badges">
-								<span class="badge-tipo badge-categoria"><?php echo esc_html( imob_strtoupper( $categories[0]->name ) ); ?></span>
-							</div>
-						<?php endif; ?>
-
-						<?php if ( 'yes' === $settings['show_date_badge'] ) : ?>
-							<div class="imob-card-price imob-post-date-badge">
-								<div class="imob-preco-atual" style="font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 5px;">
-									<span class="material-symbols-outlined" style="font-size: 15px;">calendar_today</span>
-									<span><?php echo get_the_date( 'd M Y' ); ?></span>
-								</div>
+							<div class="imob-card-badges" style="display: flex; flex-wrap: wrap; gap: 6px; max-width: calc(100% - 25px); top: 15px; left: 15px; z-index: 2;">
+								<?php foreach ( $categories as $cat ) : ?>
+									<span class="badge-tipo badge-categoria"><?php echo esc_html( imob_strtoupper( $cat->name ) ); ?></span>
+								<?php endforeach; ?>
 							</div>
 						<?php endif; ?>
 
@@ -470,38 +427,21 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 						</a>
 					</div>
 
-					<!-- CORPO DO CARD SEGUINDO PADRÃO DO IMÓVEL -->
+					<!-- CORPO DO CARD -->
 					<div class="imob-card-content">
-						<?php if ( 'yes' === $settings['show_author'] ) : ?>
-							<div class="imob-card-info-top">
-								<span class="info-bairro">
-									<span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle; color: var(--accent-color);">person</span> 
-									Por: <?php echo get_the_author(); ?>
-								</span>
-							</div>
-						<?php endif; ?>
-
-						<?php the_title( '<h3 class="imob-card-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h3>' ); ?>
+						<?php the_title( '<h3 class="imob-card-title" style="margin: 0 0 10px;"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h3>' ); ?>
 
 						<?php if ( 'yes' === $settings['show_excerpt'] ) : ?>
-							<div class="imob-card-residencial imob-post-excerpt" style="line-height: 1.6; margin-bottom: 15px;">
+							<div class="imob-card-residencial imob-post-excerpt" style="line-height: 1.6; margin-bottom: 20px;">
 								<?php echo wp_trim_words( get_the_excerpt(), $excerpt_len, '...' ); ?>
 							</div>
 						<?php endif; ?>
 
-						<?php if ( 'yes' === $settings['show_features'] ) : ?>
-							<div class="imob-card-features">
-								<span title="Data de Publicação">
-									<span class="material-symbols-outlined">schedule</span> <?php echo get_the_date( 'd/m/Y' ); ?>
-								</span>
-								<span title="Comentários">
-									<span class="material-symbols-outlined">chat_bubble_outline</span> <?php echo get_comments_number(); ?>
-								</span>
-							</div>
-						<?php endif; ?>
-
-						<div class="imob-card-footer" style="display: flex; justify-content: space-between; align-items: center;">
-							<span class="imob-card-date"><?php echo get_the_date( 'j \d\e F \d\e Y' ); ?></span>
+						<div class="imob-card-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: auto;">
+							<span class="imob-card-date" style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-light); font-size: 0.85rem; font-weight: 500;">
+								<span class="material-symbols-outlined" style="font-size: 16px; color: var(--secondary-color);">calendar_today</span>
+								<?php echo get_the_date( 'j \d\e F \d\e Y' ); ?>
+							</span>
 							
 							<?php if ( 'yes' === $settings['show_read_more'] ) : ?>
 								<a href="<?php the_permalink(); ?>" class="imob-read-more-link" style="color: var(--secondary-color); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">
