@@ -404,16 +404,8 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 				?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'imob-card imob-post-card' ); ?>>
 					
-					<!-- THUMBNAIL COM BADGES DE TODAS AS CATEGORIAS DO POST -->
+					<!-- THUMBNAIL -->
 					<div class="imob-card-thumb">
-						<?php if ( 'yes' === $settings['show_category_badge'] && ! empty( $categories ) ) : ?>
-							<div class="imob-card-badges" style="display: flex; flex-wrap: wrap; gap: 6px; max-width: calc(100% - 25px); top: 15px; left: 15px; z-index: 2;">
-								<?php foreach ( $categories as $cat ) : ?>
-									<span class="badge-tipo badge-categoria"><?php echo esc_html( imob_strtoupper( $cat->name ) ); ?></span>
-								<?php endforeach; ?>
-							</div>
-						<?php endif; ?>
-
 						<a href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
 							<?php
 							if ( has_post_thumbnail() ) {
@@ -432,8 +424,17 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 						<?php the_title( '<h3 class="imob-card-title" style="margin: 0 0 10px;"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h3>' ); ?>
 
 						<?php if ( 'yes' === $settings['show_excerpt'] ) : ?>
-							<div class="imob-card-residencial imob-post-excerpt" style="line-height: 1.6; margin-bottom: 20px;">
+							<div class="imob-card-residencial imob-post-excerpt" style="line-height: 1.6; margin-bottom: 15px;">
 								<?php echo wp_trim_words( get_the_excerpt(), $excerpt_len, '...' ); ?>
+							</div>
+						<?php endif; ?>
+
+						<!-- BADGES DE TODAS AS CATEGORIAS (ABAIXO DO RESUMO E ACIMA DA DATA) -->
+						<?php if ( 'yes' === $settings['show_category_badge'] && ! empty( $categories ) ) : ?>
+							<div class="imob-post-categories-badges" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px;">
+								<?php foreach ( $categories as $cat ) : ?>
+									<span class="badge-tipo badge-categoria"><?php echo esc_html( imob_strtoupper( $cat->name ) ); ?></span>
+								<?php endforeach; ?>
 							</div>
 						<?php endif; ?>
 
