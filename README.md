@@ -4,11 +4,30 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.1.1`
+## 🚀 Versão Atual: `1.1.2`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.1.1** (Atualização Recente)
+#### **Versão 1.1.2** (Atualização Recente)
+- **Novo Widget do Elementor: Grid de Posts / Blog (`imob_blog_grid` / `imob_post_grid`)**:
+  - Segue fielmente a mesma linguagem visual, arquitetura de componentes e padrão do **Grid de Imóveis**.
+  - **Cards Padronizados (`.imob-card`)**: fundo branco, cantos arredondados, sombra suave e efeito de elevação no hover (`translateY(-5px)`).
+  - **Thumbnail com Badges Flutuantes**:
+    - Badge superior com a categoria do post em destaque (com `imob_strtoupper()`).
+    - Badge inferior escuro com a data de publicação no mesmo formato do preço de imóveis.
+    - Placeholder elegante caso o post não possua imagem destacada.
+  - **Conteúdo e Metadados Ricos**:
+    - Tag do autor com ícone no topo do conteúdo.
+    - Título do post com tipografia profissional e efeito hover.
+    - Resumo do artigo com limitador configurável de palavras.
+    - Barra de recursos com ícones de calendário e contagem de comentários.
+    - Rodapé com data por extenso e botão dinâmico "Ler artigo" com seta.
+  - **Controles no Elementor**:
+    - Colunas responsivas (1 a 4 colunas para desktop, tablet e celular).
+    - Quantidade de posts, filtro dinâmico por categoria, ordenação personalizada e paginação numérica opcional.
+    - Customização de tipografia, cores, bordas e espaçamentos no painel de estilos.
+
+#### **Versão 1.1.1**
 - **Novo Widget do Elementor: FAQ - Perguntas Frequentes (`imob_faq_accordion`)**:
   - Exibição das perguntas e respostas em formato **accordion** (sanfona) com animação suave e abertura expansível.
   - Cadastro de múltiplas perguntas e respostas utilizando controle **Repeater**.

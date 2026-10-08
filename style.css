@@ -4,7 +4,7 @@ Theme URI:
 Author: Antigravity
 Author URI: 
 Description: Tema customizado para Imobiliárias com alta performance, suporte a Elementor e otimizado para SEO técnico.
-Version: 1.1.1
+Version: 1.1.2
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: imobiliaria-tema
@@ -901,5 +901,41 @@ a:hover {
 	color: #0E1A2B;
 	font-weight: 700;
 }
+
+/* ==========================================================================
+   Widget Grid de Posts (Padrão do Grid de Imóveis)
+   ========================================================================== */
+.imob-elementor-post-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 30px;
+}
+.imob-post-card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+.imob-post-card .imob-card-content {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+.imob-post-card .imob-card-footer {
+	margin-top: auto;
+}
+.imob-post-date-badge {
+	background: #0E1A2B !important;
+	color: #ffffff !important;
+	padding: 5px 12px !important;
+	border-radius: 6px !important;
+}
+.imob-read-more-link {
+	transition: gap 0.2s ease, color 0.2s ease;
+}
+.imob-read-more-link:hover {
+	gap: 7px !important;
+	color: #1b68cc !important;
+}
+
 
 
