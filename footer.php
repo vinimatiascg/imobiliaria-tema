@@ -98,7 +98,7 @@ if ( ! empty( $clean_wa_num ) ) {
 					Desenvolvido por <strong>Vinicius Matias</strong>
 				</div>
 				<a href="<?php echo esc_url( $whatsapp_click_url ); ?>" class="footer-whatsapp-btn" target="_blank" rel="noopener noreferrer">
-					<span class="material-symbols-outlined">chat</span> Como posso te ajudar?
+					<span class="material-symbols-outlined">chat</span> Faça sua Simulação Agora!
 				</a>
 			</div>
 		</div>

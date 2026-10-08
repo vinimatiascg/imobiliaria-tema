@@ -352,7 +352,7 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 			[
 				'label'     => __( 'Cor do Botão "Ler artigo"', 'imobiliaria-tema' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
-				'default'   => '#2F80ED',
+				'default'   => '#B2915A',
 				'selectors' => [
 					'{{WRAPPER}} .imob-read-more-link' => 'color: {{VALUE}} !important;',
 				],
@@ -364,7 +364,7 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 			[
 				'label'     => __( 'Cor do Botão "Ler artigo" (Hover)', 'imobiliaria-tema' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
-				'default'   => '#1b68cc',
+				'default'   => '#9E7E47',
 				'selectors' => [
 					'{{WRAPPER}} .imob-read-more-link:hover' => 'color: {{VALUE}} !important;',
 				],
@@ -433,19 +433,19 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 						<?php if ( 'yes' === $settings['show_category_badge'] && ! empty( $categories ) ) : ?>
 							<div class="imob-post-categories-badges" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px;">
 								<?php foreach ( $categories as $cat ) : ?>
-									<span class="badge-tipo badge-categoria"><?php echo esc_html( imob_strtoupper( $cat->name ) ); ?></span>
+									<span class="badge-categoria"><?php echo esc_html( imob_strtoupper( $cat->name ) ); ?></span>
 								<?php endforeach; ?>
 							</div>
 						<?php endif; ?>
 
 						<div class="imob-card-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: auto;">
 							<span class="imob-card-date" style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-light); font-size: 0.85rem; font-weight: 500;">
-								<span class="material-symbols-outlined" style="font-size: 16px; color: var(--secondary-color);">calendar_today</span>
+								<span class="material-symbols-outlined" style="font-size: 16px; color: var(--accent-color);">calendar_today</span>
 								<?php echo get_the_date( 'j \d\e F \d\e Y' ); ?>
 							</span>
 							
 							<?php if ( 'yes' === $settings['show_read_more'] ) : ?>
-								<a href="<?php the_permalink(); ?>" class="imob-read-more-link" style="color: var(--secondary-color); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">
+								<a href="<?php the_permalink(); ?>" class="imob-read-more-link" style="color: var(--accent-color); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">
 									<?php echo esc_html( $settings['read_more_text'] ); ?>
 									<span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
 								</a>

@@ -4,11 +4,22 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.1.4`
+## 🚀 Versão Atual: `1.1.5`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.1.4** (Atualização Recente)
+#### **Versão 1.1.5** (Atualização Recente)
+- **Harmonização Visual e Cores no Grid de Posts (`imob_blog_grid`)**:
+  - **Badges de Categorias**:
+    - Fundo dourado institucional (`var(--accent-color)` / `#B2915A`), borda dourada e tipografia 100% branca (`#FFFFFF`) em estado normal.
+    - Efeito Hover com **inversão dinâmica**: fundo branco puro (`#FFFFFF`), borda dourada e letras douradas (`#B2915A`).
+    - Remoção da classe conflitante `.badge-tipo` para garantir isolamento e estilo exclusivo aos badges do blog.
+  - **Link "Ler artigo"**:
+    - Ajustado para o mesmo tom institucional dourado (`#B2915A`), com transição suave no hover e controles atualizados no Elementor.
+  - **Ícone da Data**:
+    - O ícone `calendar_today` no rodapé do card foi atualizado para o tom de dourado (`#B2915A`), mantendo a identidade visual coesa.
+
+#### **Versão 1.1.4**
 - **Ajuste de Posicionamento dos Badges de Categoria no Grid de Posts**:
   - Os badges de categorias foram movidos do topo da imagem para o corpo do card, posicionados estrategicamente **abaixo do resumo do post e acima do rodapé com a data**.
   - A imagem destacada fica agora totalmente limpa e sem elementos sobrepostos.
