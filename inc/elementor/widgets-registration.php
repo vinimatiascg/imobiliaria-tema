@@ -44,6 +44,7 @@ final class Imob_Elementor_Widgets_Manager {
 			'construtoras',
 			'numeros',
 			'blog-grid',
+			'faq-accordion',
 		];
 
 		foreach ( $widgets as $widget ) {

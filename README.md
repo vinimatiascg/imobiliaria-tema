@@ -4,11 +4,24 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.1.0`
+## 🚀 Versão Atual: `1.1.1`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.1.0** (Atualização Recente)
+#### **Versão 1.1.1** (Atualização Recente)
+- **Novo Widget do Elementor: FAQ - Perguntas Frequentes (`imob_faq_accordion`)**:
+  - Exibição das perguntas e respostas em formato **accordion** (sanfona) com animação suave e abertura expansível.
+  - Cadastro de múltiplas perguntas e respostas utilizando controle **Repeater**.
+  - O campo de resposta conta com editor de texto **WYSIWYG** completo, permitindo negrito (`<strong>`), itálico, listas e inserção de **links** internos/externos.
+  - Opções avançadas: primeiro item aberto por padrão, modo acordeão estrito (fecha os demais itens ao abrir um), seleção de ícones (seta ou +/-) e microdados Schema.org `FAQPage` para SEO.
+  - Personalização completa de cores, tipografia, bordas e sombras pelo painel de estilos do Elementor.
+- **Correção e Blindagem do Botão de WhatsApp**:
+  - O botão flutuante foi configurado com `position: fixed !important; z-index: 9999999 !important;`, garantindo permanência fixa no canto inferior da tela em qualquer página ou dispositivo.
+  - O botão estático presente no rodapé (`.footer-whatsapp-btn`) foi integrado à mesma URL dinâmica do WhatsApp.
+  - Adicionado suporte a fallback universal via API do WhatsApp: o link agora funciona mesmo que o número ainda não tenha sido cadastrado nas opções do tema, abrindo o WhatsApp com a mensagem contextual pré-preenchida.
+  - Resolução de eventuais cortes de overflow no rodapé.
+
+#### **Versão 1.1.0**
 - **Geração Automática do Código do Imóvel**:
   - O campo de digitação manual de referência/código foi substituído por uma geração automática de código único baseado no tipo de imóvel selecionado (ex: `Apt-123456` para apartamento, `Cas-654321` para casa, `Ter-987654` para terreno, etc.).
   - Validação de unicidade no banco de dados para evitar referências duplicadas.

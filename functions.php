@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.1.0' );
+define( 'IMOB_THEME_VERSION', '1.1.1' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
