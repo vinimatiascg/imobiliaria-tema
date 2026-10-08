@@ -1,0 +1,65 @@
+# Imobiliária Tema - WordPress Theme
+
+Tema profissional para imobiliárias, corretores e portais imobiliários desenvolvido para WordPress com suporte nativo a Elementor, alta performance, SEO técnico e ferramentas administrativas inteligentes.
+
+---
+
+## 🚀 Versão Atual: `1.1.0`
+
+### 📋 Histórico de Alterações (Changelog)
+
+#### **Versão 1.1.0** (Atualização Recente)
+- **Geração Automática do Código do Imóvel**:
+  - O campo de digitação manual de referência/código foi substituído por uma geração automática de código único baseado no tipo de imóvel selecionado (ex: `Apt-123456` para apartamento, `Cas-654321` para casa, `Ter-987654` para terreno, etc.).
+  - Validação de unicidade no banco de dados para evitar referências duplicadas.
+  - Exibição como badge somente leitura na tela de edição, gerado automaticamente na publicação/salvamento.
+- **Cadastro Rápido via Modal (Construtora, Proprietário e Empreendimento)**:
+  - Adicionados botões dedicados de cadastro rápido ao lado de cada seletor na tela de inserção/edição do imóvel.
+  - Modais responsivos e assíncronos (AJAX) que cadastram o novo item sem que o usuário precise sair da página do imóvel.
+  - O novo item cadastrado é automaticamente inserido e selecionado no respectivo `<select>` da página.
+- **Localização Interativa via Google Maps**:
+  - Mapa interativo do Google Maps integrado na meta box de localização do imóvel.
+  - Centralização inicial configurada por padrão para a cidade de **Campina Grande - PB** (`lat: -7.2247, lng: -35.8816`).
+  - Marcador clicável e arrastável pelo usuário, campo de busca com autocompletar de endereços (Places API) e geocodificação reversa que preenche automaticamente endereço, bairro, cidade, latitude e longitude.
+- **Otimização no Upload de Imagens**:
+  - Filtro estrito de geração de imagens intermediárias no WordPress (`intermediate_image_sizes_advanced`): agora são geradas **apenas duas resoluções**:
+    - `imob_large`: até **1280px** (proporcional, sem corte) para visualização em alta definição.
+    - `imob_thumb`: **400x300px** (com corte central) para miniaturas de grids e listagens.
+  - Desabilitada a criação redundante de arquivos `-scaled` pesados (`big_image_size_threshold`).
+- **Ferramenta de Otimização de Imagens Existentes (Painel do Tema)**:
+  - Nova ferramenta disponível em **Opções do Tema** que varre todas as fotos dos imóveis já cadastrados no site.
+  - Aplica a marca d'água configurada no arquivo original (com opções de transparência e alinhamento em 5 posições).
+  - Redimensiona e salva as resoluções de 1280px e 400x300.
+  - **Remove do disco** todos os arquivos de resoluções antigas desnecessárias, economizando armazenamento do servidor.
+  - Processamento em lote via AJAX com barra de progresso e console de log em tempo real para evitar limites de timeout do PHP.
+- **Ferramenta de Limpeza de Imagens Órfãs (Painel do Tema)**:
+  - Ferramenta para varredura e detecção de arquivos de imagem na biblioteca de mídia que não estão associados a nenhum imóvel, construtora, empreendimento, proprietário, corretor, logo ou post do site.
+  - Exclusão segura e permanente via AJAX com confirmação do usuário e log detalhado.
+- **Botão Flutuante do WhatsApp Dinâmico**:
+  - Botão flutuante moderno no canto inferior direito com suporte a efeito de pulso suave e tooltip.
+  - Integração com número configurável nas **Opções do Tema** (com fallback inteligente para o WhatsApp do corretor responsável no caso de imóvel).
+  - Campo nas **Opções do Tema** para definir a **Mensagem Padrão do WhatsApp** em páginas gerais (Home, listagens, etc.).
+  - Em páginas individuais de imóveis (`single-imovel`), o link monta automaticamente com a mensagem personalizada:
+    > `Olá, eu gostaria de mais informações sobre o imóvel [Título do Imóvel] - [Código do Imóvel]`
+- **Ajustes de Layout e Badges**:
+  - Correção na exibição de badges com caracteres acentuados, garantindo caixa alta correta (`mb_strtoupper(..., 'UTF-8')`).
+  - Ajuste de espaçamento e flexbox para evitar sobreposição do preço sobre o endereço nos cards e grids de imóveis.
+  - Integração dos dados de contato do corretor/autor no widget de contato da página de imóvel.
+
+---
+
+#### **Versão 1.0.0**
+- Lançamento inicial do tema imobiliário customizado.
+- Custom Post Types: `imovel`, `construtora`, `proprietario`, `empreendimento`.
+- Taxonomias: `tipo_imovel`, `localidade`, `caracteristica`, `status_imovel`, `corretor`.
+- Widgets customizados do Elementor para exibição de cards, buscas e filtros avançados.
+- Integração básica com Open Graph, Schema.org e SEO técnico.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+- **WordPress 6+** (PHP 8.1+ / 8.2+)
+- **Google Maps JavaScript API & Places Library**
+- **GD Library / WordPress Image Editor** para processamento de fotos e marca d'água
+- **Elementor**
+- **HTML5 Semântico, Vanilla CSS e jQuery / AJAX**

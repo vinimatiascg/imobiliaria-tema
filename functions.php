@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.0.0' );
+define( 'IMOB_THEME_VERSION', '1.1.0' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -21,8 +21,10 @@ $imob_includes = [
 	'inc/core/enqueue.php',
 	'inc/core/search-logic.php',
 	'inc/core/theme-options.php',
+	'inc/core/user-profile.php',
 	'inc/core/seo.php',
 	'inc/core/watermark.php',
+	'inc/core/image-optimizer.php',
 	'inc/post-types/imovel.php',
 	'inc/post-types/construtora.php',
 	'inc/post-types/proprietario.php',
@@ -49,6 +51,19 @@ foreach ( $imob_includes as $file ) {
 	if ( file_exists( $filepath ) ) {
 		require_once $filepath;
 	}
+}
+
+/**
+ * UTF-8 Multibyte uppercase helper for badges and labels
+ */
+function imob_strtoupper( $string ) {
+	if ( empty( $string ) ) {
+		return '';
+	}
+	if ( function_exists( 'mb_strtoupper' ) ) {
+		return mb_strtoupper( (string) $string, 'UTF-8' );
+	}
+	return strtoupper( (string) $string );
 }
 
 /**

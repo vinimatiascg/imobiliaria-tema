@@ -151,24 +151,21 @@ class Imob_Elementor_Widget_imovel_grid extends \Elementor\Widget_Base {
 				$empreendimento = get_post_meta( get_the_ID(), '_imob_empreendimento', true ); // or similar field for residential name
 
 				$tipos = wp_get_post_terms( get_the_ID(), 'tipo_imovel', array( 'fields' => 'names' ) );
-				$finalidades = wp_get_post_terms( get_the_ID(), 'finalidade', array( 'fields' => 'names' ) );
+				$status_list = wp_get_post_terms( get_the_ID(), 'status_imovel', array( 'fields' => 'names' ) );
 				$localidades = wp_get_post_terms( get_the_ID(), 'localidade', array( 'fields' => 'names' ) );
 
-				$tipo = !empty($tipos) ? $tipos[0] : 'IMÓVEL';
-				$finalidade = !empty($finalidades) ? $finalidades[0] : 'VENDA';
-				$bairro = !empty($localidades) ? $localidades[0] : 'Bairro não informado';
+				$tipo = ( ! is_wp_error( $tipos ) && ! empty( $tipos ) ) ? $tipos[0] : 'IMÓVEL';
+				$finalidade = ( ! is_wp_error( $status_list ) && ! empty( $status_list ) ) ? $status_list[0] : 'VENDA';
+				$bairro = ( ! is_wp_error( $localidades ) && ! empty( $localidades ) ) ? $localidades[0] : 'Bairro não informado';
 				?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'imob-card' ); ?>>
 					<div class="imob-card-thumb">
 						<div class="imob-card-badges">
-							<span class="badge-tipo"><?php echo esc_html( strtoupper( $tipo ) ); ?></span>
-							<span class="badge-finalidade"><?php echo esc_html( strtoupper( $finalidade ) ); ?></span>
-						</div>
-						<div class="imob-card-info-top">
-							<span class="info-bairro">Bairro: <?php echo esc_html( $bairro ); ?></span>
+							<span class="badge-tipo"><?php echo esc_html( imob_strtoupper( $tipo ) ); ?></span>
+							<span class="badge-finalidade"><?php echo esc_html( imob_strtoupper( $finalidade ) ); ?></span>
 						</div>
 						<?php if ( $price_html ) : ?>
-							<div class="imob-card-price" style="position: absolute; bottom: 15px; left: 15px; background: #0E1A2B; color: #fff; padding: 5px 15px; border-radius: 8px; z-index: 2;">
+							<div class="imob-card-price">
 								<?php echo $price_html; ?>
 							</div>
 						<?php endif; ?>
@@ -183,6 +180,9 @@ class Imob_Elementor_Widget_imovel_grid extends \Elementor\Widget_Base {
 						</a>
 					</div>
 					<div class="imob-card-content">
+						<div class="imob-card-info-top">
+							<span class="info-bairro"><span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle; color: var(--accent-color);">location_on</span> Bairro: <?php echo esc_html( $bairro ); ?></span>
+						</div>
 						<?php the_title( '<h3 class="imob-card-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h3>' ); ?>
 						
 						<?php if ( $empreendimento ) : ?>

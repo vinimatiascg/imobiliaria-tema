@@ -34,5 +34,11 @@ add_action( 'wp_enqueue_scripts', 'imob_theme_scripts' );
 function imob_theme_admin_scripts( $hook ) {
 	// Need media uploader for taxonomies and meta boxes
 	wp_enqueue_media();
+
+	global $post_type;
+	$gmaps_key = get_option( 'imob_gmaps_key' );
+	if ( $gmaps_key && ( $post_type === 'imovel' || ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'imovel' ) ) ) {
+		wp_enqueue_script( 'google-maps-admin', 'https://maps.googleapis.com/maps/api/js?key=' . esc_attr( $gmaps_key ) . '&libraries=places', array(), null, true );
+	}
 }
 add_action( 'admin_enqueue_scripts', 'imob_theme_admin_scripts' );

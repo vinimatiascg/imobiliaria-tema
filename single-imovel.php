@@ -34,12 +34,26 @@ get_header(); ?>
 		$bairro = (!empty($localidades) && !is_wp_error($localidades)) ? $localidades[0]->name : 'Bairro não informado';
 		$status_imovel = (!empty($status_terms) && !is_wp_error($status_terms)) ? $status_terms[0]->name : '';
 		
-		$whatsapp_global = get_option( 'imob_contact_whatsapp' );
-		if ( empty($whatsapp_global) ) {
-			$whatsapp_global = '5583999999999'; // fallback number
+		// Contact WhatsApp: check corretor, then user profile, then global option
+		$corretores = wp_get_post_terms( get_the_ID(), 'corretor' );
+		$contact_whatsapp = '';
+		if ( ! empty($corretores) && ! is_wp_error($corretores) ) {
+			$contact_whatsapp = get_term_meta( $corretores[0]->term_id, 'imob_corretor_whatsapp', true );
+		}
+		if ( empty($contact_whatsapp) && function_exists('imob_get_user_contact_data') ) {
+			$u_data = imob_get_user_contact_data( get_the_author_meta('ID') );
+			if ( $u_data && ! empty($u_data['whatsapp']) ) {
+				$contact_whatsapp = $u_data['whatsapp'];
+			}
+		}
+		if ( empty($contact_whatsapp) ) {
+			$contact_whatsapp = get_option( 'imob_contact_whatsapp' );
+		}
+		if ( empty($contact_whatsapp) ) {
+			$contact_whatsapp = '5583999999999'; // fallback number
 		}
 		
-		$wa_number = preg_replace('/[^0-9]/', '', $whatsapp_global);
+		$wa_number = preg_replace('/[^0-9]/', '', $contact_whatsapp);
 		if (substr($wa_number, 0, 2) !== '55' && strlen($wa_number) <= 11) {
 			$wa_number = '55' . $wa_number;
 		}
@@ -116,19 +130,19 @@ get_header(); ?>
 								// Status
 								if (!empty($status_terms) && !is_wp_error($status_terms)) {
 									foreach($status_terms as $term) {
-										echo '<a href="'.esc_url(get_term_link($term)).'" class="badge badge-status">'.esc_html(strtoupper($term->name)).'</a>';
+										echo '<a href="'.esc_url(get_term_link($term)).'" class="badge badge-status">'.esc_html(imob_strtoupper($term->name)).'</a>';
 									}
 								}
 								// Tipos
 								if (!empty($tipos) && !is_wp_error($tipos)) {
 									foreach($tipos as $term) {
-										echo '<a href="'.esc_url(get_term_link($term)).'" class="badge badge-tipo">'.esc_html(strtoupper($term->name)).'</a>';
+										echo '<a href="'.esc_url(get_term_link($term)).'" class="badge badge-tipo">'.esc_html(imob_strtoupper($term->name)).'</a>';
 									}
 								}
 								// Localidades
 								if (!empty($localidades) && !is_wp_error($localidades)) {
 									foreach($localidades as $term) {
-										echo '<a href="'.esc_url(get_term_link($term)).'" class="badge badge-localidade" style="background: #999; color: #fff; text-decoration: none;">'.esc_html(strtoupper($term->name)).'</a>';
+										echo '<a href="'.esc_url(get_term_link($term)).'" class="badge badge-localidade" style="background: #999; color: #fff; text-decoration: none;">'.esc_html(imob_strtoupper($term->name)).'</a>';
 									}
 								}
 								?>
@@ -283,7 +297,7 @@ get_header(); ?>
 
 				<!-- Sidebar -->
 				<aside class="imob-single-sidebar">
-					<!-- Corretor Responsável -->
+					<!-- Corretor Responsável / Contato -->
 					<div class="imob-sidebar-widget">
 						<?php
 						$corretores = wp_get_post_terms( get_the_ID(), 'corretor' );
@@ -296,7 +310,7 @@ get_header(); ?>
 								$instagram = get_term_meta( $corretor->term_id, 'imob_corretor_instagram', true );
 								$email = get_term_meta( $corretor->term_id, 'imob_corretor_email', true );
 								$foto = get_term_meta( $corretor->term_id, 'imob_corretor_foto', true );
-								$foto_url = $foto ? wp_get_attachment_image_url( $foto, 'thumbnail' ) : 'https://via.placeholder.com/50x50.png?text=FOTO';
+								$foto_url = $foto ? wp_get_attachment_image_url( $foto, 'thumbnail' ) : 'https://via.placeholder.com/70x70.png?text=FOTO';
 								$corretor_link = get_term_link( $corretor );
 								?>
 								<h3 class="widget-title">Corretor responsável:</h3>
@@ -334,34 +348,126 @@ get_header(); ?>
 									</div>
 								</div>
 							<?php endforeach; ?>
-						<?php else: ?>
-							<h3 class="widget-title">Contato:</h3>
-							<div class="imob-corretor-card">
-								<p>Fale conosco para mais detalhes sobre este imóvel.</p>
-							</div>
+						<?php else: 
+							// Carrega os dados de contato do usuário (autor do post)
+							$user_contact = function_exists( 'imob_get_user_contact_data' ) ? imob_get_user_contact_data( get_the_author_meta( 'ID' ) ) : false;
+							if ( $user_contact ) :
+							?>
+								<h3 class="widget-title">Corretor responsável:</h3>
+								<div class="imob-corretor-card" style="margin-bottom: 20px;">
+									<div class="imob-corretor-info" style="display: flex; justify-content: space-between; align-items: flex-start;">
+										<div class="imob-corretor-details" style="flex: 1;">
+											<h4 style="font-size: 1.2rem;"><?php echo esc_html( $user_contact['name'] ); ?></h4>
+											<p class="role" style="color: var(--text-light);"><?php echo esc_html( $user_contact['role'] ); ?></p>
+											<?php if ( ! empty( $user_contact['creci'] ) || ! empty( $user_contact['cnai'] ) ) : ?>
+												<p class="creci" style="color: #999;">
+													<?php if ( ! empty( $user_contact['creci'] ) ) : ?>CRECI <?php echo esc_html( $user_contact['creci'] ); ?><?php endif; ?>
+													<?php if ( ! empty( $user_contact['cnai'] ) ) : ?> CNAI <?php echo esc_html( $user_contact['cnai'] ); ?><?php endif; ?>
+												</p>
+											<?php endif; ?>
+										</div>
+										<div class="imob-corretor-avatar" style="flex-shrink: 0; margin-left: 15px;">
+											<div class="avatar-placeholder" style="width: 70px; height: 70px; border-radius: 10px; background: url('<?php echo esc_url($user_contact['foto_url']); ?>') center/cover;"></div>
+										</div>
+									</div>
+									<?php if ( ! empty( $user_contact['resumo'] ) ) : ?>
+										<div class="imob-corretor-resumo" style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 10px;">
+											<?php echo wp_kses_post( $user_contact['resumo'] ); ?>
+										</div>
+									<?php endif; ?>
+									<div class="imob-corretor-contact" style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px;">
+										<p style="margin: 0; font-size: 0.9rem; font-weight: 600; line-height: 1.3; max-width: 150px;"><strong>Entre em contato</strong> e realize o sonho do imóvel próprio:</p>
+										<div class="imob-social-icons">
+											<?php if ( ! empty( $user_contact['whatsapp'] ) ) : 
+												$u_wa = preg_replace('/[^0-9]/', '', $user_contact['whatsapp']);
+												if ( substr($u_wa, 0, 2) !== '55' && strlen($u_wa) <= 11 ) {
+													$u_wa = '55' . $u_wa;
+												}
+												$u_wa_text = urlencode('Olá, gostaria de mais informações sobre o imóvel: ' . get_the_title() . ' - ' . get_permalink());
+											?>
+												<a href="https://wa.me/<?php echo esc_attr($u_wa); ?>?text=<?php echo $u_wa_text; ?>" target="_blank" class="social-icon" title="WhatsApp"><span class="material-symbols-outlined">chat</span></a>
+											<?php endif; ?>
+											<?php if ( ! empty( $user_contact['instagram'] ) ) : ?>
+												<a href="https://instagram.com/<?php echo esc_attr(str_replace('@', '', $user_contact['instagram'])); ?>" target="_blank" class="social-icon" title="Instagram"><span class="material-symbols-outlined">photo_camera</span></a>
+											<?php endif; ?>
+											<?php if ( ! empty( $user_contact['email'] ) ) : ?>
+												<a href="mailto:<?php echo esc_attr($user_contact['email']); ?>?subject=<?php echo urlencode('Interesse no imóvel: ' . get_the_title()); ?>" class="social-icon" title="E-mail"><span class="material-symbols-outlined">mail</span></a>
+											<?php endif; ?>
+										</div>
+									</div>
+								</div>
+							<?php else : ?>
+								<h3 class="widget-title">Contato:</h3>
+								<div class="imob-corretor-card">
+									<p>Fale conosco para mais detalhes sobre este imóvel.</p>
+								</div>
+							<?php endif; ?>
 						<?php endif; ?>
 					</div>
 
-					<!-- Widget de Busca Simplificado (Aluguel/Venda) -->
+					<!-- Widget de Busca Simplificado -->
 					<div class="imob-sidebar-widget imob-sidebar-search">
-						<div class="imob-search-tabs">
-							<label class="imob-search-tab"><input type="radio" name="fin_sb" value="aluguel"><span>Aluguel</span></label>
-							<label class="imob-search-tab"><input type="radio" name="fin_sb" value="venda" checked><span>Venda</span></label>
-						</div>
-						<form class="imob-sb-form">
+						<h3 class="widget-title" style="margin-bottom: 15px;">Buscar imóveis</h3>
+						<form role="search" method="get" class="imob-sb-form" action="<?php echo esc_url( home_url( '/' ) ); ?>" style="margin-top: 0;">
+							<input type="hidden" name="post_type" value="imovel" />
+							
+							<div class="imob-search-tabs">
+								<label class="imob-search-tab">
+									<input type="radio" name="finalidade" value="aluguel" <?php checked( isset($_GET['finalidade']) && $_GET['finalidade'] === 'aluguel' ); ?>>
+									<span>Aluguel</span>
+								</label>
+								<label class="imob-search-tab">
+									<input type="radio" name="finalidade" value="venda" <?php checked( !isset($_GET['finalidade']) || $_GET['finalidade'] !== 'aluguel' ); ?>>
+									<span>Venda</span>
+								</label>
+							</div>
+
 							<div class="imob-sb-field">
 								<span class="material-symbols-outlined search-icon">search</span>
-								<input type="text" placeholder="O que você procura?">
+								<input type="text" name="s" placeholder="O que você procura?" value="<?php echo esc_attr( get_search_query() ); ?>">
 							</div>
+
 							<div class="imob-sb-field">
-								<select><option>Cidade</option></select>
-								<span class="material-symbols-outlined" style="color: var(--text-light); margin-left: auto; margin-right: 0;">keyboard_arrow_down</span>
+								<span class="material-symbols-outlined" style="color: var(--text-light);">location_on</span>
+								<select name="localidade" class="imob-select" style="cursor: pointer;">
+									<option value="">Todas as Localidades</option>
+									<?php
+									$loc_terms = get_terms( array(
+										'taxonomy'   => 'localidade',
+										'hide_empty' => false,
+									) );
+									if ( ! empty( $loc_terms ) && ! is_wp_error( $loc_terms ) ) {
+										$selected_loc = isset( $_GET['localidade'] ) ? sanitize_text_field( $_GET['localidade'] ) : '';
+										foreach ( $loc_terms as $loc_term ) {
+											echo '<option value="' . esc_attr( $loc_term->slug ) . '" ' . selected( $selected_loc, $loc_term->slug, false ) . '>' . esc_html( $loc_term->name ) . '</option>';
+										}
+									}
+									?>
+								</select>
+								<span class="material-symbols-outlined" style="color: var(--text-light); margin-left: auto; margin-right: 0; pointer-events: none;">keyboard_arrow_down</span>
 							</div>
+
 							<div class="imob-sb-field">
-								<select><option>Bairro</option></select>
-								<span class="material-symbols-outlined" style="color: var(--text-light); margin-left: auto; margin-right: 0;">keyboard_arrow_down</span>
+								<span class="material-symbols-outlined" style="color: var(--text-light);">home_work</span>
+								<select name="tipo" class="imob-select" style="cursor: pointer;">
+									<option value="">Todos os Tipos de Imóvel</option>
+									<?php
+									$tipo_terms = get_terms( array(
+										'taxonomy'   => 'tipo_imovel',
+										'hide_empty' => false,
+									) );
+									if ( ! empty( $tipo_terms ) && ! is_wp_error( $tipo_terms ) ) {
+										$selected_tipo = isset( $_GET['tipo'] ) ? sanitize_text_field( $_GET['tipo'] ) : '';
+										foreach ( $tipo_terms as $tipo_term ) {
+											echo '<option value="' . esc_attr( $tipo_term->slug ) . '" ' . selected( $selected_tipo, $tipo_term->slug, false ) . '>' . esc_html( $tipo_term->name ) . '</option>';
+										}
+									}
+									?>
+								</select>
+								<span class="material-symbols-outlined" style="color: var(--text-light); margin-left: auto; margin-right: 0; pointer-events: none;">keyboard_arrow_down</span>
 							</div>
-							<button type="submit" class="btn-primary" style="width: 100%; justify-content: center; background-color: var(--accent-color); color: #fff; font-size: 1.1rem; border: none; cursor: pointer;">Mostrar resultados</button>
+
+							<button type="submit" class="btn-primary" style="width: 100%; justify-content: center; background-color: var(--accent-color); color: #fff; font-size: 1.1rem; border: none; cursor: pointer; padding: 12px 20px; border-radius: 6px;">Mostrar resultados</button>
 						</form>
 					</div>
 
@@ -389,19 +495,25 @@ get_header(); ?>
 							if ( $related->have_posts() ) {
 								while ( $related->have_posts() ) {
 									$related->the_post();
+									$rel_tipos = wp_get_post_terms( get_the_ID(), 'tipo_imovel' );
+									$rel_status = wp_get_post_terms( get_the_ID(), 'status_imovel' );
+									$rel_locs = wp_get_post_terms( get_the_ID(), 'localidade' );
+									$rel_tipo = ( ! empty( $rel_tipos ) && ! is_wp_error( $rel_tipos ) ) ? $rel_tipos[0]->name : 'IMÓVEL';
+									$rel_bairro = ( ! empty( $rel_locs ) && ! is_wp_error( $rel_locs ) ) ? $rel_locs[0]->name : 'Bairro não informado';
+									$rel_status_name = ( ! empty( $rel_status ) && ! is_wp_error( $rel_status ) ) ? $rel_status[0]->name : '';
 									?>
 									<article class="imob-card imob-related-card">
 										<div class="imob-card-thumb" style="height: 150px;">
 											<div class="imob-card-badges">
-												<span class="badge-tipo"><?php echo esc_html( strtoupper( $tipo ) ); ?></span>
-												<?php if ( $status_imovel ) : ?>
-													<span class="badge-status"><?php echo esc_html( strtoupper( $status_imovel ) ); ?></span>
+												<span class="badge-tipo"><?php echo esc_html( imob_strtoupper( $rel_tipo ) ); ?></span>
+												<?php if ( $rel_status_name ) : ?>
+													<span class="badge-status"><?php echo esc_html( imob_strtoupper( $rel_status_name ) ); ?></span>
 												<?php endif; ?>
 											</div>
 											
 											<?php $price_html = imob_get_formatted_price( get_the_ID(), false ); ?>
 											<?php if ( $price_html ) : ?>
-												<div class="imob-card-price" style="position: absolute; bottom: 15px; left: 15px; background: #0E1A2B; color: #fff; padding: 5px 15px; border-radius: 8px; z-index: 2;">
+												<div class="imob-card-price">
 													<?php echo $price_html; ?>
 												</div>
 											<?php endif; ?>
@@ -418,7 +530,7 @@ get_header(); ?>
 										</div>
 										<div class="imob-card-content" style="padding: 15px;">
 											<div class="imob-card-info-top" style="position: static; background: transparent; padding: 0 0 10px 0;">
-												<span class="info-bairro" style="border: 1px solid #ccc; padding: 2px 8px; border-radius: 4px;">Bairro: <?php echo esc_html( $bairro ); ?></span>
+												<span class="info-bairro"><span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle; color: var(--accent-color);">location_on</span> Bairro: <?php echo esc_html( $rel_bairro ); ?></span>
 											</div>
 											
 											<?php the_title( '<h3 class="imob-card-title" style="font-size: 1rem; margin-bottom: 10px;"><a href="' . esc_url( get_permalink() ) . '">', '</a></h3>' ); ?>
