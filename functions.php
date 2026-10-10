@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.3.1' );
+define( 'IMOB_THEME_VERSION', '1.3.2' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -192,6 +192,93 @@ function imob_render_empreendimento_badge( $post_id, $is_single = false ) {
 	}
 
 	$class = $is_single ? 'imob-single-badge-empreendimento badge-empreendimento' : 'badge-empreendimento';
+	return sprintf(
+		'<span class="%s">%s %s</span>',
+		esc_attr( $class ),
+		$icon,
+		$nome
+	);
+}
+
+/**
+ * Recupera dados da construtora vinculada a um imóvel
+ *
+ * @param int $post_id ID do imóvel
+ * @return array|null Array com ['id', 'nome', 'url'] ou null
+ */
+function imob_get_imovel_construtora( $post_id ) {
+	$const_id = get_post_meta( $post_id, '_imob_construtora_id', true );
+	if ( ! empty( $const_id ) && is_numeric( $const_id ) ) {
+		$const_post = get_post( (int) $const_id );
+		if ( $const_post && 'construtora' === $const_post->post_type ) {
+			return array(
+				'id'   => $const_post->ID,
+				'nome' => $const_post->post_title,
+				'url'  => get_permalink( $const_post->ID ),
+			);
+		}
+	}
+
+	// Fallback por texto legado
+	$const_text = get_post_meta( $post_id, '_imob_construtora', true );
+	if ( ! empty( $const_text ) ) {
+		$found = get_page_by_title( $const_text, OBJECT, 'construtora' );
+		if ( $found ) {
+			return array(
+				'id'   => $found->ID,
+				'nome' => $found->post_title,
+				'url'  => get_permalink( $found->ID ),
+			);
+		}
+	}
+
+	// Fallback: verificar se o empreendimento vinculado possui construtora
+	$emp = imob_get_imovel_empreendimento( $post_id );
+	if ( $emp && ! empty( $emp['id'] ) ) {
+		$emp_const_id = get_post_meta( $emp['id'], '_imob_emp_construtora_id', true );
+		if ( ! empty( $emp_const_id ) ) {
+			$const_post = get_post( (int) $emp_const_id );
+			if ( $const_post && 'construtora' === $const_post->post_type ) {
+				return array(
+					'id'   => $const_post->ID,
+					'nome' => $const_post->post_title,
+					'url'  => get_permalink( $const_post->ID ),
+				);
+			}
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Renderiza o badge HTML da construtora com link para a página da construtora
+ *
+ * @param int $post_id ID do imóvel
+ * @param bool $is_single
+ * @return string HTML do badge
+ */
+function imob_render_construtora_badge( $post_id, $is_single = false ) {
+	$const = imob_get_imovel_construtora( $post_id );
+	if ( ! $const || empty( $const['nome'] ) ) {
+		return '';
+	}
+
+	$nome = esc_html( imob_strtoupper( $const['nome'] ) );
+	$icon = '<span class="material-symbols-outlined" style="font-size: 13px; vertical-align: middle;">apartment</span>';
+	$class = $is_single ? 'imob-single-badge-construtora badge-construtora' : 'badge-construtora';
+
+	if ( ! empty( $const['url'] ) ) {
+		return sprintf(
+			'<a href="%s" class="%s" title="%s">%s %s</a>',
+			esc_url( $const['url'] ),
+			esc_attr( $class ),
+			esc_attr__( 'Ver todos os imóveis desta Construtora', 'imobiliaria-tema' ),
+			$icon,
+			$nome
+		);
+	}
+
 	return sprintf(
 		'<span class="%s">%s %s</span>',
 		esc_attr( $class ),

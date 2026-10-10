@@ -93,13 +93,14 @@ get_header(); ?>
 						<div class="imob-gallery-thumbs">
 							<?php foreach ( array_slice($images, 1, 6) as $index => $img_id ) : 
 								$thumb_full = wp_get_attachment_image_url( $img_id, 'full' );
+								if ( ! $thumb_full ) continue;
 							?>
 								<div class="imob-thumb-item">
 									<a href="<?php echo esc_url($thumb_full); ?>" class="glightbox" data-gallery="imovel-gallery">
 										<?php echo wp_get_attachment_image( $img_id, 'medium' ); ?>
 									</a>
 									<?php if ( $index === 5 && count($images) > 7 ) : ?>
-										<div class="imob-thumb-overlay">
+										<div class="imob-thumb-overlay" style="pointer-events: none;">
 											<span class="material-symbols-outlined">photo_camera</span>
 											<span><?php echo count($images); ?><br>fotos</span>
 										</div>
@@ -107,13 +108,30 @@ get_header(); ?>
 								</div>
 							<?php endforeach; ?>
 						</div>
+
+						<!-- Links ocultos para que todas as fotos adicionais participem do slideshow -->
+						<?php if ( count( $images ) > 7 ) : ?>
+							<div class="imob-gallery-hidden" style="display: none;">
+								<?php foreach ( array_slice( $images, 7 ) as $hidden_id ) : 
+									$hidden_full = wp_get_attachment_image_url( $hidden_id, 'full' );
+									if ( ! $hidden_full ) continue;
+								?>
+									<a href="<?php echo esc_url( $hidden_full ); ?>" class="glightbox" data-gallery="imovel-gallery"></a>
+								<?php endforeach; ?>
+							</div>
+						<?php endif; ?>
 					<?php endif; ?>
 				</div>
-				<!-- Script para iniciar o Lightbox -->
+				<!-- Script para iniciar o Lightbox com loop e navegação completa -->
 				<script>
 				document.addEventListener('DOMContentLoaded', function() {
 					if (typeof GLightbox !== 'undefined') {
-						const lightbox = GLightbox({ selector: '.glightbox' });
+						const lightbox = GLightbox({ 
+							selector: '.glightbox',
+							loop: true,
+							zoomable: true,
+							touchNavigation: true
+						});
 					}
 				});
 				</script>
@@ -139,10 +157,22 @@ get_header(); ?>
 										echo '<a href="'.esc_url(get_term_link($term)).'" class="badge badge-tipo">'.esc_html(imob_strtoupper($term->name)).'</a>';
 									}
 								}
-								// Empreendimento vinculado (Requisito 4)
+								// Estágio da Obra
+								$estagios = wp_get_post_terms( get_the_ID(), 'estagio_obra' );
+								if ( ! empty($estagios) && ! is_wp_error($estagios) ) {
+									foreach($estagios as $stg) {
+										echo '<a href="'.esc_url(get_term_link($stg)).'" class="badge badge-estagio">'.esc_html(imob_strtoupper($stg->name)).'</a>';
+									}
+								}
+								// Empreendimento vinculado (com link para a listagem do empreendimento)
 								$badge_emp_single = imob_render_empreendimento_badge( get_the_ID(), true );
 								if ( ! empty( $badge_emp_single ) ) {
 									echo $badge_emp_single;
+								}
+								// Construtora vinculada (com link para a listagem da construtora)
+								$badge_const_single = imob_render_construtora_badge( get_the_ID(), true );
+								if ( ! empty( $badge_const_single ) ) {
+									echo $badge_const_single;
 								}
 								// Localidades
 								if (!empty($localidades) && !is_wp_error($localidades)) {
@@ -218,6 +248,42 @@ get_header(); ?>
 								</div>
 							<?php endif; ?>
 						</div>
+
+						<!-- Informações de Vínculo com Empreendimento e Construtora -->
+						<?php 
+						$emp_vinculo   = imob_get_imovel_empreendimento( get_the_ID() );
+						$const_vinculo = imob_get_imovel_construtora( get_the_ID() );
+						if ( $emp_vinculo || $const_vinculo ) : ?>
+							<div class="imob-imovel-relations-banner" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 25px; padding: 16px 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+								<?php if ( $emp_vinculo && ! empty( $emp_vinculo['nome'] ) ) : ?>
+									<div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+										<span class="material-symbols-outlined" style="color: var(--accent-color); font-size: 20px;">domain</span>
+										<span style="color: var(--text-light);"><?php _e( 'Empreendimento:', 'imobiliaria-tema' ); ?></span>
+										<?php if ( ! empty( $emp_vinculo['url'] ) ) : ?>
+											<a href="<?php echo esc_url( $emp_vinculo['url'] ); ?>" style="color: var(--primary-color); font-weight: 700; text-decoration: none;" title="<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?>">
+												<?php echo esc_html( $emp_vinculo['nome'] ); ?> &rarr;
+											</a>
+										<?php else : ?>
+											<strong style="color: var(--primary-color);"><?php echo esc_html( $emp_vinculo['nome'] ); ?></strong>
+										<?php endif; ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if ( $const_vinculo && ! empty( $const_vinculo['nome'] ) ) : ?>
+									<div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+										<span class="material-symbols-outlined" style="color: var(--accent-color); font-size: 20px;">apartment</span>
+										<span style="color: var(--text-light);"><?php _e( 'Construtora:', 'imobiliaria-tema' ); ?></span>
+										<?php if ( ! empty( $const_vinculo['url'] ) ) : ?>
+											<a href="<?php echo esc_url( $const_vinculo['url'] ); ?>" style="color: var(--primary-color); font-weight: 700; text-decoration: none;" title="<?php _e( 'Ver todos os imóveis desta construtora', 'imobiliaria-tema' ); ?>">
+												<?php echo esc_html( $const_vinculo['nome'] ); ?> &rarr;
+											</a>
+										<?php else : ?>
+											<strong style="color: var(--primary-color);"><?php echo esc_html( $const_vinculo['nome'] ); ?></strong>
+										<?php endif; ?>
+									</div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
 					</header>
 
 					<!-- Descrição -->
@@ -302,6 +368,51 @@ get_header(); ?>
 
 				<!-- Sidebar -->
 				<aside class="imob-single-sidebar">
+					<!-- Empreendimento / Construtora (com links para as respectivas listagens) -->
+					<?php 
+					$emp_side   = imob_get_imovel_empreendimento( get_the_ID() );
+					$const_side = imob_get_imovel_construtora( get_the_ID() );
+					if ( $emp_side || $const_side ) : ?>
+						<div class="imob-sidebar-widget imob-sidebar-relations" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 22px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+							<h3 class="widget-title" style="margin: 0 0 15px; font-size: 1.15rem; color: var(--primary-color); display: flex; align-items: center; gap: 8px;">
+								<span class="material-symbols-outlined" style="color: var(--accent-color);">apartment</span>
+								<?php _e( 'Empreendimento & Construtora', 'imobiliaria-tema' ); ?>
+							</h3>
+
+							<?php if ( $emp_side && ! empty( $emp_side['nome'] ) ) : ?>
+								<div style="margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
+									<div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">
+										<?php _e( 'Empreendimento', 'imobiliaria-tema' ); ?>
+									</div>
+									<h4 style="margin: 0 0 6px; font-size: 1.1rem; color: var(--primary-color); font-weight: 700;">
+										<?php echo esc_html( $emp_side['nome'] ); ?>
+									</h4>
+									<?php if ( ! empty( $emp_side['url'] ) ) : ?>
+										<a href="<?php echo esc_url( $emp_side['url'] ); ?>" style="color: var(--accent-color); font-weight: 700; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?>">
+											<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?> &rarr;
+										</a>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
+
+							<?php if ( $const_side && ! empty( $const_side['nome'] ) ) : ?>
+								<div>
+									<div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">
+										<?php _e( 'Construtora', 'imobiliaria-tema' ); ?>
+									</div>
+									<h4 style="margin: 0 0 6px; font-size: 1.1rem; color: var(--primary-color); font-weight: 700;">
+										<?php echo esc_html( $const_side['nome'] ); ?>
+									</h4>
+									<?php if ( ! empty( $const_side['url'] ) ) : ?>
+										<a href="<?php echo esc_url( $const_side['url'] ); ?>" style="color: var(--accent-color); font-weight: 700; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="<?php _e( 'Ver todos os imóveis desta construtora', 'imobiliaria-tema' ); ?>">
+											<?php _e( 'Ver todos os imóveis desta construtora', 'imobiliaria-tema' ); ?> &rarr;
+										</a>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
+
 					<!-- Corretor Responsável / Contato -->
 					<div class="imob-sidebar-widget">
 						<?php

@@ -4,11 +4,23 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.1`
+## 🚀 Versão Atual: `1.3.2`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.1** (Atualização Recente)
+#### **Versão 1.3.2** (Atualização Recente)
+- **1. Galeria de Imagens e Slideshow Completo (`single-imovel.php`)**:
+  - Correção na galeria de fotos do imóvel: anteriormente, o loop de miniaturas limitava a renderização no DOM às primeiras imagens (`array_slice`), fazendo com que o GLightbox não carregasse as imagens subsequentes no slideshow.
+  - Implementada a renderização de links ocultos (`.imob-gallery-hidden`) para todas as fotos excedentes pertencentes ao imóvel com a mesma classe e atributo `data-gallery="imovel-gallery"`.
+  - Configurado o GLightbox com `loop: true`, `zoomable: true` e `touchNavigation: true`, permitindo navegar fluidamente por todas as dezenas de fotos cadastradas sem interrupções.
+  - Adicionado `pointer-events: none` na sobreposição `+X fotos` para garantir o clique direto no elemento de abertura do lightbox.
+- **2. Vínculo e Links de Construtora e Empreendimento (`single-imovel.php`)**:
+  - Criados os helpers `imob_get_imovel_construtora()` e `imob_render_construtora_badge()` com detecção via meta direto e herança automática via empreendimento.
+  - No cabeçalho do imóvel: exibição de badges com links para a listagem da construtora e do empreendimento (`imob-single-badge-construtora` e `imob-single-badge-empreendimento`), além do estágio da obra.
+  - No corpo do imóvel: novo banner informativo (`.imob-imovel-relations-banner`) abaixo da barra de características com links destacados para a listagem de todos os imóveis da respectiva construtora e do respectivo empreendimento.
+  - Na barra lateral (sidebar): novo widget dedicado (`.imob-sidebar-relations`) destacando o Empreendimento e a Construtora com links diretos para suas páginas de catálogo e listagem completa de unidades.
+
+#### **Versão 1.3.1**
 - **1. Correção de Erro de Validação de Formulário ao Salvar Imóveis (`An invalid form control with name='' is not focusable`)**:
   - Removido o atributo nativo HTML5 `required` dos inputs de texto nos modais de cadastro rápido de Construtora, Proprietário e Empreendimento (`#quick_const_nome`, `#quick_prop_nome`, `#quick_emp_nome`).
   - Implementado transporte dinâmico via JavaScript (`$('body').append(...)`) para anexar os modais diretamente ao `body`, desvinculando-os do formulário principal de submissão do WordPress (`#post`) e blindando a gravação de imóveis contra bloqueios nativos do navegador.
