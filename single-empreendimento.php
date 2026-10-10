@@ -101,6 +101,26 @@ $gmaps_key = get_option( 'imob_gmaps_key' );
 				<?php endif; ?>
 			</header>
 
+			<!-- ITENS DE LAZER / CARACTERÍSTICAS DO EMPREENDIMENTO -->
+			<?php 
+			$emp_caracteristicas = wp_get_post_terms( $emp_id, 'caracteristica' );
+			if ( ! empty( $emp_caracteristicas ) && ! is_wp_error( $emp_caracteristicas ) ) : ?>
+				<section class="imob-emp-features-section" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 35px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+					<h2 style="font-size: 1.6rem; color: var(--primary-color); margin: 0 0 20px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+						<span class="material-symbols-outlined" style="color: var(--accent-color);">deck</span>
+						<?php _e( 'Itens de Lazer e Diferenciais', 'imobiliaria-tema' ); ?>
+					</h2>
+					<div class="imob-emp-features-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px;">
+						<?php foreach ( $emp_caracteristicas as $carac ) : ?>
+							<div class="imob-emp-feature-item" style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px 18px; border-radius: 8px; transition: transform 0.2s, box-shadow 0.2s;">
+								<span class="material-symbols-outlined" style="color: var(--accent-color); font-size: 22px;">check_circle</span>
+								<span style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark);"><?php echo esc_html( $carac->name ); ?></span>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				</section>
+			<?php endif; ?>
+
 			<!-- FOTOS DO EMPREENDIMENTO (GALERIA) -->
 			<?php if ( ! empty( $galeria ) ) : ?>
 				<section class="imob-emp-gallery-section" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 35px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">

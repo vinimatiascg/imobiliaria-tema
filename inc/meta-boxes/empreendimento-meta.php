@@ -271,6 +271,16 @@ function imob_save_empreendimento_meta( $post_id ) {
 	if ( isset( $_POST['imob_emp_galeria'] ) && is_array( $_POST['imob_emp_galeria'] ) ) {
 		$galeria = array_map( 'intval', $_POST['imob_emp_galeria'] );
 		update_post_meta( $post_id, '_imob_emp_galeria', $galeria );
+
+		// Aplicar marca d'água e redimensionamento caso ainda não processadas
+		if ( function_exists( 'imob_process_optimize_attachment' ) ) {
+			foreach ( $galeria as $img_id ) {
+				if ( ! get_post_meta( $img_id, '_imob_optimized', true ) ) {
+					imob_process_optimize_attachment( $img_id );
+					update_post_meta( $img_id, '_imob_optimized', '1' );
+				}
+			}
+		}
 	} else {
 		delete_post_meta( $post_id, '_imob_emp_galeria' );
 	}

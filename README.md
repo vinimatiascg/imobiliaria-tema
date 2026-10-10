@@ -4,11 +4,39 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.2.0`
+## 🚀 Versão Atual: `1.3.0`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.2.0** (Atualização Recente)
+#### **Versão 1.3.0** (Atualização Recente)
+- **1. Padronização da Página de Blog (`/nosso-blog/` e `home.php`)**:
+  - Unificação completa do design da página de blog (`home.php`, `template-blog.php`, `page-nosso-blog.php`) com a mesma estrutura visual e harmonia de cores estabelecida em `category.php`.
+  - Cards elegantes com badges de categoria dourados com hover invertido, título, resumo legível, link "Ler artigo" dourado e data com ícone `calendar_today`.
+- **2. Correção e Modernização do CSS da Paginação**:
+  - Correção dos estilos da paginação em toda a listagem de imóveis (`archive-imovel.php`, `template-imoveis.php`, `taxonomy`).
+  - Eliminação de marcadores padrão de lista (`list-style: none`) em `ul.page-numbers` e adição de botões arredondados, flexbox centralizado, sombras suaves, hover interativo e destaque ativo em dourado.
+- **3. Carrossel de Construtoras para Elementor (`Construtoras_Widget`)**:
+  - Reconstrução completa do widget do Elementor com carrossel dinâmico e interativo para exibir os logos das construtoras parceiras.
+  - Links automáticos direcionando para a página individual de cada construtora (`single-construtora.php`).
+  - Suporte a modo automático (lê CPT `construtora`) e itens manuais, com controles de autoplay, setas de navegação prev/next e transições suaves.
+- **4. Destaque do Logo e Responsividade na Página da Construtora (`single-construtora.php`)**:
+  - No desktop: logo da construtora ampliado (até 220px) posicionado à esquerda, com textos, dados de contato e botões alinhados fluidamente à esquerda.
+  - No smartphone: tamanho da tipografia do título reduzido proporcionalmente (`1.75rem`), com empilhamento vertical limpo e sem estouro visual.
+- **5. Taxonomia "Estágio da Obra" e Filtro Superior de Imóveis**:
+  - Criação da taxonomia personalizada `estagio_obra` para imóveis e empreendimentos com termos padrão (*Lançamento*, *Em Construção*, *Pronto para Morar*, *Na Planta*).
+  - Criação do template de arquivo `taxonomy-estagio_obra.php` com paginação e design integrado.
+  - Adição do filtro suspenso por Estágio de Obra na barra superior de imóveis (`archive-imovel.php` e `template-imoveis.php`), com valor padrão "Todos" e integração à lógica de busca `pre_get_posts` em `search-logic.php`.
+- **6. Ajuste de Taxonomias no Post Type Empreendimento e Itens de Lazer**:
+  - Remoção das taxonomias `tipo_imovel` e `status_imovel` do CPT `empreendimento`.
+  - Associação oficial da taxonomia `caracteristica` para registrar os itens de lazer e diferenciais do empreendimento.
+  - Nova seção no template `single-empreendimento.php` renderizando os "Itens de Lazer & Diferenciais" com ícones e visual de destaque.
+- **7. Marca d'Água e Redimensionamento de Fotos nos Empreendimentos**:
+  - Integração da galeria de fotos de empreendimentos (`_imob_emp_galeria`) com o pipeline de processamento de imagens do tema:
+    - Aplicação automática de marca d'água (`inc/core/watermark.php`) para uploads no CPT `empreendimento`.
+    - Geração padronizada das resoluções otimizadas (1280px e 400x300 miniatura) e limpeza de resoluções redundantes.
+    - Suporte completo no escaneamento em lote e proteção contra remoção como órfãs em `inc/core/image-optimizer.php`.
+
+#### **Versão 1.2.0**
 - **Links de Categoria e Novo Template de Categoria (`category.php` e `archive.php`)**:
   - Os badges de categorias no Grid de Posts agora são links navegáveis (`<a>`) que direcionam para o arquivo da respectiva categoria.
   - Criado o template `category.php` seguindo rigorosamente a identidade visual e o padrão de cards do Grid de Posts (badges dourados com hover invertido, data com ícone de calendário dourado, botão "Ler artigo" dourado e paginação moderna).

@@ -37,6 +37,6 @@ function imob_register_tax_tipo_imovel() {
 		'show_in_rest'               => true,
 		'rewrite'                    => array( 'slug' => 'tipo' ),
 	);
-	register_taxonomy( 'tipo_imovel', array( 'imovel', 'empreendimento' ), $args );
+	register_taxonomy( 'tipo_imovel', array( 'imovel' ), $args );
 }
 add_action( 'init', 'imob_register_tax_tipo_imovel', 0 );

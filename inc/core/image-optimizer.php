@@ -287,21 +287,21 @@ function imob_process_optimize_attachment( $attachment_id ) {
 }
 
 /**
- * 4. BUSCAR TODOS OS ATTACHMENT IDs PERTENCENTES A IMÓVEIS
+ * 4. BUSCAR TODOS OS ATTACHMENT IDs PERTENCENTES A IMÓVEIS E EMPREENDIMENTOS
  *
- * @return array Lista de IDs únicos de anexos dos imóveis.
+ * @return array Lista de IDs únicos de anexos dos imóveis e empreendimentos.
  */
 function imob_get_all_imovel_image_ids() {
 	global $wpdb;
 
 	$attachment_ids = [];
 
-	// 1. Imagens destacadas de imóveis
+	// 1. Imagens destacadas de imóveis e empreendimentos
 	$thumb_ids = $wpdb->get_col( "
 		SELECT DISTINCT pm.meta_value 
 		FROM {$wpdb->postmeta} pm
 		INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-		WHERE p.post_type = 'imovel' 
+		WHERE p.post_type IN ('imovel', 'empreendimento') 
 		  AND pm.meta_key = '_thumbnail_id' 
 		  AND pm.meta_value > 0
 	" );
@@ -312,13 +312,13 @@ function imob_get_all_imovel_image_ids() {
 		}
 	}
 
-	// 2. Galerias de fotos (_imob_galeria)
+	// 2. Galerias de fotos (_imob_galeria e _imob_emp_galeria)
 	$galerias = $wpdb->get_col( "
 		SELECT DISTINCT pm.meta_value 
 		FROM {$wpdb->postmeta} pm
 		INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-		WHERE p.post_type = 'imovel' 
-		  AND pm.meta_key = '_imob_galeria'
+		WHERE p.post_type IN ('imovel', 'empreendimento') 
+		  AND pm.meta_key IN ('_imob_galeria', '_imob_emp_galeria')
 	" );
 
 	if ( ! empty( $galerias ) ) {
@@ -336,12 +336,12 @@ function imob_get_all_imovel_image_ids() {
 		}
 	}
 
-	// 3. Imagens filhas de posts imovel (post_parent = imovel)
+	// 3. Imagens filhas de posts imovel ou empreendimento (post_parent)
 	$parent_attachments = $wpdb->get_col( "
 		SELECT p_att.ID 
 		FROM {$wpdb->posts} p_att
 		INNER JOIN {$wpdb->posts} p_parent ON p_parent.ID = p_att.post_parent
-		WHERE p_parent.post_type = 'imovel'
+		WHERE p_parent.post_type IN ('imovel', 'empreendimento')
 		  AND p_att.post_type = 'attachment'
 		  AND p_att.post_mime_type LIKE 'image/%'
 	" );
@@ -392,11 +392,11 @@ function imob_get_orphan_image_ids() {
 		$used_ids[ intval( $tid ) ] = true;
 	}
 
-	// 2. Metas com arrays de imagens (_imob_galeria, galeria_fotos, etc.)
+	// 2. Metas com arrays de imagens (_imob_galeria, _imob_emp_galeria, galeria_fotos, etc.)
 	$meta_galerias = $wpdb->get_col( "
 		SELECT DISTINCT meta_value 
 		FROM {$wpdb->postmeta} 
-		WHERE meta_key IN ('_imob_galeria', '_construtora_galeria', '_empreendimento_galeria', '_imob_planta')
+		WHERE meta_key IN ('_imob_galeria', '_imob_emp_galeria', '_construtora_galeria', '_empreendimento_galeria', '_imob_planta')
 	" );
 	foreach ( $meta_galerias as $raw_meta ) {
 		$unserialized = maybe_unserialize( $raw_meta );

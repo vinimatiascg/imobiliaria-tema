@@ -15,7 +15,7 @@ function imob_apply_watermark_to_upload( $upload ) {
 
 	$post_id = intval( $_REQUEST['post_id'] );
 	$post = get_post( $post_id );
-	if ( ! $post || $post->post_type !== 'imovel' ) {
+	if ( ! $post || ! in_array( $post->post_type, array( 'imovel', 'empreendimento' ), true ) ) {
 		return $upload;
 	}
 

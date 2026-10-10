@@ -11,7 +11,8 @@ get_header();
 $tipo_sel       = isset( $_GET['tipo'] ) ? sanitize_text_field( $_GET['tipo'] ) : '';
 $localidade_sel = isset( $_GET['localidade'] ) ? sanitize_text_field( $_GET['localidade'] ) : ( isset( $_GET['bairro'] ) ? sanitize_text_field( $_GET['bairro'] ) : '' );
 $finalidade_sel = isset( $_GET['finalidade'] ) ? sanitize_text_field( $_GET['finalidade'] ) : '';
-$has_filter     = ! empty( $tipo_sel ) || ! empty( $localidade_sel ) || ! empty( $finalidade_sel );
+$estagio_sel    = isset( $_GET['estagio'] ) ? sanitize_text_field( $_GET['estagio'] ) : '';
+$has_filter     = ! empty( $tipo_sel ) || ! empty( $localidade_sel ) || ! empty( $finalidade_sel ) || ! empty( $estagio_sel );
 
 // Termos para os filtros
 $termos_tipo = get_terms( array(
@@ -23,6 +24,13 @@ $termos_tipo = get_terms( array(
 
 $termos_localidade = get_terms( array(
 	'taxonomy'   => 'localidade',
+	'hide_empty' => false,
+	'orderby'    => 'name',
+	'order'      => 'ASC',
+) );
+
+$termos_estagio = get_terms( array(
+	'taxonomy'   => 'estagio_obra',
 	'hide_empty' => false,
 	'orderby'    => 'name',
 	'order'      => 'ASC',
@@ -98,6 +106,24 @@ $termos_localidade = get_terms( array(
 						<option value=""><?php _e( 'Todas as Modalidades', 'imobiliaria-tema' ); ?></option>
 						<option value="venda" <?php selected( $finalidade_sel, 'venda' ); ?>><?php _e( 'Comprar (Venda)', 'imobiliaria-tema' ); ?></option>
 						<option value="aluguel" <?php selected( $finalidade_sel, 'aluguel' ); ?>><?php _e( 'Alugar (Aluguel)', 'imobiliaria-tema' ); ?></option>
+					</select>
+				</div>
+
+				<!-- FILTRO POR ESTÁGIO DA OBRA -->
+				<div class="imob-filter-group" style="display: flex; flex-direction: column; gap: 6px;">
+					<label for="filter-estagio" style="font-size: 0.85rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
+						<span class="material-symbols-outlined" style="font-size: 16px; color: var(--accent-color);">construction</span>
+						<?php _e( 'Estágio da Obra', 'imobiliaria-tema' ); ?>
+					</label>
+					<select name="estagio" id="filter-estagio" class="imob-filter-select" style="width: 100%; height: 46px; border: 1px solid var(--border-color); border-radius: 8px; padding: 0 12px; font-size: 0.95rem; background: #fafafa; color: var(--text-dark);">
+						<option value=""><?php _e( 'Todos os Estágios', 'imobiliaria-tema' ); ?></option>
+						<?php if ( ! empty( $termos_estagio ) && ! is_wp_error( $termos_estagio ) ) : ?>
+							<?php foreach ( $termos_estagio as $e ) : ?>
+								<option value="<?php echo esc_attr( $e->slug ); ?>" <?php selected( $estagio_sel, $e->slug ); ?>>
+									<?php echo esc_html( $e->name ); ?> (<?php echo intval( $e->count ); ?>)
+								</option>
+							<?php endforeach; ?>
+						<?php endif; ?>
 					</select>
 				</div>
 

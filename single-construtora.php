@@ -15,33 +15,162 @@ get_header();
 			$site = get_post_meta( get_the_ID(), '_imob_construtora_site', true );
 			$instagram = get_post_meta( get_the_ID(), '_imob_construtora_instagram', true );
 		?>
-			<header class="imob-construtora-header" style="margin-bottom: 40px; text-align: center; padding: 40px; background: #fff; border: 1px solid var(--border-color); border-radius: 8px;">
-				<?php if ( has_post_thumbnail() ) : ?>
-					<div class="imob-construtora-logo" style="margin-bottom: 20px;">
-						<?php the_post_thumbnail( 'medium', ['style' => 'max-height: 120px; width: auto;'] ); ?>
-					</div>
-				<?php endif; ?>
-				<h1 class="imob-archive-title" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px;"><?php the_title(); ?></h1>
-				
-				<div class="imob-construtora-content" style="color: var(--text-light); max-width: 800px; margin: 0 auto 20px;">
-					<?php the_content(); ?>
-				</div>
+			<header class="imob-construtora-header">
+				<div class="imob-construtora-header-inner">
+					<?php if ( has_post_thumbnail() ) : ?>
+						<div class="imob-construtora-logo">
+							<?php the_post_thumbnail( 'large', ['style' => 'max-height: 160px; max-width: 100%; width: auto; object-fit: contain; display: block;'] ); ?>
+						</div>
+					<?php endif; ?>
 
-				<div class="imob-construtora-contato" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-					<?php if ( $telefone ) : ?>
-						<a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $telefone)); ?>" class="btn-contato" style="background: var(--bg-light); padding: 8px 15px; border-radius: 4px; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 5px;"><span class="material-symbols-outlined">call</span> <?php echo esc_html($telefone); ?></a>
-					<?php endif; ?>
-					<?php if ( $whatsapp ) : ?>
-						<a href="https://wa.me/55<?php echo esc_attr(preg_replace('/[^0-9]/', '', $whatsapp)); ?>" target="_blank" class="btn-contato" style="background: #25D366; padding: 8px 15px; border-radius: 4px; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 5px;"><span class="material-symbols-outlined">chat</span> <?php echo esc_html($whatsapp); ?></a>
-					<?php endif; ?>
-					<?php if ( $site ) : ?>
-						<a href="<?php echo esc_url($site); ?>" target="_blank" class="btn-contato" style="background: var(--bg-light); padding: 8px 15px; border-radius: 4px; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 5px;"><span class="material-symbols-outlined">language</span> Site</a>
-					<?php endif; ?>
-					<?php if ( $instagram ) : ?>
-						<a href="https://instagram.com/<?php echo esc_attr(str_replace('@', '', $instagram)); ?>" target="_blank" class="btn-contato" style="background: var(--bg-light); padding: 8px 15px; border-radius: 4px; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 5px;"><span class="material-symbols-outlined">photo_camera</span> <?php echo esc_html($instagram); ?></a>
-					<?php endif; ?>
+					<div class="imob-construtora-info">
+						<div class="imob-construtora-tag">
+							<span class="material-symbols-outlined" style="font-size: 15px;">apartment</span>
+							<?php _e( 'Construtora', 'imobiliaria-tema' ); ?>
+						</div>
+						
+						<h1 class="imob-construtora-title"><?php the_title(); ?></h1>
+						
+						<?php if ( get_the_content() ) : ?>
+							<div class="imob-construtora-content">
+								<?php the_content(); ?>
+							</div>
+						<?php endif; ?>
+
+						<div class="imob-construtora-contato">
+							<?php if ( $telefone ) : ?>
+								<a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $telefone)); ?>" class="btn-contato"><span class="material-symbols-outlined">call</span> <?php echo esc_html($telefone); ?></a>
+							<?php endif; ?>
+							<?php if ( $whatsapp ) : ?>
+								<a href="https://wa.me/55<?php echo esc_attr(preg_replace('/[^0-9]/', '', $whatsapp)); ?>" target="_blank" class="btn-contato btn-wa"><span class="material-symbols-outlined">chat</span> <?php echo esc_html($whatsapp); ?></a>
+							<?php endif; ?>
+							<?php if ( $site ) : ?>
+								<a href="<?php echo esc_url($site); ?>" target="_blank" class="btn-contato"><span class="material-symbols-outlined">language</span> Site Oficial</a>
+							<?php endif; ?>
+							<?php if ( $instagram ) : ?>
+								<a href="https://instagram.com/<?php echo esc_attr(str_replace('@', '', $instagram)); ?>" target="_blank" class="btn-contato"><span class="material-symbols-outlined">photo_camera</span> <?php echo esc_html($instagram); ?></a>
+							<?php endif; ?>
+						</div>
+					</div>
 				</div>
 			</header>
+
+			<style>
+				.imob-construtora-header {
+					margin-bottom: 40px;
+					background: #ffffff;
+					border: 1px solid var(--border-color);
+					border-radius: 12px;
+					padding: 40px;
+					box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+				}
+				.imob-construtora-header-inner {
+					display: flex;
+					gap: 40px;
+					align-items: center;
+					text-align: left;
+				}
+				.imob-construtora-logo {
+					flex: 0 0 220px;
+					max-width: 250px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					background: #f8fafc;
+					border: 1px solid #edf2f7;
+					border-radius: 10px;
+					padding: 20px;
+				}
+				.imob-construtora-info {
+					flex: 1;
+					min-width: 280px;
+				}
+				.imob-construtora-tag {
+					display: inline-flex;
+					align-items: center;
+					gap: 5px;
+					background: rgba(178, 145, 90, 0.12);
+					color: var(--accent-color);
+					padding: 4px 12px;
+					border-radius: 20px;
+					font-size: 0.75rem;
+					font-weight: 700;
+					text-transform: uppercase;
+					letter-spacing: 0.5px;
+					margin-bottom: 10px;
+				}
+				.imob-construtora-title {
+					font-size: 2.5rem;
+					color: var(--primary-color);
+					margin: 0 0 15px;
+					font-weight: 800;
+					line-height: 1.2;
+				}
+				.imob-construtora-content {
+					color: var(--text-light);
+					margin-bottom: 25px;
+					line-height: 1.7;
+					font-size: 1.05rem;
+				}
+				.imob-construtora-contato {
+					display: flex;
+					gap: 12px;
+					justify-content: flex-start;
+					flex-wrap: wrap;
+				}
+				.imob-construtora-contato .btn-contato {
+					background: #f1f5f9;
+					border: 1px solid var(--border-color);
+					padding: 8px 16px;
+					border-radius: 6px;
+					color: var(--text-dark);
+					text-decoration: none;
+					display: inline-flex;
+					align-items: center;
+					gap: 6px;
+					font-size: 0.9rem;
+					font-weight: 600;
+					transition: all 0.2s ease;
+				}
+				.imob-construtora-contato .btn-contato:hover {
+					border-color: var(--accent-color);
+					color: var(--accent-color);
+					transform: translateY(-2px);
+				}
+				.imob-construtora-contato .btn-wa {
+					background: #25D366 !important;
+					color: #ffffff !important;
+					border-color: #25D366 !important;
+				}
+				.imob-construtora-contato .btn-wa:hover {
+					opacity: 0.9;
+					color: #ffffff !important;
+				}
+				@media (max-width: 768px) {
+					.imob-construtora-header {
+						padding: 25px 20px;
+					}
+					.imob-construtora-header-inner {
+						flex-direction: column;
+						text-align: center;
+						gap: 20px;
+					}
+					.imob-construtora-logo {
+						margin: 0 auto;
+						width: 100%;
+						max-width: 180px;
+					}
+					.imob-construtora-title {
+						font-size: 1.75rem; /* Diminuído no smartphone */
+					}
+					.imob-construtora-content {
+						font-size: 0.95rem;
+					}
+					.imob-construtora-contato {
+						justify-content: center;
+					}
+				}
+			</style>
 
 			<!-- EMPREENDIMENTOS DESTA CONSTRUTORA -->
 			<?php

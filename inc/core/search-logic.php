@@ -29,6 +29,15 @@ function imob_advanced_search_query( $query ) {
 				);
 			}
 
+			// Handle Estágio da Obra
+			if ( isset( $_GET['estagio'] ) && ! empty( $_GET['estagio'] ) && 'todos' !== $_GET['estagio'] ) {
+				$tax_query[] = array(
+					'taxonomy' => 'estagio_obra',
+					'field'    => 'slug',
+					'terms'    => sanitize_text_field( $_GET['estagio'] ),
+				);
+			}
+
 			// Handle Localidade
 			$loc_slug = '';
 			if ( ! empty( $_GET['localidade'] ) ) {
