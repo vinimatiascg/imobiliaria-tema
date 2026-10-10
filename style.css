@@ -4,7 +4,7 @@ Theme URI:
 Author: Antigravity
 Author URI: 
 Description: Tema customizado para Imobiliárias com alta performance, suporte a Elementor e otimizado para SEO técnico.
-Version: 1.1.6
+Version: 1.2.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: imobiliaria-tema
@@ -970,7 +970,8 @@ html body div.elementor-element .imob-post-card a.imob-read-more-link:hover,
 	gap: 6px;
 	margin-bottom: 15px;
 }
-.imob-post-categories-badges .badge-categoria {
+.imob-post-categories-badges .badge-categoria,
+.imob-post-categories-badges a.badge-categoria {
 	background-color: var(--accent-color) !important; /* Dourado */
 	color: #FFFFFF !important; /* Letras brancas */
 	border: 1px solid var(--accent-color) !important; /* Borda dourada */
@@ -981,14 +982,92 @@ html body div.elementor-element .imob-post-card a.imob-read-more-link:hover,
 	letter-spacing: 0.5px;
 	text-transform: uppercase;
 	display: inline-block;
+	text-decoration: none !important;
 	transition: all 0.25s ease;
 	cursor: pointer;
 }
-.imob-post-categories-badges .badge-categoria:hover {
+.imob-post-categories-badges .badge-categoria:hover,
+.imob-post-categories-badges a.badge-categoria:hover {
 	background-color: #FFFFFF !important; /* Invertido: fundo branco */
 	color: var(--accent-color) !important; /* Letras douradas */
 	border-color: var(--accent-color) !important; /* Borda dourada */
 }
+
+/* ==========================================================================
+   BADGE DE EMPREENDIMENTO (CARDS E SINGLE)
+   ========================================================================== */
+.badge-empreendimento,
+a.badge-empreendimento {
+	background: #0E1A2B !important;
+	color: #FFFFFF !important;
+	border: 1px solid rgba(255,255,255,0.2) !important;
+	padding: 3px 10px !important;
+	border-radius: 4px !important;
+	font-size: 0.72rem !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	display: inline-flex !important;
+	align-items: center;
+	gap: 4px;
+	text-decoration: none !important;
+	transition: all 0.2s ease;
+	vertical-align: middle;
+}
+a.badge-empreendimento:hover {
+	background: var(--accent-color) !important;
+	border-color: var(--accent-color) !important;
+	color: #FFFFFF !important;
+}
+.imob-single-badge-empreendimento,
+a.imob-single-badge-empreendimento {
+	background: #0E1A2B !important;
+	color: #FFFFFF !important;
+	padding: 6px 14px !important;
+	border-radius: 6px !important;
+	font-size: 0.82rem !important;
+	border: 1px solid rgba(255,255,255,0.15) !important;
+}
+a.imob-single-badge-empreendimento:hover {
+	background: var(--accent-color) !important;
+	border-color: var(--accent-color) !important;
+}
+
+/* ==========================================================================
+   BARRA DE FILTROS SUPERIOR (ARCHIVE E PÁGINA DE IMÓVEIS)
+   ========================================================================== */
+.imob-archive-filters-bar {
+	transition: box-shadow 0.25s ease;
+}
+.imob-archive-filters-bar:focus-within {
+	box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+}
+.imob-filter-select {
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.imob-filter-select:focus {
+	outline: none;
+	border-color: var(--accent-color) !important;
+	box-shadow: 0 0 0 3px rgba(178, 145, 90, 0.15);
+}
+.imob-btn-filtrar:hover {
+	background: #9E7E47 !important;
+}
+.imob-btn-limpar:hover {
+	background: #e2e8f0 !important;
+	color: var(--primary-color) !important;
+}
+
+/* ==========================================================================
+   GALERIA DE FOTOS DO EMPREENDIMENTO
+   ========================================================================== */
+.imob-gallery-item:hover {
+	transform: translateY(-3px);
+}
+.imob-gallery-item:hover img {
+	transform: scale(1.04);
+}
+
 
 
 

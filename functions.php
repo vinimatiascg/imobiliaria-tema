@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.1.6' );
+define( 'IMOB_THEME_VERSION', '1.2.0' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -120,4 +120,81 @@ function imob_get_formatted_price( $post_id, $is_single = false ) {
 	}
 
 	return $html;
+}
+
+/**
+ * Recupera dados do empreendimento vinculado a um imóvel
+ *
+ * @param int $post_id ID do imóvel
+ * @return array|null Array com ['id', 'nome', 'url'] ou null
+ */
+function imob_get_imovel_empreendimento( $post_id ) {
+	$emp_id = get_post_meta( $post_id, '_imob_empreendimento_id', true );
+	if ( ! empty( $emp_id ) && is_numeric( $emp_id ) ) {
+		$emp_post = get_post( (int) $emp_id );
+		if ( $emp_post && 'empreendimento' === $emp_post->post_type ) {
+			return array(
+				'id'   => $emp_post->ID,
+				'nome' => $emp_post->post_title,
+				'url'  => get_permalink( $emp_post->ID ),
+			);
+		}
+	}
+
+	// Fallback para campo legado em texto
+	$emp_text = get_post_meta( $post_id, '_imob_empreendimento', true );
+	if ( ! empty( $emp_text ) ) {
+		$found = get_page_by_title( $emp_text, OBJECT, 'empreendimento' );
+		if ( $found ) {
+			return array(
+				'id'   => $found->ID,
+				'nome' => $found->post_title,
+				'url'  => get_permalink( $found->ID ),
+			);
+		}
+		return array(
+			'id'   => 0,
+			'nome' => $emp_text,
+			'url'  => '',
+		);
+	}
+
+	return null;
+}
+
+/**
+ * Renderiza o badge HTML do empreendimento com formatação e link se disponível
+ *
+ * @param int $post_id ID do imóvel
+ * @param bool $is_single Se está sendo renderizado na página single
+ * @return string HTML do badge
+ */
+function imob_render_empreendimento_badge( $post_id, $is_single = false ) {
+	$emp = imob_get_imovel_empreendimento( $post_id );
+	if ( ! $emp || empty( $emp['nome'] ) ) {
+		return '';
+	}
+
+	$nome = esc_html( imob_strtoupper( $emp['nome'] ) );
+	$icon = '<span class="material-symbols-outlined" style="font-size: 13px; vertical-align: middle;">domain</span>';
+
+	if ( ! empty( $emp['url'] ) ) {
+		$class = $is_single ? 'imob-single-badge-empreendimento badge-empreendimento' : 'badge-empreendimento';
+		return sprintf(
+			'<a href="%s" class="%s" title="%s">%s %s</a>',
+			esc_url( $emp['url'] ),
+			esc_attr( $class ),
+			esc_attr__( 'Ver Empreendimento', 'imobiliaria-tema' ),
+			$icon,
+			$nome
+		);
+	}
+
+	$class = $is_single ? 'imob-single-badge-empreendimento badge-empreendimento' : 'badge-empreendimento';
+	return sprintf(
+		'<span class="%s">%s %s</span>',
+		esc_attr( $class ),
+		$icon,
+		$nome
+	);
 }

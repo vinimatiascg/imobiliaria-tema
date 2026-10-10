@@ -448,7 +448,7 @@ class Imob_Elementor_Widget_blog_grid extends \Elementor\Widget_Base {
 						<?php if ( 'yes' === $settings['show_category_badge'] && ! empty( $categories ) ) : ?>
 							<div class="imob-post-categories-badges" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px;">
 								<?php foreach ( $categories as $cat ) : ?>
-									<span class="badge-categoria"><?php echo esc_html( imob_strtoupper( $cat->name ) ); ?></span>
+									<a href="<?php echo esc_url( get_category_link( $cat->term_id ) ); ?>" class="badge-categoria"><?php echo esc_html( imob_strtoupper( $cat->name ) ); ?></a>
 								<?php endforeach; ?>
 							</div>
 						<?php endif; ?>

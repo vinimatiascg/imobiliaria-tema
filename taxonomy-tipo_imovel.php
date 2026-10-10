@@ -41,6 +41,12 @@ $term = get_queried_object();
 							<div class="imob-card-badges">
 								<span class="badge-tipo"><?php echo esc_html( imob_strtoupper( $tipo ) ); ?></span>
 								<span class="badge-finalidade"><?php echo esc_html( imob_strtoupper( $finalidade ) ); ?></span>
+								<?php 
+								$badge_emp_html = imob_render_empreendimento_badge( get_the_ID() );
+								if ( ! empty( $badge_emp_html ) ) {
+									echo $badge_emp_html;
+								}
+								?>
 							</div>
 							<?php if ( $price_html ) : ?>
 								<div class="imob-card-price">

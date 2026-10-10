@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying archive of imóveis with top filters.
+ * Template Name: Listagem de Imóveis (Filtros Avançados)
  *
  * @package ImobiliariaTema
  */
@@ -27,6 +27,75 @@ $termos_localidade = get_terms( array(
 	'orderby'    => 'name',
 	'order'      => 'ASC',
 ) );
+
+// Construção da query de imóveis
+$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : ( ( get_query_var( 'page' ) ) ? get_query_var( 'page' ) : 1 );
+
+$args = array(
+	'post_type'      => 'imovel',
+	'post_status'    => 'publish',
+	'posts_per_page' => 12,
+	'paged'          => $paged,
+);
+
+$tax_query = array();
+if ( ! empty( $tipo_sel ) ) {
+	$tax_query[] = array(
+		'taxonomy' => 'tipo_imovel',
+		'field'    => 'slug',
+		'terms'    => $tipo_sel,
+	);
+}
+
+if ( ! empty( $localidade_sel ) ) {
+	$tax_query[] = array(
+		'taxonomy' => 'localidade',
+		'field'    => 'slug',
+		'terms'    => $localidade_sel,
+	);
+}
+
+if ( ! empty( $finalidade_sel ) ) {
+	$fin_val = strtolower( $finalidade_sel );
+	$tax_name = taxonomy_exists( 'finalidade' ) ? 'finalidade' : 'status_imovel';
+	$tax_terms = ( 'venda' === $fin_val ) ? array( 'venda', 'para-venda', 'vender' ) : array( 'aluguel', 'para-alugar', 'locacao', 'alugar' );
+	
+	$existing_term = false;
+	foreach ( $tax_terms as $tt ) {
+		if ( term_exists( $tt, $tax_name ) ) {
+			$existing_term = $tt;
+			break;
+		}
+	}
+
+	if ( $existing_term ) {
+		$tax_query[] = array(
+			'taxonomy' => $tax_name,
+			'field'    => 'slug',
+			'terms'    => $tax_terms,
+		);
+	} else {
+		$price_key = ( 'venda' === $fin_val ) ? '_imob_preco_venda' : '_imob_preco_aluguel';
+		$args['meta_query'] = array(
+			array(
+				'key'     => $price_key,
+				'value'   => 0,
+				'compare' => '>',
+				'type'    => 'NUMERIC',
+			)
+		);
+	}
+}
+
+if ( ! empty( $tax_query ) ) {
+	if ( count( $tax_query ) > 1 ) {
+		$tax_query['relation'] = 'AND';
+	}
+	$args['tax_query'] = $tax_query;
+}
+
+$imoveis_query = new WP_Query( $args );
+$current_page_url = get_permalink();
 ?>
 
 <main id="primary" class="site-main imob-archive-imovel">
@@ -35,13 +104,7 @@ $termos_localidade = get_terms( array(
 		<!-- CABEÇALHO -->
 		<header class="page-header" style="margin-bottom: 25px; text-align: center;">
 			<h1 class="page-title" style="font-size: 2.4rem; color: var(--primary-color); font-weight: 800; margin: 0 0 10px;">
-				<?php 
-				if ( is_search() ) {
-					printf( esc_html__( 'Resultados da busca para: %s', 'imobiliaria-tema' ), '<span>' . esc_html( get_search_query() ) . '</span>' );
-				} else {
-					_e( 'Nossos Imóveis', 'imobiliaria-tema' );
-				}
-				?>
+				<?php the_title(); ?>
 			</h1>
 			<p style="color: var(--text-light); max-width: 600px; margin: 0 auto; font-size: 1.05rem;">
 				<?php _e( 'Explore as melhores opções de apartamentos, casas e empreendimentos selecionados com exclusividade para você.', 'imobiliaria-tema' ); ?>
@@ -50,7 +113,7 @@ $termos_localidade = get_terms( array(
 
 		<!-- BARRA DE FILTROS SUPERIOR -->
 		<div class="imob-archive-filters-bar" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; margin-bottom: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
-			<form method="get" action="<?php echo esc_url( get_post_type_archive_link( 'imovel' ) ); ?>" class="imob-filters-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) auto auto; gap: 15px; align-items: end;">
+			<form method="get" action="<?php echo esc_url( $current_page_url ); ?>" class="imob-filters-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) auto auto; gap: 15px; align-items: end;">
 				
 				<!-- FILTRO POR TIPO -->
 				<div class="imob-filter-group" style="display: flex; flex-direction: column; gap: 6px;">
@@ -110,7 +173,7 @@ $termos_localidade = get_terms( array(
 
 					<!-- BOTÃO LIMPAR -->
 					<?php if ( $has_filter ) : ?>
-						<a href="<?php echo esc_url( get_post_type_archive_link( 'imovel' ) ); ?>" class="imob-btn-limpar" title="<?php esc_attr_e( 'Limpar todos os filtros', 'imobiliaria-tema' ); ?>" style="height: 46px; background: #f1f5f9; color: var(--text-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 0 16px; font-weight: 600; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+						<a href="<?php echo esc_url( $current_page_url ); ?>" class="imob-btn-limpar" title="<?php esc_attr_e( 'Limpar todos os filtros', 'imobiliaria-tema' ); ?>" style="height: 46px; background: #f1f5f9; color: var(--text-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 0 16px; font-weight: 600; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
 							<span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
 							<?php _e( 'Limpar', 'imobiliaria-tema' ); ?>
 						</a>
@@ -124,8 +187,7 @@ $termos_localidade = get_terms( array(
 		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
 			<div style="color: var(--text-light); font-size: 0.95rem; font-weight: 500;">
 				<?php 
-				global $wp_query;
-				$total = $wp_query->found_posts;
+				$total = $imoveis_query->found_posts;
 				printf( _n( 'Encontrado <strong>%s imóvel</strong>', 'Encontrados <strong>%s imóveis</strong>', $total, 'imobiliaria-tema' ), number_format_i18n( $total ) );
 				if ( $has_filter ) {
 					echo ' <span style="color: var(--accent-color); font-weight: 600;">(com filtros aplicados)</span>';
@@ -137,9 +199,9 @@ $termos_localidade = get_terms( array(
 		<!-- GRID DE IMÓVEIS -->
 		<div class="imob-imovel-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;">
 			<?php
-			if ( have_posts() ) :
-				while ( have_posts() ) :
-					the_post();
+			if ( $imoveis_query->have_posts() ) :
+				while ( $imoveis_query->have_posts() ) :
+					$imoveis_query->the_post();
 					$price_html = imob_get_formatted_price( get_the_ID(), false );
 					$quartos = get_post_meta( get_the_ID(), '_imob_quartos', true );
 					$banheiros = get_post_meta( get_the_ID(), '_imob_banheiros', true );
@@ -232,6 +294,7 @@ $termos_localidade = get_terms( array(
 					</article>
 					<?php
 				endwhile;
+				wp_reset_postdata();
 			else :
 				?>
 				<div style="grid-column: 1 / -1; background: #ffffff; padding: 60px 20px; text-align: center; border-radius: 8px; border: 1px solid var(--border-color);">
@@ -239,7 +302,7 @@ $termos_localidade = get_terms( array(
 					<h3 style="margin: 0 0 10px; color: var(--primary-color);"><?php _e( 'Nenhum imóvel encontrado', 'imobiliaria-tema' ); ?></h3>
 					<p style="color: var(--text-light); margin: 0 0 20px;"><?php _e( 'Tente alterar os filtros selecionados para encontrar outras opções.', 'imobiliaria-tema' ); ?></p>
 					<?php if ( $has_filter ) : ?>
-						<a href="<?php echo esc_url( get_post_type_archive_link( 'imovel' ) ); ?>" class="btn-primary" style="display: inline-flex; align-items: center; gap: 6px; background: var(--accent-color); color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 700;">
+						<a href="<?php echo esc_url( $current_page_url ); ?>" class="btn-primary" style="display: inline-flex; align-items: center; gap: 6px; background: var(--accent-color); color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 700;">
 							<span class="material-symbols-outlined">restart_alt</span> <?php _e( 'Limpar Filtros', 'imobiliaria-tema' ); ?>
 						</a>
 					<?php endif; ?>
@@ -256,8 +319,8 @@ $termos_localidade = get_terms( array(
 			echo paginate_links( array(
 				'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 				'format'    => '?paged=%#%',
-				'current'   => max( 1, get_query_var( 'paged' ) ),
-				'total'     => $wp_query->max_num_pages,
+				'current'   => max( 1, $paged ),
+				'total'     => $imoveis_query->max_num_pages,
 				'prev_text' => '<span class="material-symbols-outlined" style="vertical-align: middle;">chevron_left</span>',
 				'next_text' => '<span class="material-symbols-outlined" style="vertical-align: middle;">chevron_right</span>',
 				'type'      => 'list',

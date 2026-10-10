@@ -4,11 +4,36 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.1.6`
+## 🚀 Versão Atual: `1.2.0`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.1.6** (Atualização Recente)
+#### **Versão 1.2.0** (Atualização Recente)
+- **Links de Categoria e Novo Template de Categoria (`category.php` e `archive.php`)**:
+  - Os badges de categorias no Grid de Posts agora são links navegáveis (`<a>`) que direcionam para o arquivo da respectiva categoria.
+  - Criado o template `category.php` seguindo rigorosamente a identidade visual e o padrão de cards do Grid de Posts (badges dourados com hover invertido, data com ícone de calendário dourado, botão "Ler artigo" dourado e paginação moderna).
+- **Página de Imóveis com Filtros Superiores Avançados (`archive-imovel.php` e `template-imoveis.php`)**:
+  - Nova barra de filtros no topo com layout responsivo e moderno.
+  - Filtros por:
+    - **Tipo de Imóvel** (Apartamento, Casa, etc.)
+    - **Localidade / Bairro** (Campina Grande e bairros cadastrados)
+    - **Modalidade** (Comprar / Venda ou Alugar / Aluguel)
+  - Botão de "Filtrar" com feedback visual e botão "Limpar" quando há filtros ativos.
+  - Criação de `template-imoveis.php` e `page-imoveis.php` para uso como modelo de página no WordPress ou via URL `/imoveis/`.
+  - Busca inteligente com fallback duplo por taxonomia e faixas de preço (`_imob_preco_venda` / `_imob_preco_aluguel`).
+- **Páginas de Construtora e Empreendimento (`single-construtora.php` e `single-empreendimento.php`)**:
+  - **Empreendimento**:
+    - Novo template `single-empreendimento.php` com logo/imagem de destaque, estágio da obra (Lançamento, Em Construção, Pronto), previsão de entrega, endereço e vínculo com a Construtora.
+    - Seção de **Galeria de Fotos** do empreendimento com grid expansível e upload nativo no painel administrativo.
+    - Seção de **Localização em Mapa Interativo** com coordenadas e busca geográfica.
+    - Listagem de todas as unidades/imóveis disponíveis vinculadas àquele empreendimento com paginação.
+  - **Construtora**:
+    - Exibição de logo, nome, dados de contato completos (telefone, WhatsApp, site, Instagram), catálogo de empreendimentos cadastrados e listagem de imóveis.
+- **Badge do Empreendimento nos Grids e Página do Imóvel**:
+  - Quando um imóvel estiver vinculado a um empreendimento, um badge exclusivo com ícone predial é renderizado automaticamente nos cards de todos os grids (`archive-imovel`, `template-imoveis`, `taxonomy`, widgets do Elementor) e no topo do `single-imovel.php`, com link direto para a página do empreendimento.
+  - Criados os helpers universais `imob_get_imovel_empreendimento()` e `imob_render_empreendimento_badge()`.
+
+#### **Versão 1.1.6**
 - **Correção e Blindagem de Especificidade no Botão "Ler artigo" (`imob_blog_grid`)**:
   - **Resolução de Conflito com CSS Compilado do Elementor**: Em páginas onde o widget já havia sido salvo anteriormente, o Elementor gerava um seletor estático com `!important` e cor azul legada (`#2F80ED`).
   - **Injeção de Bloco Scoped Dinâmico**: Adicionado bloco `<style>` renderizado dinamicamente junto ao widget com os seletores exatos `.elementor-element-{{ID}}` e `div[data-id="{{ID}}"]`, garantindo prioridade imediata sobre folhas de estilo compiladas em cache.

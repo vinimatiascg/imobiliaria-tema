@@ -139,6 +139,11 @@ get_header(); ?>
 										echo '<a href="'.esc_url(get_term_link($term)).'" class="badge badge-tipo">'.esc_html(imob_strtoupper($term->name)).'</a>';
 									}
 								}
+								// Empreendimento vinculado (Requisito 4)
+								$badge_emp_single = imob_render_empreendimento_badge( get_the_ID(), true );
+								if ( ! empty( $badge_emp_single ) ) {
+									echo $badge_emp_single;
+								}
 								// Localidades
 								if (!empty($localidades) && !is_wp_error($localidades)) {
 									foreach($localidades as $term) {
@@ -509,6 +514,12 @@ get_header(); ?>
 												<?php if ( $rel_status_name ) : ?>
 													<span class="badge-status"><?php echo esc_html( imob_strtoupper( $rel_status_name ) ); ?></span>
 												<?php endif; ?>
+												<?php 
+												$rel_emp_badge = imob_render_empreendimento_badge( get_the_ID() );
+												if ( ! empty( $rel_emp_badge ) ) {
+													echo $rel_emp_badge;
+												}
+												?>
 											</div>
 											
 											<?php $price_html = imob_get_formatted_price( get_the_ID(), false ); ?>

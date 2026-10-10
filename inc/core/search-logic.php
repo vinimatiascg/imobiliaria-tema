@@ -47,15 +47,41 @@ function imob_advanced_search_query( $query ) {
 				);
 			}
 
-			// Handle Finalidade
+			// Handle Finalidade / Modalidade (Venda ou Aluguel)
 			if ( isset( $_GET['finalidade'] ) && ! empty( $_GET['finalidade'] ) ) {
-				$fin_val = sanitize_text_field( $_GET['finalidade'] );
-				$tax_name = taxonomy_exists( 'finalidade' ) ? 'finalidade' : 'status_imovel';
-				$tax_query[] = array(
-					'taxonomy' => $tax_name,
-					'field'    => 'slug',
-					'terms'    => $fin_val,
-				);
+				$fin_val = strtolower( sanitize_text_field( $_GET['finalidade'] ) );
+				if ( in_array( $fin_val, array( 'venda', 'aluguel' ), true ) ) {
+					$tax_name = taxonomy_exists( 'finalidade' ) ? 'finalidade' : 'status_imovel';
+					$tax_terms = ( 'venda' === $fin_val ) ? array( 'venda', 'para-venda', 'vender' ) : array( 'aluguel', 'para-alugar', 'locacao', 'alugar' );
+					
+					// Verifica se existe algum termo cadastrado
+					$existing_term = false;
+					foreach ( $tax_terms as $tt ) {
+						if ( term_exists( $tt, $tax_name ) ) {
+							$existing_term = $tt;
+							break;
+						}
+					}
+
+					if ( $existing_term ) {
+						$tax_query[] = array(
+							'taxonomy' => $tax_name,
+							'field'    => 'slug',
+							'terms'    => $tax_terms,
+						);
+					} else {
+						// Fallback por meta campo de preço de venda / aluguel
+						$meta_query = (array) $query->get( 'meta_query' );
+						$price_key = ( 'venda' === $fin_val ) ? '_imob_preco_venda' : '_imob_preco_aluguel';
+						$meta_query[] = array(
+							'key'     => $price_key,
+							'value'   => 0,
+							'compare' => '>',
+							'type'    => 'NUMERIC',
+						);
+						$query->set( 'meta_query', $meta_query );
+					}
+				}
 			}
 
 			if ( ! empty( $tax_query ) ) {

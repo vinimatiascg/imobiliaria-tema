@@ -43,6 +43,62 @@ get_header();
 				</div>
 			</header>
 
+			<!-- EMPREENDIMENTOS DESTA CONSTRUTORA -->
+			<?php
+			$emp_args = array(
+				'post_type'      => 'empreendimento',
+				'posts_per_page' => -1,
+				'meta_query'     => array(
+					array(
+						'key'     => '_imob_emp_construtora_id',
+						'value'   => get_the_ID(),
+						'compare' => '=',
+					),
+				),
+			);
+			$emp_query = new WP_Query( $emp_args );
+			if ( $emp_query->have_posts() ) :
+			?>
+				<div class="imob-construtora-empreendimentos" style="margin-bottom: 50px;">
+					<h2 style="font-size: 1.8rem; margin-bottom: 25px; text-align: center; color: var(--primary-color); font-weight: 800;">
+						<?php _e( 'Empreendimentos desta Construtora', 'imobiliaria-tema' ); ?>
+					</h2>
+					<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;">
+						<?php while ( $emp_query->have_posts() ) : $emp_query->the_post(); 
+							$estagio = get_post_meta( get_the_ID(), '_imob_emp_estagio', true );
+							$previsao = get_post_meta( get_the_ID(), '_imob_emp_previsao', true );
+						?>
+							<div class="imob-card" style="display: flex; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid var(--border-color); border-radius: 8px;">
+								<div class="imob-card-thumb" style="height: 200px;">
+									<a href="<?php the_permalink(); ?>">
+										<?php if ( has_post_thumbnail() ) : ?>
+											<?php the_post_thumbnail( 'medium_large', array( 'style' => 'width: 100%; height: 100%; object-fit: cover;' ) ); ?>
+										<?php else : ?>
+											<div class="imob-card-placeholder" style="display:flex; align-items:center; justify-content:center; height:100%; background:#f0f2f5;">
+												<span class="material-symbols-outlined" style="font-size: 40px; color:#b0b7c3;">apartment</span>
+											</div>
+										<?php endif; ?>
+									</a>
+								</div>
+								<div class="imob-card-content" style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
+									<?php the_title( '<h3 class="imob-card-title" style="margin: 0 0 10px; font-size: 1.2rem;"><a href="' . esc_url( get_permalink() ) . '" style="color: var(--primary-color); text-decoration: none;">', '</a></h3>' ); ?>
+									<?php if ( $previsao || $estagio ) : ?>
+										<div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">
+											<?php if ( $estagio ) : ?><span>Estágio: <strong><?php echo esc_html( $estagio ); ?></strong></span><br><?php endif; ?>
+											<?php if ( $previsao ) : ?><span>Previsão: <strong><?php echo esc_html( $previsao ); ?></strong></span><?php endif; ?>
+										</div>
+									<?php endif; ?>
+									<a href="<?php the_permalink(); ?>" class="imob-read-more-link" style="margin-top: auto; color: var(--accent-color); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">
+										<?php _e( 'Ver empreendimento', 'imobiliaria-tema' ); ?>
+										<span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+									</a>
+								</div>
+							</div>
+						<?php endwhile; wp_reset_postdata(); ?>
+					</div>
+				</div>
+			<?php endif; ?>
+
 			<div class="imob-construtora-imoveis">
 				<h2 style="font-size: 1.8rem; margin-bottom: 30px; text-align: center;">Imóveis desta Construtora</h2>
 				<?php
@@ -85,6 +141,12 @@ get_header();
 									<div class="imob-card-badges">
 										<span class="badge-tipo"><?php echo esc_html( imob_strtoupper( $tipo ) ); ?></span>
 										<span class="badge-finalidade"><?php echo esc_html( imob_strtoupper( $finalidade ) ); ?></span>
+										<?php 
+										$badge_emp_html = imob_render_empreendimento_badge( get_the_ID() );
+										if ( ! empty( $badge_emp_html ) ) {
+											echo $badge_emp_html;
+										}
+										?>
 									</div>
 									<?php if ( $price_html ) : ?>
 										<div class="imob-card-price">
