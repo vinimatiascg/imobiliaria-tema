@@ -45,17 +45,16 @@ $gmaps_key = get_option( 'imob_gmaps_key' );
 
 					<div style="flex: 1; min-width: 260px;">
 						<!-- BADGES DO EMPREENDIMENTO -->
-						<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center;">
+						<div class="imob-emp-badges-header" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center;">
 							<span style="background: rgba(178, 145, 90, 0.15); color: var(--accent-color); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px;">
 								<span class="material-symbols-outlined" style="font-size: 14px;">domain</span>
 								<?php _e( 'Empreendimento', 'imobiliaria-tema' ); ?>
 							</span>
 
-							<?php if ( $estagio_label ) : ?>
-								<span style="background: var(--primary-color); color: #ffffff; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
-									<?php echo esc_html( $estagio_label ); ?>
-								</span>
-							<?php endif; ?>
+							<?php 
+							// Badges de Estágio da Obra e Tipo(s) de Imóvel com links para suas listagens
+							echo imob_render_empreendimento_badges( $emp_id );
+							?>
 
 							<?php if ( $previsao ) : ?>
 								<span style="background: #f1f5f9; color: var(--text-dark); border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">

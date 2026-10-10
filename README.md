@@ -4,11 +4,24 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.0`
+## 🚀 Versão Atual: `1.3.1`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.0** (Atualização Recente)
+#### **Versão 1.3.1** (Atualização Recente)
+- **1. Correção de Erro de Validação de Formulário ao Salvar Imóveis (`An invalid form control with name='' is not focusable`)**:
+  - Removido o atributo nativo HTML5 `required` dos inputs de texto nos modais de cadastro rápido de Construtora, Proprietário e Empreendimento (`#quick_const_nome`, `#quick_prop_nome`, `#quick_emp_nome`).
+  - Implementado transporte dinâmico via JavaScript (`$('body').append(...)`) para anexar os modais diretamente ao `body`, desvinculando-os do formulário principal de submissão do WordPress (`#post`) e blindando a gravação de imóveis contra bloqueios nativos do navegador.
+  - A validação de preenchimento permanece 100% ativa e segura via JavaScript no clique do botão de submissão rápida.
+- **2. Correção e Dinamização dos Badges nos Empreendimentos (Estágio da Obra e Tipo de Imóvel com Links)**:
+  - Eliminação da badge estática de "Lançamento" que aparecia indevidamente em todos os empreendimentos.
+  - Criados os helpers universais `imob_get_empreendimento_estagio_data()`, `imob_get_empreendimento_tipo_data()` e `imob_render_empreendimento_badges()`:
+    - **Estágio da Obra**: Lê dinamicamente os termos da taxonomia `estagio_obra` (com fallback inteligente para `_imob_emp_estagio`) e gera o badge com link direto para a listagem correspondente.
+    - **Tipo de Imóvel**: Permite atribuir `tipo_imovel` diretamente ao empreendimento ou herda automaticamente os tipos das unidades cadastradas naquele empreendimento, gerando badges clicáveis direcionando para a listagem de cada tipo de imóvel.
+  - Atualização dos templates `single-empreendimento.php`, `single-construtora.php` e criação de `archive-empreendimento.php`.
+  - Sincronização automática bidirecional entre o select de estágio e a taxonomia `estagio_obra` no painel administrativo.
+
+#### **Versão 1.3.0**
 - **1. Padronização da Página de Blog (`/nosso-blog/` e `home.php`)**:
   - Unificação completa do design da página de blog (`home.php`, `template-blog.php`, `page-nosso-blog.php`) com a mesma estrutura visual e harmonia de cores estabelecida em `category.php`.
   - Cards elegantes com badges de categoria dourados com hover invertido, título, resumo legível, link "Ler artigo" dourado e data com ícone `calendar_today`.

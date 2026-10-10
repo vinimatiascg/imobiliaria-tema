@@ -60,9 +60,21 @@ function imob_empreendimento_meta_box_callback( $post ) {
 		<div class="imob-meta-field">
 			<label for="imob_emp_estagio"><?php _e( 'Estágio da Obra:', 'imobiliaria-tema' ); ?></label>
 			<select name="imob_emp_estagio" id="imob_emp_estagio">
-				<option value="Lancamento" <?php selected($estagio, 'Lancamento'); ?>><?php _e( 'Lançamento', 'imobiliaria-tema' ); ?></option>
-				<option value="Em Construcao" <?php selected($estagio, 'Em Construcao'); ?>><?php _e( 'Em Construção', 'imobiliaria-tema' ); ?></option>
-				<option value="Pronto" <?php selected($estagio, 'Pronto'); ?>><?php _e( 'Pronto para Morar', 'imobiliaria-tema' ); ?></option>
+				<option value=""><?php _e( 'Selecione o Estágio', 'imobiliaria-tema' ); ?></option>
+				<?php
+				$estagio_terms = get_terms( array( 'taxonomy' => 'estagio_obra', 'hide_empty' => false ) );
+				$post_terms = wp_get_post_terms( $post->ID, 'estagio_obra', array( 'fields' => 'slugs' ) );
+				$current_slug = ! empty( $post_terms ) && ! is_wp_error( $post_terms ) ? $post_terms[0] : sanitize_title( $estagio );
+				if ( ! empty( $estagio_terms ) && ! is_wp_error( $estagio_terms ) ) {
+					foreach ( $estagio_terms as $sterm ) {
+						echo '<option value="' . esc_attr( $sterm->slug ) . '" ' . selected( $current_slug, $sterm->slug, false ) . '>' . esc_html( $sterm->name ) . '</option>';
+					}
+				} else {
+					echo '<option value="lancamento" ' . selected( $current_slug, 'lancamento', false ) . '>' . __( 'Lançamento', 'imobiliaria-tema' ) . '</option>';
+					echo '<option value="em-construcao" ' . selected( $current_slug, 'em-construcao', false ) . '>' . __( 'Em Construção', 'imobiliaria-tema' ) . '</option>';
+					echo '<option value="pronto" ' . selected( $current_slug, 'pronto', false ) . '>' . __( 'Pronto para Morar', 'imobiliaria-tema' ) . '</option>';
+				}
+				?>
 			</select>
 		</div>
 
@@ -263,7 +275,11 @@ function imob_save_empreendimento_meta( $post_id ) {
 
 	foreach ( $fields as $field ) {
 		if ( isset( $_POST[ $field ] ) ) {
-			update_post_meta( $post_id, '_' . $field, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
+			$val = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+			update_post_meta( $post_id, '_' . $field, $val );
+			if ( 'imob_emp_estagio' === $field && ! empty( $val ) ) {
+				wp_set_object_terms( $post_id, $val, 'estagio_obra' );
+			}
 		}
 	}
 

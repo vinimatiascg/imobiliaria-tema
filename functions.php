@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.3.0' );
+define( 'IMOB_THEME_VERSION', '1.3.1' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -198,4 +198,199 @@ function imob_render_empreendimento_badge( $post_id, $is_single = false ) {
 		$icon,
 		$nome
 	);
+}
+
+/**
+ * Retorna os dados do estágio da obra do empreendimento com nome e link
+ *
+ * @param int $emp_id ID do empreendimento
+ * @return array|null
+ */
+function imob_get_empreendimento_estagio_data( $emp_id ) {
+	if ( empty( $emp_id ) ) {
+		return null;
+	}
+
+	// 1. Tenta obter da taxonomia estagio_obra associada diretamente
+	$terms = wp_get_post_terms( $emp_id, 'estagio_obra' );
+	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+		$term = $terms[0];
+		$term_link = get_term_link( $term );
+		return array(
+			'name' => $term->name,
+			'url'  => ! is_wp_error( $term_link ) ? $term_link : '',
+			'slug' => $term->slug,
+		);
+	}
+
+	// 2. Fallback para meta campo _imob_emp_estagio
+	$estagio = get_post_meta( $emp_id, '_imob_emp_estagio', true );
+	if ( ! empty( $estagio ) ) {
+		$labels = array(
+			'Lancamento'    => __( 'Lançamento', 'imobiliaria-tema' ),
+			'lancamento'    => __( 'Lançamento', 'imobiliaria-tema' ),
+			'Em Construcao' => __( 'Em Construção', 'imobiliaria-tema' ),
+			'em-construcao' => __( 'Em Construção', 'imobiliaria-tema' ),
+			'Pronto'        => __( 'Pronto para Morar', 'imobiliaria-tema' ),
+			'pronto'        => __( 'Pronto para Morar', 'imobiliaria-tema' ),
+			'Na Planta'     => __( 'Na Planta', 'imobiliaria-tema' ),
+			'na-planta'     => __( 'Na Planta', 'imobiliaria-tema' ),
+		);
+		$name = isset( $labels[ $estagio ] ) ? $labels[ $estagio ] : $estagio;
+		$slug = sanitize_title( $name );
+
+		// Tenta encontrar o termo na taxonomia
+		$found_term = get_term_by( 'slug', $slug, 'estagio_obra' );
+		if ( ! $found_term ) {
+			$found_term = get_term_by( 'name', $name, 'estagio_obra' );
+		}
+
+		$url = '';
+		if ( $found_term && ! is_wp_error( $found_term ) ) {
+			$term_link = get_term_link( $found_term );
+			if ( ! is_wp_error( $term_link ) ) {
+				$url = $term_link;
+			}
+		}
+
+		if ( empty( $url ) ) {
+			$tax_obj = get_taxonomy( 'estagio_obra' );
+			$url = add_query_arg( 'estagio', $slug, home_url( '/imoveis/' ) );
+		}
+
+		return array(
+			'name' => $name,
+			'url'  => $url,
+			'slug' => $slug,
+		);
+	}
+
+	return null;
+}
+
+/**
+ * Retorna os tipos de imóvel do empreendimento com nomes e links
+ *
+ * @param int $emp_id ID do empreendimento
+ * @return array
+ */
+function imob_get_empreendimento_tipo_data( $emp_id ) {
+	if ( empty( $emp_id ) ) {
+		return array();
+	}
+
+	$tipos = array();
+
+	// 1. Termos atribuídos diretamente ao empreendimento
+	$terms = wp_get_post_terms( $emp_id, 'tipo_imovel' );
+	if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+		foreach ( $terms as $term ) {
+			$link = get_term_link( $term );
+			$tipos[ $term->term_id ] = array(
+				'name' => $term->name,
+				'url'  => ! is_wp_error( $link ) ? $link : '',
+				'slug' => $term->slug,
+			);
+		}
+	}
+
+	// 2. Se não houver termos diretos, busca das unidades deste empreendimento
+	if ( empty( $tipos ) ) {
+		$imoveis = get_posts( array(
+			'post_type'      => 'imovel',
+			'posts_per_page' => 15,
+			'meta_query'     => array(
+				'relation' => 'OR',
+				array(
+					'key'     => '_imob_empreendimento_id',
+					'value'   => $emp_id,
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_imob_empreendimento',
+					'value'   => get_the_title( $emp_id ),
+					'compare' => '=',
+				),
+			),
+			'fields'         => 'ids',
+		) );
+
+		if ( ! empty( $imoveis ) ) {
+			foreach ( $imoveis as $imv_id ) {
+				$imv_terms = wp_get_post_terms( $imv_id, 'tipo_imovel' );
+				if ( ! empty( $imv_terms ) && ! is_wp_error( $imv_terms ) ) {
+					foreach ( $imv_terms as $it ) {
+						if ( ! isset( $tipos[ $it->term_id ] ) ) {
+							$link = get_term_link( $it );
+							$tipos[ $it->term_id ] = array(
+								'name' => $it->name,
+								'url'  => ! is_wp_error( $link ) ? $link : '',
+								'slug' => $it->slug,
+							);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return array_values( $tipos );
+}
+
+/**
+ * Renderiza os badges do empreendimento (Estágio da Obra e Tipo de Imóvel) com links para listagens
+ *
+ * @param int $emp_id ID do empreendimento
+ * @return string HTML dos badges
+ */
+function imob_render_empreendimento_badges( $emp_id ) {
+	$output = '';
+
+	// 1. Badge do Estágio da Obra com Link
+	$estagio = imob_get_empreendimento_estagio_data( $emp_id );
+	if ( $estagio && ! empty( $estagio['name'] ) ) {
+		$estagio_name = esc_html( imob_strtoupper( $estagio['name'] ) );
+		$icon = '<span class="material-symbols-outlined" style="font-size: 13px; vertical-align: middle;">construction</span>';
+		if ( ! empty( $estagio['url'] ) ) {
+			$output .= sprintf(
+				'<a href="%s" class="badge-estagio" title="%s">%s %s</a>',
+				esc_url( $estagio['url'] ),
+				esc_attr( sprintf( __( 'Ver imóveis em estágio: %s', 'imobiliaria-tema' ), $estagio['name'] ) ),
+				$icon,
+				$estagio_name
+			);
+		} else {
+			$output .= sprintf(
+				'<span class="badge-estagio">%s %s</span>',
+				$icon,
+				$estagio_name
+			);
+		}
+	}
+
+	// 2. Badges dos Tipos de Imóvel com Link
+	$tipos = imob_get_empreendimento_tipo_data( $emp_id );
+	if ( ! empty( $tipos ) ) {
+		foreach ( $tipos as $tipo ) {
+			$tipo_name = esc_html( imob_strtoupper( $tipo['name'] ) );
+			$icon = '<span class="material-symbols-outlined" style="font-size: 13px; vertical-align: middle;">apartment</span>';
+			if ( ! empty( $tipo['url'] ) ) {
+				$output .= sprintf(
+					'<a href="%s" class="badge-tipo" title="%s">%s %s</a>',
+					esc_url( $tipo['url'] ),
+					esc_attr( sprintf( __( 'Ver imóveis do tipo: %s', 'imobiliaria-tema' ), $tipo['name'] ) ),
+					$icon,
+					$tipo_name
+				);
+			} else {
+				$output .= sprintf(
+					'<span class="badge-tipo">%s %s</span>',
+					$icon,
+					$tipo_name
+				);
+			}
+		}
+	}
+
+	return $output;
 }

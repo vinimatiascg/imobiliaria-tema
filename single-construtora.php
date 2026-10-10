@@ -198,7 +198,10 @@ get_header();
 							$previsao = get_post_meta( get_the_ID(), '_imob_emp_previsao', true );
 						?>
 							<div class="imob-card" style="display: flex; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid var(--border-color); border-radius: 8px;">
-								<div class="imob-card-thumb" style="height: 200px;">
+								<div class="imob-card-thumb" style="height: 200px; position: relative;">
+									<div class="imob-card-badges">
+										<?php echo imob_render_empreendimento_badges( get_the_ID() ); ?>
+									</div>
 									<a href="<?php the_permalink(); ?>">
 										<?php if ( has_post_thumbnail() ) : ?>
 											<?php the_post_thumbnail( 'medium_large', array( 'style' => 'width: 100%; height: 100%; object-fit: cover;' ) ); ?>
@@ -211,10 +214,9 @@ get_header();
 								</div>
 								<div class="imob-card-content" style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
 									<?php the_title( '<h3 class="imob-card-title" style="margin: 0 0 10px; font-size: 1.2rem;"><a href="' . esc_url( get_permalink() ) . '" style="color: var(--primary-color); text-decoration: none;">', '</a></h3>' ); ?>
-									<?php if ( $previsao || $estagio ) : ?>
+									<?php if ( $previsao ) : ?>
 										<div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">
-											<?php if ( $estagio ) : ?><span>Estágio: <strong><?php echo esc_html( $estagio ); ?></strong></span><br><?php endif; ?>
-											<?php if ( $previsao ) : ?><span>Previsão: <strong><?php echo esc_html( $previsao ); ?></strong></span><?php endif; ?>
+											<span>Previsão de entrega: <strong><?php echo esc_html( $previsao ); ?></strong></span>
 										</div>
 									<?php endif; ?>
 									<a href="<?php the_permalink(); ?>" class="imob-read-more-link" style="margin-top: auto; color: var(--accent-color); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">

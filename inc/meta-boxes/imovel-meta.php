@@ -389,7 +389,7 @@ function imob_imovel_meta_box_callback( $post ) {
 			<div class="imob-modal-body">
 				<div class="imob-modal-field">
 					<label><?php _e( 'Nome da Construtora *', 'imobiliaria-tema' ); ?></label>
-					<input type="text" id="quick_const_nome" required placeholder="Ex: Rocha Construtora">
+					<input type="text" id="quick_const_nome" placeholder="Ex: Rocha Construtora">
 				</div>
 				<div class="imob-modal-field">
 					<label><?php _e( 'Telefone:', 'imobiliaria-tema' ); ?></label>
@@ -425,7 +425,7 @@ function imob_imovel_meta_box_callback( $post ) {
 			<div class="imob-modal-body">
 				<div class="imob-modal-field">
 					<label><?php _e( 'Nome do Proprietário *', 'imobiliaria-tema' ); ?></label>
-					<input type="text" id="quick_prop_nome" required placeholder="Ex: João da Silva">
+					<input type="text" id="quick_prop_nome" placeholder="Ex: João da Silva">
 				</div>
 				<div class="imob-modal-field">
 					<label><?php _e( 'Telefone:', 'imobiliaria-tema' ); ?></label>
@@ -453,14 +453,23 @@ function imob_imovel_meta_box_callback( $post ) {
 			<div class="imob-modal-body">
 				<div class="imob-modal-field">
 					<label><?php _e( 'Nome do Empreendimento *', 'imobiliaria-tema' ); ?></label>
-					<input type="text" id="quick_emp_nome" required placeholder="Ex: Residencial Mirante da Serra">
+					<input type="text" id="quick_emp_nome" placeholder="Ex: Residencial Mirante da Serra">
 				</div>
 				<div class="imob-modal-field">
 					<label><?php _e( 'Estágio da Obra:', 'imobiliaria-tema' ); ?></label>
 					<select id="quick_emp_estagio">
-						<option value="Lancamento"><?php _e( 'Lançamento', 'imobiliaria-tema' ); ?></option>
-						<option value="Em Construcao"><?php _e( 'Em Construção', 'imobiliaria-tema' ); ?></option>
-						<option value="Pronto"><?php _e( 'Pronto para Morar', 'imobiliaria-tema' ); ?></option>
+						<?php
+						$estagio_terms = get_terms( array( 'taxonomy' => 'estagio_obra', 'hide_empty' => false ) );
+						if ( ! empty( $estagio_terms ) && ! is_wp_error( $estagio_terms ) ) {
+							foreach ( $estagio_terms as $sterm ) {
+								echo '<option value="' . esc_attr( $sterm->slug ) . '">' . esc_html( $sterm->name ) . '</option>';
+							}
+						} else {
+							echo '<option value="lancamento">' . __( 'Lançamento', 'imobiliaria-tema' ) . '</option>';
+							echo '<option value="em-construcao">' . __( 'Em Construção', 'imobiliaria-tema' ) . '</option>';
+							echo '<option value="pronto">' . __( 'Pronto para Morar', 'imobiliaria-tema' ) . '</option>';
+						}
+						?>
 					</select>
 				</div>
 				<div class="imob-modal-field">
@@ -489,6 +498,9 @@ function imob_imovel_meta_box_callback( $post ) {
 	<!-- Scripts para Galeria, Modais e Google Maps -->
 	<script>
 	jQuery(document).ready(function($){
+		// Isola os modais de cadastro rápido fora do form principal de publicação
+		$('body').append($('#modal-quick-construtora, #modal-quick-proprietario, #modal-quick-empreendimento'));
+
 		// --- 1. Galeria de Imagens ---
 		var frame;
 		$('#imob_add_gallery_images').on('click', function(e) {
@@ -837,7 +849,11 @@ function imob_ajax_quick_create_relation() {
 		if ( isset( $_POST['telefone'] ) ) update_post_meta( $post_id, '_imob_proprietario_telefone', sanitize_text_field( wp_unslash( $_POST['telefone'] ) ) );
 		if ( isset( $_POST['whatsapp'] ) ) update_post_meta( $post_id, '_imob_proprietario_whatsapp', sanitize_text_field( wp_unslash( $_POST['whatsapp'] ) ) );
 	} elseif ( $entity_type === 'empreendimento' ) {
-		if ( isset( $_POST['estagio'] ) ) update_post_meta( $post_id, '_imob_emp_estagio', sanitize_text_field( wp_unslash( $_POST['estagio'] ) ) );
+		if ( isset( $_POST['estagio'] ) && ! empty( $_POST['estagio'] ) ) {
+			$estagio_val = sanitize_text_field( wp_unslash( $_POST['estagio'] ) );
+			update_post_meta( $post_id, '_imob_emp_estagio', $estagio_val );
+			wp_set_object_terms( $post_id, $estagio_val, 'estagio_obra' );
+		}
 		if ( isset( $_POST['previsao'] ) ) update_post_meta( $post_id, '_imob_emp_previsao', sanitize_text_field( wp_unslash( $_POST['previsao'] ) ) );
 		if ( isset( $_POST['construtora_id'] ) ) update_post_meta( $post_id, '_imob_emp_construtora_id', intval( $_POST['construtora_id'] ) );
 	}

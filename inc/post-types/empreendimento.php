@@ -35,7 +35,7 @@ function imob_register_cpt_empreendimento() {
 		'capability_type'       => 'post',
 		'show_in_rest'          => true,
 		'rewrite'               => array( 'slug' => 'empreendimentos' ),
-		'taxonomies'            => array( 'caracteristica', 'localidade', 'estagio_obra' ),
+		'taxonomies'            => array( 'caracteristica', 'localidade', 'estagio_obra', 'tipo_imovel' ),
 	);
 	register_post_type( 'empreendimento', $args );
 }
