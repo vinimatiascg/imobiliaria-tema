@@ -30,7 +30,7 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 - **5. Estilização dos Botões de Empreendimento e Construtora (Dourado & Azul Escuro)**:
   - Padronização visual dos botões de relacionamento nos boxes da barra lateral (`.imob-btn-relation`) e nos metaboxes administrativos (`.imob-meta-btn`, upload e busca no mapa).
   - Fundo dourado (`var(--accent-color)` / `#B2915A`) com borda correspondente.
-  - Formato arredondado em estilo pílula (`border-radius: 30px` e `25px`) seguindo a identidade visual dos badges das categorias.
+  - Cantos arredondados ajustados com `border-radius: 8px` para um visual moderno e proporcional.
   - Efeito hover sofisticado alternando para azul escuro (`var(--primary-color)` / `#0E1A2B`) com letras brancas mantidas em ambos os estados.
 
 #### **Versão 1.3.2**

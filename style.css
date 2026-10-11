@@ -1323,7 +1323,7 @@ a.badge-tipo:hover {
 	background-color: var(--accent-color) !important; /* Dourado */
 	color: #FFFFFF !important; /* Letras Brancas */
 	border: 1px solid var(--accent-color) !important; /* Borda Dourada */
-	border-radius: 30px !important; /* Arredondado seguindo o padrão dos badges das categorias */
+	border-radius: 8px !important; /* Border radius ajustado para 8px */
 	font-size: 0.88rem !important;
 	font-weight: 700 !important;
 	text-decoration: none !important;

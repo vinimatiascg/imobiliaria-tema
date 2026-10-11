@@ -69,7 +69,7 @@ function imob_empreendimento_meta_box_callback( $post ) {
 			background: #B2915A !important;
 			color: #FFFFFF !important;
 			border: 1px solid #B2915A !important;
-			border-radius: 25px !important;
+			border-radius: 8px !important;
 			padding: 7px 18px !important;
 			font-weight: 700 !important;
 			font-size: 13px !important;
