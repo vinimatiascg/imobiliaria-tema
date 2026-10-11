@@ -4,7 +4,7 @@ Theme URI:
 Author: Antigravity
 Author URI: 
 Description: Tema customizado para Imobiliárias com alta performance, suporte a Elementor e otimizado para SEO técnico.
-Version: 1.3.2
+Version: 1.3.3
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: imobiliaria-tema
@@ -1255,8 +1255,69 @@ a.badge-tipo:hover {
 	vertical-align: middle;
 }
 
+/* ==========================================================================
+   Galeria Interativa do Empreendimento (Slider & Navegação)
+   ========================================================================== */
+.imob-emp-slider-wrapper {
+	user-select: none;
+}
+.emp-nav-btn {
+	opacity: 0.88;
+	transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.emp-nav-btn:hover {
+	opacity: 1 !important;
+	background: var(--accent-color) !important;
+	color: #ffffff !important;
+	transform: translateY(-50%) scale(1.1) !important;
+	box-shadow: 0 6px 18px rgba(178, 145, 90, 0.45) !important;
+}
+.emp-nav-btn:active {
+	transform: translateY(-50%) scale(0.95) !important;
+}
+.emp-nav-zoom:hover {
+	background: rgba(15, 23, 42, 0.95) !important;
+	color: var(--accent-color) !important;
+	transform: scale(1.04);
+}
+.emp-thumb-btn {
+	outline: none;
+}
+.emp-thumb-btn:hover {
+	opacity: 1 !important;
+	transform: translateY(-2px);
+}
+.emp-thumb-btn.active {
+	border-color: var(--accent-color) !important;
+	box-shadow: 0 3px 10px rgba(178, 145, 90, 0.35);
+}
 
+/* ==========================================================================
+   Widgets Dedicados da Sidebar (Empreendimento & Construtora)
+   ========================================================================== */
+.imob-sidebar-emp-widget,
+.imob-sidebar-const-widget {
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.imob-sidebar-emp-widget:hover,
+.imob-sidebar-const-widget:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06) !important;
+}
 
-
-
-
+@media (max-width: 768px) {
+	.imob-emp-slides {
+		height: 320px !important;
+	}
+	.emp-nav-btn {
+		width: 40px !important;
+		height: 40px !important;
+	}
+	.emp-nav-btn span {
+		font-size: 22px !important;
+	}
+	.emp-thumb-btn {
+		flex: 0 0 80px !important;
+		height: 60px !important;
+	}
+}

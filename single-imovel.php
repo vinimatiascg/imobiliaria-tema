@@ -169,11 +169,7 @@ get_header(); ?>
 								if ( ! empty( $badge_emp_single ) ) {
 									echo $badge_emp_single;
 								}
-								// Construtora vinculada (com link para a listagem da construtora)
-								$badge_const_single = imob_render_construtora_badge( get_the_ID(), true );
-								if ( ! empty( $badge_const_single ) ) {
-									echo $badge_const_single;
-								}
+
 								// Localidades
 								if (!empty($localidades) && !is_wp_error($localidades)) {
 									foreach($localidades as $term) {
@@ -368,47 +364,44 @@ get_header(); ?>
 
 				<!-- Sidebar -->
 				<aside class="imob-single-sidebar">
-					<!-- Empreendimento / Construtora (com links para as respectivas listagens) -->
+					<!-- Widgets Dedicados de Empreendimento e Construtora -->
 					<?php 
 					$emp_side   = imob_get_imovel_empreendimento( get_the_ID() );
 					$const_side = imob_get_imovel_construtora( get_the_ID() );
-					if ( $emp_side || $const_side ) : ?>
-						<div class="imob-sidebar-widget imob-sidebar-relations" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 22px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-							<h3 class="widget-title" style="margin: 0 0 15px; font-size: 1.15rem; color: var(--primary-color); display: flex; align-items: center; gap: 8px;">
-								<span class="material-symbols-outlined" style="color: var(--accent-color);">apartment</span>
-								<?php _e( 'Empreendimento & Construtora', 'imobiliaria-tema' ); ?>
+					?>
+
+					<?php if ( $emp_side && ! empty( $emp_side['nome'] ) ) : ?>
+						<div class="imob-sidebar-widget imob-sidebar-emp-widget" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 22px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+							<div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-color); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+								<span class="material-symbols-outlined" style="font-size: 18px; color: var(--accent-color);">domain</span>
+								<?php _e( 'Empreendimento', 'imobiliaria-tema' ); ?>
+							</div>
+							<h3 style="margin: 0 0 12px; font-size: 1.15rem; color: var(--primary-color); font-weight: 700;">
+								<?php echo esc_html( $emp_side['nome'] ); ?>
 							</h3>
-
-							<?php if ( $emp_side && ! empty( $emp_side['nome'] ) ) : ?>
-								<div style="margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
-									<div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">
-										<?php _e( 'Empreendimento', 'imobiliaria-tema' ); ?>
-									</div>
-									<h4 style="margin: 0 0 6px; font-size: 1.1rem; color: var(--primary-color); font-weight: 700;">
-										<?php echo esc_html( $emp_side['nome'] ); ?>
-									</h4>
-									<?php if ( ! empty( $emp_side['url'] ) ) : ?>
-										<a href="<?php echo esc_url( $emp_side['url'] ); ?>" style="color: var(--accent-color); font-weight: 700; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?>">
-											<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?> &rarr;
-										</a>
-									<?php endif; ?>
-								</div>
+							<?php if ( ! empty( $emp_side['url'] ) ) : ?>
+								<a href="<?php echo esc_url( $emp_side['url'] ); ?>" class="btn-primary" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; text-decoration: none; padding: 10px 14px; font-size: 0.88rem; font-weight: 700; border-radius: 6px;" title="<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?>">
+									<span class="material-symbols-outlined" style="font-size: 18px;">domain</span>
+									<?php _e( 'Ver imóveis deste empreendimento', 'imobiliaria-tema' ); ?> &rarr;
+								</a>
 							<?php endif; ?>
+						</div>
+					<?php endif; ?>
 
-							<?php if ( $const_side && ! empty( $const_side['nome'] ) ) : ?>
-								<div>
-									<div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">
-										<?php _e( 'Construtora', 'imobiliaria-tema' ); ?>
-									</div>
-									<h4 style="margin: 0 0 6px; font-size: 1.1rem; color: var(--primary-color); font-weight: 700;">
-										<?php echo esc_html( $const_side['nome'] ); ?>
-									</h4>
-									<?php if ( ! empty( $const_side['url'] ) ) : ?>
-										<a href="<?php echo esc_url( $const_side['url'] ); ?>" style="color: var(--accent-color); font-weight: 700; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="<?php _e( 'Ver todos os imóveis desta construtora', 'imobiliaria-tema' ); ?>">
-											<?php _e( 'Ver todos os imóveis desta construtora', 'imobiliaria-tema' ); ?> &rarr;
-										</a>
-									<?php endif; ?>
-								</div>
+					<?php if ( $const_side && ! empty( $const_side['nome'] ) ) : ?>
+						<div class="imob-sidebar-widget imob-sidebar-const-widget" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 22px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+							<div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-color); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+								<span class="material-symbols-outlined" style="font-size: 18px; color: var(--accent-color);">apartment</span>
+								<?php _e( 'Construtora', 'imobiliaria-tema' ); ?>
+							</div>
+							<h3 style="margin: 0 0 12px; font-size: 1.15rem; color: var(--primary-color); font-weight: 700;">
+								<?php echo esc_html( $const_side['nome'] ); ?>
+							</h3>
+							<?php if ( ! empty( $const_side['url'] ) ) : ?>
+								<a href="<?php echo esc_url( $const_side['url'] ); ?>" class="btn-primary" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; text-decoration: none; padding: 10px 14px; font-size: 0.88rem; font-weight: 700; border-radius: 6px;" title="<?php _e( 'Ver todos os imóveis desta construtora', 'imobiliaria-tema' ); ?>">
+									<span class="material-symbols-outlined" style="font-size: 18px;">apartment</span>
+									<?php _e( 'Ver imóveis desta construtora', 'imobiliaria-tema' ); ?> &rarr;
+								</a>
 							<?php endif; ?>
 						</div>
 					<?php endif; ?>

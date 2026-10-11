@@ -14,6 +14,14 @@ function imob_add_empreendimento_meta_boxes() {
 		'normal',
 		'high'
 	);
+	add_meta_box(
+		'imob_empreendimento_construtora_side',
+		__( 'Construtora Responsável', 'imobiliaria-tema' ),
+		'imob_empreendimento_construtora_side_callback',
+		'empreendimento',
+		'side',
+		'high'
+	);
 }
 add_action( 'add_meta_boxes', 'imob_add_empreendimento_meta_boxes' );
 
@@ -253,6 +261,85 @@ function imob_empreendimento_meta_box_callback( $post ) {
 	<?php
 }
 
+/**
+ * Callback para a metabox lateral de Construtora Responsável
+ */
+function imob_empreendimento_construtora_side_callback( $post ) {
+	$construtora_id = get_post_meta( $post->ID, '_imob_emp_construtora_id', true );
+	$construtoras   = get_posts( array(
+		'post_type'      => 'construtora',
+		'numberposts'    => -1,
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+		'post_status'    => 'any',
+	) );
+	?>
+	<div class="imob-side-construtora-box" style="padding: 4px 0;">
+		<p style="margin: 0 0 10px; font-size: 13px; color: #64748b; line-height: 1.4;">
+			<?php _e( 'Vincule este empreendimento à construtora responsável pela execução do projeto.', 'imobiliaria-tema' ); ?>
+		</p>
+
+		<label for="imob_emp_construtora_id_side" style="display: block; font-weight: 700; margin-bottom: 6px; font-size: 12px; text-transform: uppercase; color: #1e293b;">
+			<?php _e( 'Selecione a Construtora:', 'imobiliaria-tema' ); ?>
+		</label>
+		<select name="imob_emp_construtora_id_side" id="imob_emp_construtora_id_side" style="width: 100%; height: 38px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: 600; color: #0f172a;">
+			<option value=""><?php _e( '— Nenhuma / Selecione —', 'imobiliaria-tema' ); ?></option>
+			<?php foreach ( $construtoras as $const ) : ?>
+				<option value="<?php echo esc_attr( $const->ID ); ?>" <?php selected( $construtora_id, $const->ID ); ?>>
+					<?php echo esc_html( $const->post_title ); ?>
+				</option>
+			<?php endforeach; ?>
+		</select>
+
+		<?php if ( ! empty( $construtora_id ) ) : 
+			$const_post = get_post( (int) $construtora_id );
+			if ( $const_post ) :
+		?>
+			<div style="margin-top: 14px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+				<div style="font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 4px;">
+					<?php _e( 'Construtora Atual:', 'imobiliaria-tema' ); ?>
+				</div>
+				<strong style="color: #0f172a; font-size: 14px; display: block; margin-bottom: 8px;">
+					<?php echo esc_html( $const_post->post_title ); ?>
+				</strong>
+				<div style="display: flex; gap: 12px; font-size: 12px;">
+					<a href="<?php echo esc_url( get_edit_post_link( $const_post->ID ) ); ?>" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 600;">
+						<?php _e( 'Editar Construtora', 'imobiliaria-tema' ); ?> &nearr;
+					</a>
+					<a href="<?php echo esc_url( get_permalink( $const_post->ID ) ); ?>" target="_blank" style="color: #64748b; text-decoration: none;">
+						<?php _e( 'Ver Perfil', 'imobiliaria-tema' ); ?> &nearr;
+					</a>
+				</div>
+			</div>
+		<?php endif; endif; ?>
+
+		<div style="margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+			<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=construtora' ) ); ?>" target="_blank" style="font-size: 12px; color: #b89047; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+				<span class="dashicons dashicons-plus-alt" style="font-size: 16px; width: 16px; height: 16px; vertical-align: middle;"></span>
+				<?php _e( 'Cadastrar Nova Construtora', 'imobiliaria-tema' ); ?>
+			</a>
+		</div>
+	</div>
+	<script>
+	jQuery(document).ready(function($){
+		// Sincroniza selects se ambos existirem na página
+		$('#imob_emp_construtora_id_side').on('change', function(){
+			var val = $(this).val();
+			if ($('#imob_emp_construtora_id').length) {
+				$('#imob_emp_construtora_id').val(val);
+			}
+		});
+		$('#imob_emp_construtora_id').on('change', function(){
+			var val = $(this).val();
+			if ($('#imob_emp_construtora_id_side').length) {
+				$('#imob_emp_construtora_id_side').val(val);
+			}
+		});
+	});
+	</script>
+	<?php
+}
+
 function imob_save_empreendimento_meta( $post_id ) {
 	if ( ! isset( $_POST['imob_empreendimento_meta_nonce'] ) || ! wp_verify_nonce( $_POST['imob_empreendimento_meta_nonce'], 'imob_save_empreendimento_meta' ) ) {
 		return;
@@ -281,6 +368,12 @@ function imob_save_empreendimento_meta( $post_id ) {
 				wp_set_object_terms( $post_id, $val, 'estagio_obra' );
 			}
 		}
+	}
+
+	// Fallback para construtora vinda da metabox lateral se não enviada pelo formulário principal
+	if ( isset( $_POST['imob_emp_construtora_id_side'] ) && ( ! isset( $_POST['imob_emp_construtora_id'] ) || empty( $_POST['imob_emp_construtora_id'] ) ) ) {
+		$side_const_id = intval( $_POST['imob_emp_construtora_id_side'] );
+		update_post_meta( $post_id, '_imob_emp_construtora_id', $side_const_id );
 	}
 
 	// Salvar galeria de fotos

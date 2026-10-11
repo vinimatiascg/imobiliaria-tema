@@ -120,27 +120,205 @@ $gmaps_key = get_option( 'imob_gmaps_key' );
 				</section>
 			<?php endif; ?>
 
-			<!-- FOTOS DO EMPREENDIMENTO (GALERIA) -->
-			<?php if ( ! empty( $galeria ) ) : ?>
+			<!-- FOTOS DO EMPREENDIMENTO (GALERIA INTERATIVA COM NAVEGAÇÃO) -->
+			<?php if ( ! empty( $galeria ) ) : 
+				$total_fotos = count( $galeria );
+			?>
 				<section class="imob-emp-gallery-section" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 35px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
-					<h2 style="font-size: 1.6rem; color: var(--primary-color); margin: 0 0 20px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
-						<span class="material-symbols-outlined" style="color: var(--accent-color);">photo_library</span>
-						<?php _e( 'Fotos do Empreendimento', 'imobiliaria-tema' ); ?>
-					</h2>
-
-					<div class="imob-emp-gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px;">
-						<?php foreach ( $galeria as $img_id ) : 
-							$img_large = wp_get_attachment_image_url( $img_id, 'large' );
-							$img_thumb = wp_get_attachment_image_url( $img_id, 'medium_large' );
-							if ( ! $img_thumb ) continue;
-						?>
-							<div class="imob-gallery-item" style="border-radius: 8px; overflow: hidden; height: 200px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.2s ease;">
-								<a href="<?php echo esc_url( $img_large ); ?>" target="_blank" rel="noopener noreferrer">
-									<img src="<?php echo esc_url( $img_thumb ); ?>" alt="<?php the_title_attribute(); ?>" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease;">
-								</a>
-							</div>
-						<?php endforeach; ?>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+						<h2 style="font-size: 1.6rem; color: var(--primary-color); margin: 0; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+							<span class="material-symbols-outlined" style="color: var(--accent-color);">photo_library</span>
+							<?php _e( 'Fotos do Empreendimento', 'imobiliaria-tema' ); ?>
+						</h2>
+						<span class="imob-emp-gallery-counter" style="background: #f1f5f9; color: var(--primary-color); font-weight: 700; font-size: 0.88rem; padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0;">
+							<span id="emp-gallery-current">1</span> / <span id="emp-gallery-total"><?php echo esc_html( $total_fotos ); ?></span> <?php _e( 'fotos', 'imobiliaria-tema' ); ?>
+						</span>
 					</div>
+
+					<!-- Visualizador Principal / Slider com Botões de Navegação -->
+					<div class="imob-emp-slider-wrapper" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #0f172a; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
+						
+						<!-- Container dos Slides -->
+						<div class="imob-emp-slides" id="emp-slides-container" style="position: relative; width: 100%; height: 480px;">
+							<?php foreach ( $galeria as $idx => $img_id ) : 
+								$img_full  = wp_get_attachment_image_url( $img_id, 'full' );
+								$img_large = wp_get_attachment_image_url( $img_id, 'large' );
+								if ( ! $img_large ) continue;
+							?>
+								<div class="imob-emp-slide <?php echo ( $idx === 0 ) ? 'active' : ''; ?>" data-slide-index="<?php echo esc_attr( $idx ); ?>" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: <?php echo ( $idx === 0 ) ? '1' : '0'; ?>; visibility: <?php echo ( $idx === 0 ) ? 'visible' : 'hidden'; ?>; transition: opacity 0.35s ease, visibility 0.35s ease; z-index: <?php echo ( $idx === 0 ) ? '2' : '1'; ?>;">
+									<a href="<?php echo esc_url( $img_full ); ?>" class="glightbox" data-gallery="emp-gallery" data-title="<?php echo esc_attr( get_the_title() . ' - Foto ' . ( $idx + 1 ) ); ?>" style="display: block; width: 100%; height: 100%; cursor: zoom-in;">
+										<img src="<?php echo esc_url( $img_large ); ?>" alt="<?php the_title_attribute(); ?> - Foto <?php echo esc_attr( $idx + 1 ); ?>" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+									</a>
+								</div>
+							<?php endforeach; ?>
+						</div>
+
+						<!-- Botão Navegação Anterior ( < ) -->
+						<button type="button" id="emp-gallery-btn-prev" class="emp-nav-btn emp-nav-prev" aria-label="<?php _e( 'Foto Anterior', 'imobiliaria-tema' ); ?>" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.9); border: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s ease; color: var(--primary-color);">
+							<span class="material-symbols-outlined" style="font-size: 28px; line-height: 1;">chevron_left</span>
+						</button>
+
+						<!-- Botão Navegação Próximo ( > ) -->
+						<button type="button" id="emp-gallery-btn-next" class="emp-nav-btn emp-nav-next" aria-label="<?php _e( 'Próxima Foto', 'imobiliaria-tema' ); ?>" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.9); border: none; box-shadow: 0 4px 14px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s ease; color: var(--primary-color);">
+							<span class="material-symbols-outlined" style="font-size: 28px; line-height: 1;">chevron_right</span>
+						</button>
+
+						<!-- Botão Ampliar / Tela Cheia -->
+						<button type="button" id="emp-gallery-btn-fullscreen" class="emp-nav-zoom" aria-label="<?php _e( 'Ampliar Foto', 'imobiliaria-tema' ); ?>" style="position: absolute; right: 16px; bottom: 16px; background: rgba(15, 23, 42, 0.75); color: #ffffff; border: none; border-radius: 20px; padding: 6px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; z-index: 10; backdrop-filter: blur(4px); transition: background 0.2s ease;">
+							<span class="material-symbols-outlined" style="font-size: 18px;">zoom_in</span>
+							<?php _e( 'Ampliar', 'imobiliaria-tema' ); ?>
+						</button>
+					</div>
+
+					<!-- Trilha de Miniaturas (Thumbnails) -->
+					<?php if ( $total_fotos > 1 ) : ?>
+						<div class="imob-emp-thumbs-track" id="emp-thumbs-track" style="display: flex; gap: 10px; overflow-x: auto; padding: 15px 2px 5px; scrollbar-width: thin;">
+							<?php foreach ( $galeria as $idx => $img_id ) : 
+								$img_thumb = wp_get_attachment_image_url( $img_id, 'medium' );
+								if ( ! $img_thumb ) continue;
+							?>
+								<button type="button" class="emp-thumb-btn <?php echo ( $idx === 0 ) ? 'active' : ''; ?>" data-thumb-index="<?php echo esc_attr( $idx ); ?>" style="flex: 0 0 100px; height: 75px; border-radius: 8px; overflow: hidden; padding: 0; cursor: pointer; border: 2px solid <?php echo ( $idx === 0 ) ? 'var(--accent-color)' : 'transparent'; ?>; opacity: <?php echo ( $idx === 0 ) ? '1' : '0.65'; ?>; transition: all 0.2s ease; background: #e2e8f0;">
+									<img src="<?php echo esc_url( $img_thumb ); ?>" alt="Thumb <?php echo esc_attr( $idx + 1 ); ?>" style="width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none;">
+								</button>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
+
+					<!-- Script de Controle do Slider e Lightbox -->
+					<script>
+					document.addEventListener('DOMContentLoaded', function() {
+						var slides = document.querySelectorAll('.imob-emp-slide');
+						var thumbs = document.querySelectorAll('.emp-thumb-btn');
+						var btnPrev = document.getElementById('emp-gallery-btn-prev');
+						var btnNext = document.getElementById('emp-gallery-btn-next');
+						var btnZoom = document.getElementById('emp-gallery-btn-fullscreen');
+						var counterEl = document.getElementById('emp-gallery-current');
+						var thumbsTrack = document.getElementById('emp-thumbs-track');
+						var total = slides.length;
+						var currentIndex = 0;
+
+						if (total <= 1) {
+							if (btnPrev) btnPrev.style.display = 'none';
+							if (btnNext) btnNext.style.display = 'none';
+						}
+
+						function goToSlide(index) {
+							if (index < 0) {
+								index = total - 1;
+							} else if (index >= total) {
+								index = 0;
+							}
+							currentIndex = index;
+
+							slides.forEach(function(slide, idx) {
+								if (idx === currentIndex) {
+									slide.style.opacity = '1';
+									slide.style.visibility = 'visible';
+									slide.style.zIndex = '2';
+									slide.classList.add('active');
+								} else {
+									slide.style.opacity = '0';
+									slide.style.visibility = 'hidden';
+									slide.style.zIndex = '1';
+									slide.classList.remove('active');
+								}
+							});
+
+							thumbs.forEach(function(thumb, idx) {
+								if (idx === currentIndex) {
+									thumb.classList.add('active');
+									thumb.style.borderColor = 'var(--accent-color)';
+									thumb.style.opacity = '1';
+									if (thumbsTrack) {
+										var left = thumb.offsetLeft - thumbsTrack.offsetLeft - 40;
+										thumbsTrack.scrollTo({ left: left, behavior: 'smooth' });
+									}
+								} else {
+									thumb.classList.remove('active');
+									thumb.style.borderColor = 'transparent';
+									thumb.style.opacity = '0.65';
+								}
+							});
+
+							if (counterEl) {
+								counterEl.textContent = currentIndex + 1;
+							}
+						}
+
+						if (btnPrev) {
+							btnPrev.addEventListener('click', function(e) {
+								e.preventDefault();
+								goToSlide(currentIndex - 1);
+							});
+						}
+
+						if (btnNext) {
+							btnNext.addEventListener('click', function(e) {
+								e.preventDefault();
+								goToSlide(currentIndex + 1);
+							});
+						}
+
+						if (btnZoom) {
+							btnZoom.addEventListener('click', function(e) {
+								e.preventDefault();
+								var activeLink = slides[currentIndex] ? slides[currentIndex].querySelector('a.glightbox') : null;
+								if (activeLink) {
+									activeLink.click();
+								}
+							});
+						}
+
+						thumbs.forEach(function(thumb) {
+							thumb.addEventListener('click', function(e) {
+								e.preventDefault();
+								var idx = parseInt(this.getAttribute('data-thumb-index'), 10);
+								goToSlide(idx);
+							});
+						});
+
+						// Navegação por teclado
+						document.addEventListener('keydown', function(e) {
+							if (document.body.classList.contains('glightbox-open')) return;
+							if (e.key === 'ArrowLeft') {
+								goToSlide(currentIndex - 1);
+							} else if (e.key === 'ArrowRight') {
+								goToSlide(currentIndex + 1);
+							}
+						});
+
+						// Suporte a swipe em touch
+						var startX = 0;
+						var slidesContainer = document.getElementById('emp-slides-container');
+						if (slidesContainer) {
+							slidesContainer.addEventListener('touchstart', function(e) {
+								startX = e.touches[0].clientX;
+							}, { passive: true });
+
+							slidesContainer.addEventListener('touchend', function(e) {
+								var endX = e.changedTouches[0].clientX;
+								var diff = startX - endX;
+								if (Math.abs(diff) > 40) {
+									if (diff > 0) {
+										goToSlide(currentIndex + 1);
+									} else {
+										goToSlide(currentIndex - 1);
+									}
+								}
+							}, { passive: true });
+						}
+
+						// Inicializar GLightbox
+						if (typeof GLightbox !== 'undefined') {
+							GLightbox({
+								selector: '.glightbox',
+								loop: true,
+								zoomable: true,
+								touchNavigation: true
+							});
+						}
+					});
+					</script>
 				</section>
 			<?php endif; ?>
 

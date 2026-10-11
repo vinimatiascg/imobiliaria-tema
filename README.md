@@ -4,11 +4,31 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.2`
+## 🚀 Versão Atual: `1.3.3`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.2** (Atualização Recente)
+#### **Versão 1.3.3** (Atualização Recente)
+- **1. Separação dos Widgets de Empreendimento e Construtora na Sidebar (`single-imovel.php`)**:
+  - Removido o widget conjunto anterior e seu título "Empreendimento & Construtora".
+  - Criados dois blocos/widgets independentes na barra lateral (`.imob-sidebar-emp-widget` e `.imob-sidebar-const-widget`).
+  - Hierarquia respeitada: se o imóvel tiver empreendimento vinculado, o widget do empreendimento é exibido em primeiro lugar, seguido pelo widget da construtora.
+  - Cada widget conta com ícone temático (`domain` e `apartment`), nome em destaque e botão com link direto para a listagem completa de imóveis daquela relação.
+- **2. Vínculo de Construtora no Cadastro de Empreendimentos (`empreendimento-meta.php`)**:
+  - Nova metabox dedicada na coluna lateral direita (`side`, alta prioridade): **Construtora Responsável**.
+  - Dropdown com todas as construtoras cadastradas, link de edição da construtora ativa, link para visualização pública e atalho para criar uma nova construtora.
+  - Sincronização automática entre os campos e garantia de salvamento de `_imob_emp_construtora_id`.
+- **3. Limpeza dos Badges de Topo na Página do Imóvel (`single-imovel.php`)**:
+  - Removido o badge da construtora que aparecia no meio das categorias, estágios e tipos no cabeçalho do imóvel.
+  - Mantido o badge de empreendimento e os links destacados e contextualizados na parte inferior do header (`.imob-imovel-relations-banner`) e na barra lateral.
+- **4. Galeria de Fotos Interativa com Botões de Navegação no Empreendimento (`single-empreendimento.php`)**:
+  - Reestruturação completa da seção de fotos: substituído o grid estático por um slider interativo de alta resolução com proporção elegante e background escuro.
+  - **Botões de Navegação Anterior (`<`) e Próximo (`>`)**: botões flutuantes arredondados com ícones chevron, hover dourado interativo e suporte a teclado (setas esquerda e direita) e swipe em dispositivos móveis.
+  - **Contador Dinâmico de Fotos**: badge indicativo no cabeçalho da seção exibindo a contagem da foto ativa (`1 / N`).
+  - **Trilha de Miniaturas (Thumbnails)**: barra inferior com rolagem horizontal automática e borda dourada ativa na miniatura selecionada.
+  - **Integração com GLightbox**: botão "Ampliar" e clique na imagem para visualização em tela cheia com zoom e loop.
+
+#### **Versão 1.3.2**
 - **1. Galeria de Imagens e Slideshow Completo (`single-imovel.php`)**:
   - Correção na galeria de fotos do imóvel: anteriormente, o loop de miniaturas limitava a renderização no DOM às primeiras imagens (`array_slice`), fazendo com que o GLightbox não carregasse as imagens subsequentes no slideshow.
   - Implementada a renderização de links ocultos (`.imob-gallery-hidden`) para todas as fotos excedentes pertencentes ao imóvel com a mesma classe e atributo `data-gallery="imovel-gallery"`.
