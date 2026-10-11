@@ -128,90 +128,91 @@ $current_page_url = get_permalink();
 		</header>
 
 		<!-- BARRA DE FILTROS SUPERIOR -->
-		<div class="imob-archive-filters-bar" style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; margin-bottom: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
-			<form method="get" action="<?php echo esc_url( $current_page_url ); ?>" class="imob-filters-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) auto auto; gap: 15px; align-items: end;">
+		<div class="imob-archive-filters-bar">
+			<form method="get" action="<?php echo esc_url( $current_page_url ); ?>" class="imob-filters-form">
 				
-				<!-- FILTRO POR TIPO -->
-				<div class="imob-filter-group" style="display: flex; flex-direction: column; gap: 6px;">
-					<label for="filter-tipo" style="font-size: 0.85rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
-						<span class="material-symbols-outlined" style="font-size: 16px; color: var(--accent-color);">home_work</span>
-						<?php _e( 'Tipo de Imóvel', 'imobiliaria-tema' ); ?>
-					</label>
-					<select name="tipo" id="filter-tipo" class="imob-filter-select" style="width: 100%; height: 46px; border: 1px solid var(--border-color); border-radius: 8px; padding: 0 12px; font-size: 0.95rem; background: #fafafa; color: var(--text-dark);">
-						<option value=""><?php _e( 'Todos os Tipos', 'imobiliaria-tema' ); ?></option>
-						<?php if ( ! empty( $termos_tipo ) && ! is_wp_error( $termos_tipo ) ) : ?>
-							<?php foreach ( $termos_tipo as $t ) : ?>
-								<option value="<?php echo esc_attr( $t->slug ); ?>" <?php selected( $tipo_sel, $t->slug ); ?>>
-									<?php echo esc_html( $t->name ); ?> (<?php echo intval( $t->count ); ?>)
-								</option>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</select>
+				<div class="imob-filters-grid">
+					<!-- FILTRO POR TIPO -->
+					<div class="imob-filter-group">
+						<label for="filter-tipo">
+							<span class="material-symbols-outlined">home_work</span>
+							<?php _e( 'Tipo de Imóvel', 'imobiliaria-tema' ); ?>
+						</label>
+						<select name="tipo" id="filter-tipo" class="imob-filter-select">
+							<option value=""><?php _e( 'Todos os Tipos', 'imobiliaria-tema' ); ?></option>
+							<?php if ( ! empty( $termos_tipo ) && ! is_wp_error( $termos_tipo ) ) : ?>
+								<?php foreach ( $termos_tipo as $t ) : ?>
+									<option value="<?php echo esc_attr( $t->slug ); ?>" <?php selected( $tipo_sel, $t->slug ); ?>>
+										<?php echo esc_html( $t->name ); ?> (<?php echo intval( $t->count ); ?>)
+									</option>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</select>
+					</div>
+
+					<!-- FILTRO POR LOCALIDADE -->
+					<div class="imob-filter-group">
+						<label for="filter-localidade">
+							<span class="material-symbols-outlined">location_on</span>
+							<?php _e( 'Localidade / Bairro', 'imobiliaria-tema' ); ?>
+						</label>
+						<select name="localidade" id="filter-localidade" class="imob-filter-select">
+							<option value=""><?php _e( 'Todas as Localidades', 'imobiliaria-tema' ); ?></option>
+							<?php if ( ! empty( $termos_localidade ) && ! is_wp_error( $termos_localidade ) ) : ?>
+								<?php foreach ( $termos_localidade as $l ) : ?>
+									<option value="<?php echo esc_attr( $l->slug ); ?>" <?php selected( $localidade_sel, $l->slug ); ?>>
+										<?php echo esc_html( $l->name ); ?> (<?php echo intval( $l->count ); ?>)
+									</option>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</select>
+					</div>
+
+					<!-- FILTRO POR MODALIDADE (VENDA OU ALUGUEL) -->
+					<div class="imob-filter-group">
+						<label for="filter-finalidade">
+							<span class="material-symbols-outlined">sell</span>
+							<?php _e( 'Modalidade', 'imobiliaria-tema' ); ?>
+						</label>
+						<select name="finalidade" id="filter-finalidade" class="imob-filter-select">
+							<option value=""><?php _e( 'Todas as Modalidades', 'imobiliaria-tema' ); ?></option>
+							<option value="venda" <?php selected( $finalidade_sel, 'venda' ); ?>><?php _e( 'Comprar (Venda)', 'imobiliaria-tema' ); ?></option>
+							<option value="aluguel" <?php selected( $finalidade_sel, 'aluguel' ); ?>><?php _e( 'Alugar (Aluguel)', 'imobiliaria-tema' ); ?></option>
+						</select>
+					</div>
+
+					<!-- FILTRO POR ESTÁGIO DA OBRA -->
+					<div class="imob-filter-group">
+						<label for="filter-estagio">
+							<span class="material-symbols-outlined">construction</span>
+							<?php _e( 'Estágio da Obra', 'imobiliaria-tema' ); ?>
+						</label>
+						<select name="estagio" id="filter-estagio" class="imob-filter-select">
+							<option value=""><?php _e( 'Todos os Estágios', 'imobiliaria-tema' ); ?></option>
+							<?php if ( ! empty( $termos_estagio ) && ! is_wp_error( $termos_estagio ) ) : ?>
+								<?php foreach ( $termos_estagio as $e ) : ?>
+									<option value="<?php echo esc_attr( $e->slug ); ?>" <?php selected( $estagio_sel, $e->slug ); ?>>
+										<?php echo esc_html( $e->name ); ?> (<?php echo intval( $e->count ); ?>)
+									</option>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</select>
+					</div>
 				</div>
 
-				<!-- FILTRO POR LOCALIDADE -->
-				<div class="imob-filter-group" style="display: flex; flex-direction: column; gap: 6px;">
-					<label for="filter-localidade" style="font-size: 0.85rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
-						<span class="material-symbols-outlined" style="font-size: 16px; color: var(--accent-color);">location_on</span>
-						<?php _e( 'Localidade / Bairro', 'imobiliaria-tema' ); ?>
-					</label>
-					<select name="localidade" id="filter-localidade" class="imob-filter-select" style="width: 100%; height: 46px; border: 1px solid var(--border-color); border-radius: 8px; padding: 0 12px; font-size: 0.95rem; background: #fafafa; color: var(--text-dark);">
-						<option value=""><?php _e( 'Todas as Localidades', 'imobiliaria-tema' ); ?></option>
-						<?php if ( ! empty( $termos_localidade ) && ! is_wp_error( $termos_localidade ) ) : ?>
-							<?php foreach ( $termos_localidade as $l ) : ?>
-								<option value="<?php echo esc_attr( $l->slug ); ?>" <?php selected( $localidade_sel, $l->slug ); ?>>
-									<?php echo esc_html( $l->name ); ?> (<?php echo intval( $l->count ); ?>)
-								</option>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</select>
-				</div>
+				<!-- AÇÕES (BOTÃO FILTRAR ALINHADO À DIREITA) -->
+				<div class="imob-filters-actions">
+					<?php if ( $has_filter ) : ?>
+						<a href="<?php echo esc_url( $current_page_url ); ?>" class="imob-btn-limpar" title="<?php esc_attr_e( 'Limpar todos os filtros', 'imobiliaria-tema' ); ?>">
+							<span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
+							<?php _e( 'Limpar Filtros', 'imobiliaria-tema' ); ?>
+						</a>
+					<?php endif; ?>
 
-				<!-- FILTRO POR MODALIDADE (VENDA OU ALUGUEL) -->
-				<div class="imob-filter-group" style="display: flex; flex-direction: column; gap: 6px;">
-					<label for="filter-finalidade" style="font-size: 0.85rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
-						<span class="material-symbols-outlined" style="font-size: 16px; color: var(--accent-color);">sell</span>
-						<?php _e( 'Modalidade', 'imobiliaria-tema' ); ?>
-					</label>
-					<select name="finalidade" id="filter-finalidade" class="imob-filter-select" style="width: 100%; height: 46px; border: 1px solid var(--border-color); border-radius: 8px; padding: 0 12px; font-size: 0.95rem; background: #fafafa; color: var(--text-dark);">
-						<option value=""><?php _e( 'Todas as Modalidades', 'imobiliaria-tema' ); ?></option>
-						<option value="venda" <?php selected( $finalidade_sel, 'venda' ); ?>><?php _e( 'Comprar (Venda)', 'imobiliaria-tema' ); ?></option>
-						<option value="aluguel" <?php selected( $finalidade_sel, 'aluguel' ); ?>><?php _e( 'Alugar (Aluguel)', 'imobiliaria-tema' ); ?></option>
-					</select>
-				</div>
-
-				<!-- FILTRO POR ESTÁGIO DA OBRA -->
-				<div class="imob-filter-group" style="display: flex; flex-direction: column; gap: 6px;">
-					<label for="filter-estagio" style="font-size: 0.85rem; font-weight: 700; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
-						<span class="material-symbols-outlined" style="font-size: 16px; color: var(--accent-color);">construction</span>
-						<?php _e( 'Estágio da Obra', 'imobiliaria-tema' ); ?>
-					</label>
-					<select name="estagio" id="filter-estagio" class="imob-filter-select" style="width: 100%; height: 46px; border: 1px solid var(--border-color); border-radius: 8px; padding: 0 12px; font-size: 0.95rem; background: #fafafa; color: var(--text-dark);">
-						<option value=""><?php _e( 'Todos os Estágios', 'imobiliaria-tema' ); ?></option>
-						<?php if ( ! empty( $termos_estagio ) && ! is_wp_error( $termos_estagio ) ) : ?>
-							<?php foreach ( $termos_estagio as $e ) : ?>
-								<option value="<?php echo esc_attr( $e->slug ); ?>" <?php selected( $estagio_sel, $e->slug ); ?>>
-									<?php echo esc_html( $e->name ); ?> (<?php echo intval( $e->count ); ?>)
-								</option>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</select>
-				</div>
-
-				<!-- BOTÃO FILTRAR -->
-				<div style="display: flex; gap: 8px;">
-					<button type="submit" class="imob-btn-filtrar" style="height: 46px; background: var(--accent-color); color: #ffffff; border: none; border-radius: 8px; padding: 0 24px; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s ease;">
+					<button type="submit" class="imob-btn-filtrar">
 						<span class="material-symbols-outlined" style="font-size: 20px;">filter_alt</span>
 						<?php _e( 'Filtrar', 'imobiliaria-tema' ); ?>
 					</button>
-
-					<!-- BOTÃO LIMPAR -->
-					<?php if ( $has_filter ) : ?>
-						<a href="<?php echo esc_url( $current_page_url ); ?>" class="imob-btn-limpar" title="<?php esc_attr_e( 'Limpar todos os filtros', 'imobiliaria-tema' ); ?>" style="height: 46px; background: #f1f5f9; color: var(--text-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 0 16px; font-weight: 600; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
-							<span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
-							<?php _e( 'Limpar', 'imobiliaria-tema' ); ?>
-						</a>
-					<?php endif; ?>
 				</div>
 
 			</form>

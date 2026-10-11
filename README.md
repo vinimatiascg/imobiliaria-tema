@@ -32,6 +32,10 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
   - Fundo dourado (`var(--accent-color)` / `#B2915A`) com borda correspondente.
   - Cantos arredondados ajustados com `border-radius: 8px` para um visual moderno e proporcional.
   - Efeito hover sofisticado alternando para azul escuro (`var(--primary-color)` / `#0E1A2B`) com letras brancas mantidas em ambos os estados.
+- **6. Layout dos Filtros de Imóveis em 2 Colunas (`archive-imovel.php` e `template-imoveis.php`)**:
+  - Reorganização dos campos de filtro em grade moderna de 2 colunas proporcionais (`.imob-filters-grid`), distribuindo tipo, localidade, modalidade e estágio da obra.
+  - Alinhamento das ações à direita (`.imob-filters-actions`), posicionando o botão "Filtrar" e "Limpar Filtros" no canto inferior direito da barra.
+  - Responsividade automática para telas menores (`<= 768px`) com coluna única.
 
 #### **Versão 1.3.2**
 - **1. Galeria de Imagens e Slideshow Completo (`single-imovel.php`)**:

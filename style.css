@@ -11,18 +11,21 @@ Text Domain: imobiliaria-tema
 */
 
 :root {
-	--primary-color: #0E1A2B; /* Dark Blue from Header/Footer */
+	--primary-color: #0E1A2B;
+	/* Dark Blue from Header/Footer */
 	--primary-color-light: #162B45;
-	--secondary-color: #2F80ED; /* Bright Blue from buttons */
+	--secondary-color: #2F80ED;
+	/* Bright Blue from buttons */
 	--secondary-color-hover: #1b68cc;
-	--accent-color: #B2915A; /* Gold/Beige */
+	--accent-color: #B2915A;
+	/* Gold/Beige */
 	--text-dark: #333333;
 	--text-light: #666666;
 	--text-white: #FFFFFF;
 	--bg-light: #F4F6F8;
 	--bg-white: #FFFFFF;
 	--border-color: #E0E0E0;
-	
+
 	--font-primary: 'Inter', sans-serif;
 }
 
@@ -46,11 +49,11 @@ a:hover {
 }
 
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
+	font-variation-settings:
+		'FILL' 0,
+		'wght' 400,
+		'GRAD' 0,
+		'opsz' 24
 }
 
 /* Base Container */
@@ -71,6 +74,7 @@ a:hover {
 	gap: 8px;
 	font-weight: 500;
 }
+
 .btn-primary:hover {
 	background-color: var(--secondary-color-hover);
 	color: var(--text-white);
@@ -82,11 +86,13 @@ a:hover {
 	color: var(--text-white);
 	padding: 20px 0;
 }
+
 .header-container {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
+
 .site-branding .logo-text {
 	color: var(--text-white);
 	font-size: 1.2rem;
@@ -95,9 +101,11 @@ a:hover {
 	align-items: center;
 	gap: 10px;
 }
+
 .site-branding .logo-text span {
 	font-weight: 400;
 }
+
 .main-navigation ul {
 	list-style: none;
 	margin: 0;
@@ -105,10 +113,12 @@ a:hover {
 	display: flex;
 	gap: 30px;
 }
+
 .main-navigation a {
 	color: var(--text-white);
 	font-weight: 500;
 }
+
 .main-navigation a:hover {
 	opacity: 0.8;
 }
@@ -120,39 +130,47 @@ a:hover {
 	padding: 60px 0 20px;
 	font-size: 0.9rem;
 }
+
 .footer-widgets {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	gap: 40px;
 	margin-bottom: 40px;
 }
+
 .footer-widget h3 {
 	color: var(--accent-color);
 	font-size: 1.1rem;
 	margin-bottom: 20px;
 }
+
 .footer-widget ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
+
 .footer-widget ul li {
 	margin-bottom: 10px;
 }
+
 .footer-widget a {
 	color: var(--text-white);
 }
+
 .footer-widget a:hover {
 	color: var(--accent-color);
 }
+
 .footer-bottom {
-	border-top: 1px solid rgba(255,255,255,0.1);
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
 	padding-top: 20px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	font-size: 0.8rem;
 }
+
 .footer-whatsapp-btn {
 	background-color: var(--accent-color);
 	color: var(--primary-color);
@@ -163,6 +181,7 @@ a:hover {
 	gap: 10px;
 	font-weight: 600;
 }
+
 .footer-whatsapp-btn:hover {
 	opacity: 0.9;
 	color: var(--primary-color);
@@ -174,32 +193,38 @@ a:hover {
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 	gap: 30px;
 }
+
 .imob-card {
 	background: var(--bg-white);
 	border-radius: 8px;
 	overflow: hidden;
-	box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .imob-card:hover {
 	transform: translateY(-5px);
-	box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
+
 .imob-card-thumb {
 	position: relative;
 	height: 200px;
 	overflow: hidden;
 }
+
 .imob-card-thumb img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
+
 .imob-card-placeholder {
 	width: 100%;
 	height: 100%;
 	background: #ddd;
 }
+
 .imob-card-badges {
 	position: absolute;
 	top: 15px;
@@ -210,6 +235,7 @@ a:hover {
 	z-index: 2;
 	max-width: calc(100% - 30px);
 }
+
 .imob-card-badges span,
 .imob-card-badges a {
 	background: var(--secondary-color);
@@ -226,6 +252,7 @@ a:hover {
 	gap: 4px;
 	transition: all 0.2s ease;
 }
+
 .imob-card-price {
 	position: absolute;
 	bottom: 15px;
@@ -236,6 +263,7 @@ a:hover {
 	border-radius: 8px;
 	z-index: 2;
 }
+
 .imob-card-info-top {
 	position: static;
 	background: transparent;
@@ -244,6 +272,7 @@ a:hover {
 	align-items: center;
 	color: inherit;
 }
+
 .info-bairro {
 	display: inline-flex;
 	align-items: center;
@@ -256,29 +285,36 @@ a:hover {
 	font-size: 0.8rem;
 	font-weight: 500;
 }
+
 .info-preco {
 	font-size: 0.9rem;
 	font-weight: 700;
 }
+
 .imob-card-content {
 	padding: 20px;
 }
+
 .imob-card-title {
 	margin: 0 0 5px;
 	font-size: 1.1rem;
 	font-weight: 700;
 }
+
 .imob-card-title a {
 	color: var(--primary-color);
 }
+
 .imob-card-title a:hover {
 	color: var(--secondary-color);
 }
+
 .imob-card-residencial {
 	margin: 0 0 15px;
 	font-size: 0.9rem;
 	color: var(--text-light);
 }
+
 .imob-card-features {
 	display: flex;
 	gap: 15px;
@@ -288,15 +324,18 @@ a:hover {
 	font-weight: 600;
 	font-size: 0.9rem;
 }
+
 .imob-card-features span {
 	display: flex;
 	align-items: center;
 	gap: 5px;
 }
+
 .imob-card-features .material-symbols-outlined {
 	font-size: 18px;
 	color: var(--secondary-color);
 }
+
 .imob-card-footer {
 	border-top: 1px solid var(--border-color);
 	padding-top: 15px;
@@ -310,17 +349,21 @@ a:hover {
 	max-width: 1000px;
 	margin: 0 auto;
 }
+
 .imob-search-tabs {
 	display: flex;
 	gap: 10px;
 	margin-bottom: 0;
 }
+
 .imob-search-tab {
 	cursor: pointer;
 }
+
 .imob-search-tab input {
 	display: none;
 }
+
 .imob-search-tab span {
 	background: #fff;
 	color: var(--primary-color);
@@ -329,20 +372,23 @@ a:hover {
 	font-weight: 600;
 	display: inline-block;
 }
-.imob-search-tab input:checked + span {
+
+.imob-search-tab input:checked+span {
 	background: var(--bg-white);
 	color: var(--secondary-color);
 }
+
 .imob-search-fields {
 	display: flex;
 	background: var(--bg-white);
 	border-radius: 0 10px 10px 10px;
 	padding: 10px;
-	box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 	gap: 15px;
 	align-items: center;
 	flex-wrap: wrap;
 }
+
 .imob-search-field {
 	flex: 1;
 	min-width: 150px;
@@ -353,14 +399,18 @@ a:hover {
 	padding: 5px 15px;
 	background: #fff;
 }
+
 .imob-search-keyword {
 	flex: 2;
 }
+
 .imob-search-field .search-icon {
 	color: var(--text-light);
 	margin-right: 10px;
 }
-.imob-search-field input, .imob-search-field select {
+
+.imob-search-field input,
+.imob-search-field select {
 	border: none;
 	background: transparent;
 	width: 100%;
@@ -369,6 +419,7 @@ a:hover {
 	font-family: inherit;
 	color: var(--text-dark);
 }
+
 .imob-search-submit {
 	flex: 0 0 auto;
 }
@@ -378,16 +429,19 @@ a:hover {
 	background: var(--bg-white);
 	padding-bottom: 50px;
 }
+
 .imob-single-gallery-section {
 	width: 100%;
 	margin-bottom: 30px;
 }
+
 .imob-gallery-main img {
 	width: 100%;
 	height: 60vh;
 	object-fit: cover;
 	display: block;
 }
+
 .imob-gallery-thumbs {
 	display: flex;
 	gap: 10px;
@@ -398,6 +452,7 @@ a:hover {
 	position: relative;
 	z-index: 10;
 }
+
 .imob-thumb-item {
 	width: 150px;
 	height: 100px;
@@ -406,20 +461,22 @@ a:hover {
 	flex-shrink: 0;
 	position: relative;
 	border: 3px solid #fff;
-	box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 .imob-thumb-item img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
+
 .imob-thumb-overlay {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.6);
+	background: rgba(0, 0, 0, 0.6);
 	color: #fff;
 	display: flex;
 	flex-direction: column;
@@ -429,6 +486,7 @@ a:hover {
 	font-weight: 700;
 	font-size: 0.9rem;
 }
+
 .imob-single-container {
 	display: grid;
 	grid-template-columns: 1fr 350px;
@@ -437,9 +495,11 @@ a:hover {
 	margin: 0 auto;
 	padding: 0 15px;
 }
+
 .imob-single-content {
 	min-width: 0;
 }
+
 .imob-badges-preco-wrap {
 	display: flex;
 	justify-content: space-between;
@@ -448,12 +508,14 @@ a:hover {
 	flex-wrap: wrap;
 	gap: 10px;
 }
+
 .imob-badges {
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
 	flex-grow: 1;
 }
+
 .imob-single-title {
 	font-size: 2rem;
 	font-weight: 800;
@@ -461,6 +523,7 @@ a:hover {
 	line-height: 1.2;
 	margin: 0 0 15px;
 }
+
 .imob-single-location {
 	display: flex;
 	align-items: center;
@@ -469,6 +532,7 @@ a:hover {
 	font-size: 0.9rem;
 	margin-bottom: 20px;
 }
+
 .imob-single-features-bar {
 	display: flex;
 	gap: 30px;
@@ -478,10 +542,12 @@ a:hover {
 	margin-bottom: 40px;
 	flex-wrap: wrap;
 }
+
 .feature-item {
 	display: flex;
 	flex-direction: column;
 }
+
 .feature-label {
 	font-size: 0.75rem;
 	font-weight: 700;
@@ -489,6 +555,7 @@ a:hover {
 	text-transform: uppercase;
 	margin-bottom: 5px;
 }
+
 .feature-val {
 	display: flex;
 	align-items: center;
@@ -496,13 +563,15 @@ a:hover {
 	font-size: 0.9rem;
 	color: var(--text-dark);
 }
+
 .imob-section-box {
 	background: #fff;
 	border-radius: 10px;
 	padding: 30px;
-	box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 	margin-bottom: 30px;
 }
+
 .imob-section-header {
 	display: flex;
 	justify-content: space-between;
@@ -511,20 +580,24 @@ a:hover {
 	border-bottom: 1px solid var(--border-color);
 	padding-bottom: 10px;
 }
+
 .imob-section-header h2 {
 	font-size: 1.4rem;
 	font-weight: 700;
 	color: var(--primary-color);
 	margin: 0;
 }
+
 .imob-date {
 	font-size: 0.8rem;
 	color: var(--text-light);
 }
+
 .imob-section-content {
 	color: var(--text-dark);
 	line-height: 1.6;
 }
+
 .imob-caracteristicas-list {
 	list-style: none;
 	padding: 0;
@@ -533,6 +606,7 @@ a:hover {
 	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	gap: 15px;
 }
+
 .imob-caracteristicas-list li {
 	display: flex;
 	align-items: center;
@@ -541,36 +615,43 @@ a:hover {
 	color: var(--primary-color);
 	font-weight: 600;
 }
+
 .imob-caracteristicas-list li span {
 	color: var(--accent-color);
 }
+
 .imob-single-sidebar {
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
 }
+
 .imob-sidebar-widget {
 	background: #fff;
 	border-radius: 10px;
 	padding: 25px;
 	border: 1px solid var(--border-color);
 }
+
 .imob-sidebar-widget .widget-title {
 	font-size: 1.1rem;
 	font-weight: 700;
 	margin: 0 0 20px;
 	color: var(--primary-color);
 }
+
 .imob-corretor-card {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
 }
+
 .imob-corretor-info {
 	display: flex;
 	gap: 15px;
 	align-items: center;
 }
+
 .avatar-placeholder {
 	width: 60px;
 	height: 60px;
@@ -580,30 +661,36 @@ a:hover {
 	background-position: 0 0, 10px 10px;
 	background-size: 20px 20px;
 }
+
 .imob-corretor-details h4 {
 	margin: 0 0 5px;
 	font-size: 1.1rem;
 	color: var(--primary-color);
 }
+
 .imob-corretor-details .role {
 	font-size: 0.8rem;
 	font-weight: 600;
 	margin: 0 0 5px;
 }
+
 .imob-corretor-details .creci {
 	font-size: 0.75rem;
 	color: var(--text-light);
 	margin: 0;
 	line-height: 1.3;
 }
+
 .imob-corretor-contact p {
 	font-size: 0.85rem;
 	margin-bottom: 10px;
 }
+
 .imob-social-icons {
 	display: flex;
 	gap: 10px;
 }
+
 .social-icon {
 	width: 40px;
 	height: 40px;
@@ -615,12 +702,14 @@ a:hover {
 	border-radius: 50%;
 	text-decoration: none;
 }
+
 .imob-sb-form {
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
 	margin-top: 20px;
 }
+
 .imob-sb-field {
 	display: flex;
 	align-items: center;
@@ -628,25 +717,30 @@ a:hover {
 	border-radius: 5px;
 	padding: 10px;
 }
-.imob-sb-field input, .imob-sb-field select {
+
+.imob-sb-field input,
+.imob-sb-field select {
 	border: none;
 	width: 100%;
 	background: transparent;
 	outline: none;
 	font-family: inherit;
 }
+
 .imob-sb-field span {
 	margin-right: 10px;
 	color: var(--text-light);
 }
+
 .imob-related-properties {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
 }
+
 .imob-related-card {
 	border: none;
-	box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 @media (max-width: 992px) {
@@ -669,27 +763,36 @@ a:hover {
 	display: inline-block;
 	text-transform: uppercase;
 }
+
 .badge-status {
-	background-color: #5bc0de !important; /* Light blue */
+	background-color: #5bc0de !important;
+	/* Light blue */
 	text-transform: uppercase;
 }
+
 .badge-tipo {
-	background-color: #B2915A !important; /* Gold */
+	background-color: #B2915A !important;
+	/* Gold */
 	text-transform: uppercase;
 }
+
 .badge-finalidade {
-	background-color: #2F80ED !important; /* Blue */
+	background-color: #2F80ED !important;
+	/* Blue */
 	text-transform: uppercase;
 }
+
 .badge-localidade {
 	text-transform: uppercase;
 }
+
 /* Features Bar */
 .imob-single-features-bar .feature-val {
 	display: flex;
 	align-items: center;
 	gap: 0;
 }
+
 .imob-single-features-bar .feature-icon {
 	background: #0E1A2B;
 	color: #fff;
@@ -699,6 +802,7 @@ a:hover {
 	align-items: center;
 	justify-content: center;
 }
+
 .imob-single-features-bar .feature-num {
 	border: 1px solid #0E1A2B;
 	border-left: none;
@@ -721,6 +825,7 @@ a:hover {
 	padding: 12px 30px;
 	border-radius: 6px;
 }
+
 .btn-cta-blue:hover {
 	background-color: #1b68cc !important;
 }
@@ -734,6 +839,7 @@ a:hover {
 .imob-related-card.dark-theme {
 	background: #0E1A2B;
 }
+
 .imob-related-card.dark-theme .imob-card-title a:hover {
 	color: #5bc0de !important;
 }
@@ -805,10 +911,12 @@ a:hover {
 		transform: scale(1);
 		opacity: 0.7;
 	}
+
 	50% {
 		transform: scale(1.35);
 		opacity: 0;
 	}
+
 	100% {
 		transform: scale(1.35);
 		opacity: 0;
@@ -856,14 +964,17 @@ a:hover {
 		bottom: 20px !important;
 		right: 20px !important;
 	}
+
 	.imob-whatsapp-float-btn {
 		width: 52px;
 		height: 52px;
 	}
+
 	.imob-whatsapp-float-icon {
 		width: 28px;
 		height: 28px;
 	}
+
 	.imob-whatsapp-float-tooltip {
 		display: none;
 	}
@@ -876,34 +987,43 @@ a:hover {
 	width: 100%;
 	margin: 0 auto;
 }
+
 .imob-faq-item {
 	transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
 }
+
 .imob-faq-item.is-active {
 	border-color: #2F80ED !important;
 	box-shadow: 0 4px 14px rgba(47, 128, 237, 0.08) !important;
 }
+
 .imob-faq-question {
 	outline: none;
 	transition: background-color 0.2s ease;
 }
+
 .imob-faq-question:hover .imob-faq-question-text {
 	color: #2F80ED !important;
 }
+
 .imob-faq-answer-inner {
 	word-break: break-word;
 }
+
 .imob-faq-answer-inner p:last-child {
 	margin-bottom: 0;
 }
+
 .imob-faq-answer-inner a {
 	color: #2F80ED;
 	text-decoration: underline;
 	transition: color 0.2s ease;
 }
+
 .imob-faq-answer-inner a:hover {
 	color: #1b68cc;
 }
+
 .imob-faq-answer-inner strong,
 .imob-faq-answer-inner b {
 	color: #0E1A2B;
@@ -918,25 +1038,30 @@ a:hover {
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 	gap: 30px;
 }
+
 .imob-post-card {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 }
+
 .imob-post-card .imob-card-content {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
 }
+
 .imob-post-card .imob-card-footer {
 	margin-top: auto;
 }
+
 .imob-post-date-badge {
 	background: #0E1A2B !important;
 	color: #ffffff !important;
 	padding: 5px 12px !important;
 	border-radius: 6px !important;
 }
+
 #page .elementor-element .imob-read-more-link,
 #page div[class*="elementor-element"] .imob-read-more-link,
 html body .elementor-element.elementor-element .imob-read-more-link,
@@ -954,6 +1079,7 @@ html body div.elementor-element .imob-post-card a.imob-read-more-link,
 	text-decoration: none;
 	transition: gap 0.2s ease, opacity 0.2s ease, color 0.2s ease;
 }
+
 #page .elementor-element .imob-read-more-link:hover,
 #page div[class*="elementor-element"] .imob-read-more-link:hover,
 html body .elementor-element.elementor-element .imob-read-more-link:hover,
@@ -967,6 +1093,7 @@ html body div.elementor-element .imob-post-card a.imob-read-more-link:hover,
 	color: #9E7E47 !important;
 	opacity: 0.85;
 }
+
 .imob-post-card .imob-card-date .material-symbols-outlined {
 	color: var(--accent-color) !important;
 }
@@ -978,11 +1105,15 @@ html body div.elementor-element .imob-post-card a.imob-read-more-link:hover,
 	gap: 6px;
 	margin-bottom: 15px;
 }
+
 .imob-post-categories-badges .badge-categoria,
 .imob-post-categories-badges a.badge-categoria {
-	background-color: var(--accent-color) !important; /* Dourado */
-	color: #FFFFFF !important; /* Letras brancas */
-	border: 1px solid var(--accent-color) !important; /* Borda dourada */
+	background-color: var(--accent-color) !important;
+	/* Dourado */
+	color: #FFFFFF !important;
+	/* Letras brancas */
+	border: 1px solid var(--accent-color) !important;
+	/* Borda dourada */
 	padding: 4px 12px;
 	border-radius: 20px;
 	font-size: 0.72rem;
@@ -994,11 +1125,15 @@ html body div.elementor-element .imob-post-card a.imob-read-more-link:hover,
 	transition: all 0.25s ease;
 	cursor: pointer;
 }
+
 .imob-post-categories-badges .badge-categoria:hover,
 .imob-post-categories-badges a.badge-categoria:hover {
-	background-color: #FFFFFF !important; /* Invertido: fundo branco */
-	color: var(--accent-color) !important; /* Letras douradas */
-	border-color: var(--accent-color) !important; /* Borda dourada */
+	background-color: #FFFFFF !important;
+	/* Invertido: fundo branco */
+	color: var(--accent-color) !important;
+	/* Letras douradas */
+	border-color: var(--accent-color) !important;
+	/* Borda dourada */
 }
 
 /* ==========================================================================
@@ -1008,7 +1143,7 @@ html body div.elementor-element .imob-post-card a.imob-read-more-link:hover,
 a.badge-empreendimento {
 	background: #0E1A2B !important;
 	color: #FFFFFF !important;
-	border: 1px solid rgba(255,255,255,0.2) !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
 	padding: 3px 10px !important;
 	border-radius: 4px !important;
 	font-size: 0.72rem !important;
@@ -1022,11 +1157,13 @@ a.badge-empreendimento {
 	transition: all 0.2s ease;
 	vertical-align: middle;
 }
+
 a.badge-empreendimento:hover {
 	background: var(--accent-color) !important;
 	border-color: var(--accent-color) !important;
 	color: #FFFFFF !important;
 }
+
 .imob-single-badge-empreendimento,
 a.imob-single-badge-empreendimento {
 	background: #0E1A2B !important;
@@ -1034,8 +1171,9 @@ a.imob-single-badge-empreendimento {
 	padding: 6px 14px !important;
 	border-radius: 6px !important;
 	font-size: 0.82rem !important;
-	border: 1px solid rgba(255,255,255,0.15) !important;
+	border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
+
 a.imob-single-badge-empreendimento:hover {
 	background: var(--accent-color) !important;
 	border-color: var(--accent-color) !important;
@@ -1048,7 +1186,7 @@ a.imob-single-badge-empreendimento:hover {
 a.badge-construtora {
 	background: #1e293b !important;
 	color: #FFFFFF !important;
-	border: 1px solid rgba(255,255,255,0.2) !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
 	padding: 3px 10px !important;
 	border-radius: 4px !important;
 	font-size: 0.72rem !important;
@@ -1062,11 +1200,13 @@ a.badge-construtora {
 	transition: all 0.2s ease;
 	vertical-align: middle;
 }
+
 a.badge-construtora:hover {
 	background: var(--accent-color) !important;
 	border-color: var(--accent-color) !important;
 	color: #FFFFFF !important;
 }
+
 .imob-single-badge-construtora,
 a.imob-single-badge-construtora {
 	background: #1e293b !important;
@@ -1074,7 +1214,7 @@ a.imob-single-badge-construtora {
 	padding: 6px 14px !important;
 	border-radius: 6px !important;
 	font-size: 0.82rem !important;
-	border: 1px solid rgba(255,255,255,0.15) !important;
+	border: 1px solid rgba(255, 255, 255, 0.15) !important;
 	display: inline-flex !important;
 	align-items: center;
 	gap: 6px;
@@ -1082,6 +1222,7 @@ a.imob-single-badge-construtora {
 	font-weight: 700 !important;
 	transition: all 0.2s ease;
 }
+
 a.imob-single-badge-construtora:hover {
 	background: var(--accent-color) !important;
 	border-color: var(--accent-color) !important;
@@ -1093,7 +1234,7 @@ a.imob-single-badge-construtora:hover {
 a.badge-estagio {
 	background: #0E1A2B !important;
 	color: #FFFFFF !important;
-	border: 1px solid rgba(255,255,255,0.2) !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
 	padding: 4px 12px !important;
 	border-radius: 20px !important;
 	font-size: 0.72rem !important;
@@ -1107,12 +1248,13 @@ a.badge-estagio {
 	transition: all 0.2s ease;
 	vertical-align: middle;
 }
+
 a.badge-estagio:hover {
 	background: var(--accent-color) !important;
 	border-color: var(--accent-color) !important;
 	color: #FFFFFF !important;
 	transform: translateY(-2px);
-	box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .badge-tipo,
@@ -1133,37 +1275,162 @@ a.badge-tipo {
 	transition: all 0.2s ease;
 	vertical-align: middle;
 }
+
 a.badge-tipo:hover {
 	background: #FFFFFF !important;
 	color: var(--accent-color) !important;
 	border-color: var(--accent-color) !important;
 	transform: translateY(-2px);
-	box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* ==========================================================================
    BARRA DE FILTROS SUPERIOR (ARCHIVE E PÁGINA DE IMÓVEIS)
    ========================================================================== */
 .imob-archive-filters-bar {
+	background: #ffffff;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	padding: 26px 28px;
+	margin-bottom: 35px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 	transition: box-shadow 0.25s ease;
 }
+
 .imob-archive-filters-bar:focus-within {
-	box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+	box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
 }
+
+.imob-filters-form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+/* Filtros em 2 Colunas */
+.imob-filters-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 18px 24px;
+}
+
+.imob-filter-group {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.imob-filter-group label {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: var(--primary-color);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.imob-filter-group label .material-symbols-outlined {
+	font-size: 16px;
+	color: var(--accent-color);
+}
+
 .imob-filter-select {
-	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	width: 100%;
+	height: 46px;
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	padding: 0 14px;
+	font-size: 0.95rem;
+	background: #fafafa;
+	color: var(--text-dark);
+	font-family: inherit;
+	cursor: pointer;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
+
+.imob-filter-select:hover {
+	background-color: #ffffff;
+}
+
 .imob-filter-select:focus {
 	outline: none;
+	background-color: #ffffff;
 	border-color: var(--accent-color) !important;
 	box-shadow: 0 0 0 3px rgba(178, 145, 90, 0.15);
 }
-.imob-btn-filtrar:hover {
-	background: #9E7E47 !important;
+
+/* Botão de filtrar e ações alinhados à direita */
+.imob-filters-actions {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 12px;
 }
+
+.imob-btn-filtrar {
+	height: 46px;
+	background: var(--accent-color);
+	color: #ffffff;
+	border: 1px solid var(--accent-color);
+	border-radius: 8px;
+	padding: 0 28px;
+	font-weight: 700;
+	font-size: 0.95rem;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	box-shadow: 0 3px 10px rgba(178, 145, 90, 0.25);
+	transition: all 0.25s ease;
+}
+
+.imob-btn-filtrar:hover {
+	background: var(--primary-color) !important;
+	border-color: var(--primary-color) !important;
+	color: #ffffff !important;
+	transform: translateY(-2px);
+	box-shadow: 0 5px 14px rgba(14, 26, 43, 0.3);
+}
+
+.imob-btn-limpar {
+	height: 46px;
+	background: #f1f5f9;
+	color: var(--text-light);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	padding: 0 16px;
+	font-weight: 600;
+	font-size: 0.9rem;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	transition: all 0.2s ease;
+}
+
 .imob-btn-limpar:hover {
 	background: #e2e8f0 !important;
 	color: var(--primary-color) !important;
+	border-color: #cbd5e1 !important;
+}
+
+@media (max-width: 768px) {
+	.imob-filters-grid {
+		grid-template-columns: 1fr;
+		gap: 14px;
+	}
+	.imob-filters-actions {
+		flex-direction: column-reverse;
+		width: 100%;
+	}
+	.imob-btn-filtrar,
+	.imob-btn-limpar {
+		width: 100%;
+	}
 }
 
 /* ==========================================================================
@@ -1172,6 +1439,7 @@ a.badge-tipo:hover {
 .imob-gallery-item:hover {
 	transform: translateY(-3px);
 }
+
 .imob-gallery-item:hover img {
 	transform: scale(1.04);
 }
@@ -1221,7 +1489,7 @@ a.badge-tipo:hover {
 	font-weight: 700;
 	text-decoration: none !important;
 	transition: all 0.2s ease;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 	cursor: pointer;
 }
 
@@ -1261,10 +1529,12 @@ a.badge-tipo:hover {
 .imob-emp-slider-wrapper {
 	user-select: none;
 }
+
 .emp-nav-btn {
 	opacity: 0.88;
 	transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+
 .emp-nav-btn:hover {
 	opacity: 1 !important;
 	background: var(--accent-color) !important;
@@ -1272,21 +1542,26 @@ a.badge-tipo:hover {
 	transform: translateY(-50%) scale(1.1) !important;
 	box-shadow: 0 6px 18px rgba(178, 145, 90, 0.45) !important;
 }
+
 .emp-nav-btn:active {
 	transform: translateY(-50%) scale(0.95) !important;
 }
+
 .emp-nav-zoom:hover {
 	background: rgba(15, 23, 42, 0.95) !important;
 	color: var(--accent-color) !important;
 	transform: scale(1.04);
 }
+
 .emp-thumb-btn {
 	outline: none;
 }
+
 .emp-thumb-btn:hover {
 	opacity: 1 !important;
 	transform: translateY(-2px);
 }
+
 .emp-thumb-btn.active {
 	border-color: var(--accent-color) !important;
 	box-shadow: 0 3px 10px rgba(178, 145, 90, 0.35);
@@ -1299,6 +1574,7 @@ a.badge-tipo:hover {
 .imob-sidebar-const-widget {
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 .imob-sidebar-emp-widget:hover,
 .imob-sidebar-const-widget:hover {
 	transform: translateY(-2px);
@@ -1320,10 +1596,14 @@ a.badge-tipo:hover {
 	width: 100% !important;
 	box-sizing: border-box !important;
 	padding: 12px 24px !important;
-	background-color: var(--accent-color) !important; /* Dourado */
-	color: #FFFFFF !important; /* Letras Brancas */
-	border: 1px solid var(--accent-color) !important; /* Borda Dourada */
-	border-radius: 8px !important; /* Border radius ajustado para 8px */
+	background-color: var(--accent-color) !important;
+	/* Dourado */
+	color: #FFFFFF !important;
+	/* Letras Brancas */
+	border: 1px solid var(--accent-color) !important;
+	/* Borda Dourada */
+	border-radius: 8px !important;
+	/* Border radius ajustado para 8px */
 	font-size: 0.88rem !important;
 	font-weight: 700 !important;
 	text-decoration: none !important;
@@ -1331,6 +1611,7 @@ a.badge-tipo:hover {
 	box-shadow: 0 4px 12px rgba(178, 145, 90, 0.28) !important;
 	transition: all 0.25s ease-in-out !important;
 	cursor: pointer !important;
+	text-transform: uppercase;
 }
 
 .imob-btn-relation:hover,
@@ -1340,9 +1621,12 @@ a.badge-tipo:hover {
 .imob-sidebar-emp-widget a.btn-primary:hover,
 .imob-sidebar-const-widget a.btn-primary:hover,
 .imob-sidebar-relations a.btn-primary:hover {
-	background-color: var(--primary-color) !important; /* Hover Azul Escuro */
-	color: #FFFFFF !important; /* Letras Brancas */
-	border-color: var(--primary-color) !important; /* Borda Azul Escuro */
+	background-color: var(--primary-color) !important;
+	/* Hover Azul Escuro */
+	color: #FFFFFF !important;
+	/* Letras Brancas */
+	border-color: var(--primary-color) !important;
+	/* Borda Azul Escuro */
 	box-shadow: 0 6px 18px rgba(14, 26, 43, 0.35) !important;
 	transform: translateY(-2px) !important;
 }
@@ -1358,16 +1642,18 @@ a.badge-tipo:hover {
 	.imob-emp-slides {
 		height: 320px !important;
 	}
+
 	.emp-nav-btn {
 		width: 40px !important;
 		height: 40px !important;
 	}
+
 	.emp-nav-btn span {
 		font-size: 22px !important;
 	}
+
 	.emp-thumb-btn {
 		flex: 0 0 80px !important;
 		height: 60px !important;
 	}
 }
-
