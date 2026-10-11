@@ -576,7 +576,10 @@ get_header(); ?>
 								<span class="material-symbols-outlined" style="color: var(--text-light); margin-left: auto; margin-right: 0; pointer-events: none;">keyboard_arrow_down</span>
 							</div>
 
-							<button type="submit" class="btn-primary" style="width: 100%; justify-content: center; background-color: var(--accent-color); color: #fff; font-size: 1.1rem; border: none; cursor: pointer; padding: 12px 20px; border-radius: 6px;">Mostrar resultados</button>
+							<button type="submit" class="imob-btn-sidebar-filter" style="width: 100%; justify-content: center;">
+								<span class="material-symbols-outlined">search</span>
+								<?php _e( 'MOSTRAR RESULTADOS', 'imobiliaria-tema' ); ?>
+							</button>
 						</form>
 					</div>
 

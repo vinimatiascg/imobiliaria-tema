@@ -691,16 +691,50 @@ a:hover {
 	gap: 10px;
 }
 
-.social-icon {
+.social-icon,
+.imob-social-icons .social-icon,
+.imob-social-icons a.social-icon {
 	width: 40px;
 	height: 40px;
-	background: #b19356;
-	color: #fff;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
-	text-decoration: none;
+	background-color: var(--accent-color) !important;
+	color: #ffffff !important;
+	border: 1px solid var(--accent-color) !important;
+	border-radius: 8px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	text-decoration: none !important;
+	box-shadow: 0 3px 8px rgba(178, 145, 90, 0.25) !important;
+	transition: all 0.25s ease-in-out !important;
+	cursor: pointer !important;
+}
+
+.social-icon:hover,
+.social-icon:focus,
+.imob-social-icons .social-icon:hover,
+.imob-social-icons .social-icon:focus,
+.imob-social-icons a.social-icon:hover,
+.imob-social-icons a.social-icon:focus {
+	background-color: var(--primary-color) !important;
+	color: #ffffff !important;
+	border-color: var(--primary-color) !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 5px 14px rgba(14, 26, 43, 0.35) !important;
+}
+
+.social-icon .material-symbols-outlined,
+.imob-social-icons .social-icon .material-symbols-outlined,
+.imob-social-icons a.social-icon .material-symbols-outlined {
+	color: #ffffff !important;
+	font-size: 20px !important;
+	line-height: 1 !important;
+	transition: color 0.2s ease !important;
+}
+
+.social-icon:hover .material-symbols-outlined,
+.imob-social-icons .social-icon:hover .material-symbols-outlined,
+.imob-social-icons a.social-icon:hover .material-symbols-outlined {
+	color: #ffffff !important;
 }
 
 .imob-sb-form {
@@ -1447,16 +1481,22 @@ a.badge-tipo:hover {
 /* ==========================================================================
    PAGINAÇÃO (.imob-pagination)
    ========================================================================== */
-.imob-pagination {
+.imob-pagination,
+.pagination {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 50px;
 	width: 100%;
 	clear: both;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
 }
 
-.imob-pagination ul.page-numbers {
+.imob-pagination ul.page-numbers,
+.pagination ul.page-numbers,
+ul.page-numbers {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -1465,16 +1505,30 @@ a.badge-tipo:hover {
 	list-style: none !important;
 	padding: 0 !important;
 	margin: 0 !important;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	min-width: 0 !important;
+	height: auto !important;
 }
 
-.imob-pagination ul.page-numbers li {
+.imob-pagination ul.page-numbers li,
+.pagination ul.page-numbers li,
+ul.page-numbers li {
 	list-style: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	display: inline-flex;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
 }
 
-.imob-pagination .page-numbers {
+/* Botões individuais da paginação (apenas links e spans, nunca no container ul ou li) */
+.imob-pagination li a.page-numbers,
+.imob-pagination li span.page-numbers,
+.imob-pagination a.page-numbers,
+.imob-pagination span.page-numbers {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -1502,7 +1556,8 @@ a.badge-tipo:hover {
 }
 
 .imob-pagination .page-numbers.current,
-.imob-pagination span.page-numbers.current {
+.imob-pagination span.page-numbers.current,
+.imob-pagination li span.page-numbers.current {
 	background: var(--accent-color) !important;
 	border-color: var(--accent-color) !important;
 	color: #ffffff !important;
@@ -1510,12 +1565,16 @@ a.badge-tipo:hover {
 	cursor: default;
 }
 
-.imob-pagination .page-numbers.dots {
-	border: none;
-	background: transparent;
-	box-shadow: none;
+.imob-pagination .page-numbers.dots,
+.imob-pagination span.page-numbers.dots,
+.imob-pagination li span.page-numbers.dots {
+	border: none !important;
+	background: transparent !important;
+	box-shadow: none !important;
 	cursor: default;
-	color: var(--text-light);
+	color: var(--text-light) !important;
+	min-width: 24px;
+	padding: 0 6px;
 }
 
 .imob-pagination .page-numbers .material-symbols-outlined {
@@ -1581,14 +1640,16 @@ a.badge-tipo:hover {
 	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06) !important;
 }
 
-/* Botões dos boxes de Empreendimento e Construtora */
+/* Botões dos boxes de Empreendimento, Construtora e Filtro da Barra Lateral */
 .imob-btn-relation,
 .imob-sidebar-emp-widget .imob-btn-relation,
 .imob-sidebar-const-widget .imob-btn-relation,
 .imob-sidebar-relations .imob-btn-relation,
 .imob-sidebar-emp-widget a.btn-primary,
 .imob-sidebar-const-widget a.btn-primary,
-.imob-sidebar-relations a.btn-primary {
+.imob-sidebar-relations a.btn-primary,
+.imob-btn-sidebar-filter,
+.imob-sb-form button[type="submit"] {
 	display: inline-flex !important;
 	align-items: center !important;
 	justify-content: center !important;
@@ -1611,7 +1672,8 @@ a.badge-tipo:hover {
 	box-shadow: 0 4px 12px rgba(178, 145, 90, 0.28) !important;
 	transition: all 0.25s ease-in-out !important;
 	cursor: pointer !important;
-	text-transform: uppercase;
+	text-transform: uppercase !important;
+	font-family: inherit !important;
 }
 
 .imob-btn-relation:hover,
@@ -1620,7 +1682,11 @@ a.badge-tipo:hover {
 .imob-sidebar-relations .imob-btn-relation:hover,
 .imob-sidebar-emp-widget a.btn-primary:hover,
 .imob-sidebar-const-widget a.btn-primary:hover,
-.imob-sidebar-relations a.btn-primary:hover {
+.imob-sidebar-relations a.btn-primary:hover,
+.imob-btn-sidebar-filter:hover,
+.imob-btn-sidebar-filter:focus,
+.imob-sb-form button[type="submit"]:hover,
+.imob-sb-form button[type="submit"]:focus {
 	background-color: var(--primary-color) !important;
 	/* Hover Azul Escuro */
 	color: #FFFFFF !important;
@@ -1633,9 +1699,12 @@ a.badge-tipo:hover {
 
 .imob-btn-relation .material-symbols-outlined,
 .imob-sidebar-emp-widget a .material-symbols-outlined,
-.imob-sidebar-const-widget a .material-symbols-outlined {
+.imob-sidebar-const-widget a .material-symbols-outlined,
+.imob-btn-sidebar-filter .material-symbols-outlined,
+.imob-sb-form button[type="submit"] .material-symbols-outlined {
 	color: #FFFFFF !important;
-	font-size: 19px !important;
+	font-size: 20px !important;
+	line-height: 1 !important;
 }
 
 @media (max-width: 768px) {

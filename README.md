@@ -4,11 +4,24 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.3`
+## 🚀 Versão Atual: `1.3.4`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.3** (Atualização Recente)
+#### **Versão 1.3.4** (Atualização Recente)
+- **1. Correção do CSS da Paginação (Eliminação de Background Branco Externo)**:
+  - Corrigido o problema onde o elemento `ul.page-numbers` gerado pelo `paginate_links()` recebia regras genéricas de `.page-numbers`, exibindo um bloco com fundo branco retangular por fora dos botões.
+  - Resetados containers (`.imob-pagination`, `ul.page-numbers`, `li`) com `background: transparent !important`, `border: none !important` e `box-shadow: none !important`, restringindo o background e bordas exclusivamente aos botões e links de navegação (`a.page-numbers` e `span.page-numbers`).
+- **2. Esquema de Cores dos Ícones das Redes Sociais no Box do Corretor (`single-imovel.php`)**:
+  - Alinhamento dos botões de redes sociais do corretor com a paleta dos botões de construtora/empreendimento.
+  - Fundo dourado (`var(--accent-color)`), ícone branco e bordas arredondadas de `8px`.
+  - No hover: fundo azul escuro (`var(--primary-color)`), elevação sutil e ícone branco mantido, corrigindo a anomalia em que o ícone ficava azul claro por herança de `a:hover`.
+- **3. Padronização do Botão de Filtro da Barra Lateral (`single-imovel.php`)**:
+  - Botão atualizado para seguir o padrão dos botões das construtoras (`.imob-btn-sidebar-filter`): fundo dourado, hover azul escuro, bordas arredondadas de `8px` e letras brancas.
+  - Adicionado ícone de lupa (`<span class="material-symbols-outlined">search</span>`).
+  - Tipografia padronizada em caixa alta (`MOSTRAR RESULTADOS` e `text-transform: uppercase`).
+
+#### **Versão 1.3.3**
 - **1. Separação dos Widgets de Empreendimento e Construtora na Sidebar (`single-imovel.php`)**:
   - Removido o widget conjunto anterior e seu título "Empreendimento & Construtora".
   - Criados dois blocos/widgets independentes na barra lateral (`.imob-sidebar-emp-widget` e `.imob-sidebar-const-widget`).
