@@ -61,6 +61,42 @@ function imob_empreendimento_meta_box_callback( $post ) {
 		.imob-galeria-item { position: relative; width: 90px; height: 90px; border-radius: 6px; overflow: hidden; border: 1px solid #e2e8f0; }
 		.imob-galeria-item img { width: 100%; height: 100%; object-fit: cover; }
 		.imob-galeria-item .remove-img { position: absolute; top: 2px; right: 2px; background: rgba(220,38,38,0.9); color: #fff; border-radius: 50%; width: 20px; height: 20px; text-align: center; line-height: 20px; cursor: pointer; font-size: 12px; font-weight: bold; }
+		
+		/* Botões com cor dourada e hover azul escuro arredondados estilo badges */
+		.imob-meta-btn,
+		#btn-upload-emp-galeria,
+		#btn_search_emp_map {
+			background: #B2915A !important;
+			color: #FFFFFF !important;
+			border: 1px solid #B2915A !important;
+			border-radius: 25px !important;
+			padding: 7px 18px !important;
+			font-weight: 700 !important;
+			font-size: 13px !important;
+			display: inline-flex !important;
+			align-items: center !important;
+			gap: 6px !important;
+			text-decoration: none !important;
+			cursor: pointer !important;
+			box-shadow: 0 3px 10px rgba(178, 145, 90, 0.25) !important;
+			transition: all 0.25s ease !important;
+			height: auto !important;
+			line-height: normal !important;
+		}
+		.imob-meta-btn:hover,
+		#btn-upload-emp-galeria:hover,
+		#btn_search_emp_map:hover {
+			background: #0E1A2B !important;
+			color: #FFFFFF !important;
+			border-color: #0E1A2B !important;
+			box-shadow: 0 4px 14px rgba(14, 26, 43, 0.35) !important;
+			transform: translateY(-2px) !important;
+		}
+		.imob-meta-btn .dashicons,
+		#btn-upload-emp-galeria .dashicons,
+		#btn_search_emp_map .dashicons {
+			color: #FFFFFF !important;
+		}
 	</style>
 	
 	<!-- DADOS GERAIS -->
@@ -314,7 +350,7 @@ function imob_empreendimento_construtora_side_callback( $post ) {
 		<?php endif; endif; ?>
 
 		<div style="margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-			<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=construtora' ) ); ?>" target="_blank" style="font-size: 12px; color: #b89047; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+			<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=construtora' ) ); ?>" target="_blank" class="imob-meta-btn" style="width: 100%; justify-content: center; box-sizing: border-box;">
 				<span class="dashicons dashicons-plus-alt" style="font-size: 16px; width: 16px; height: 16px; vertical-align: middle;"></span>
 				<?php _e( 'Cadastrar Nova Construtora', 'imobiliaria-tema' ); ?>
 			</a>

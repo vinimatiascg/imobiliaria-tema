@@ -380,7 +380,7 @@ get_header(); ?>
 								<?php echo esc_html( $emp_side['nome'] ); ?>
 							</h3>
 							<?php if ( ! empty( $emp_side['url'] ) ) : ?>
-								<a href="<?php echo esc_url( $emp_side['url'] ); ?>" class="btn-primary" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; text-decoration: none; padding: 10px 14px; font-size: 0.88rem; font-weight: 700; border-radius: 6px;" title="<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?>">
+								<a href="<?php echo esc_url( $emp_side['url'] ); ?>" class="imob-btn-relation" title="<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?>">
 									<span class="material-symbols-outlined" style="font-size: 18px;">domain</span>
 									<?php _e( 'Ver imóveis deste empreendimento', 'imobiliaria-tema' ); ?> &rarr;
 								</a>
@@ -398,7 +398,7 @@ get_header(); ?>
 								<?php echo esc_html( $const_side['nome'] ); ?>
 							</h3>
 							<?php if ( ! empty( $const_side['url'] ) ) : ?>
-								<a href="<?php echo esc_url( $const_side['url'] ); ?>" class="btn-primary" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; text-decoration: none; padding: 10px 14px; font-size: 0.88rem; font-weight: 700; border-radius: 6px;" title="<?php _e( 'Ver todos os imóveis desta construtora', 'imobiliaria-tema' ); ?>">
+								<a href="<?php echo esc_url( $const_side['url'] ); ?>" class="imob-btn-relation" title="<?php _e( 'Ver todos os imóveis desta construtora', 'imobiliaria-tema' ); ?>">
 									<span class="material-symbols-outlined" style="font-size: 18px;">apartment</span>
 									<?php _e( 'Ver imóveis desta construtora', 'imobiliaria-tema' ); ?> &rarr;
 								</a>

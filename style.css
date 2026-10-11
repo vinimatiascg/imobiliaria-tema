@@ -1305,6 +1305,55 @@ a.badge-tipo:hover {
 	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06) !important;
 }
 
+/* Botões dos boxes de Empreendimento e Construtora */
+.imob-btn-relation,
+.imob-sidebar-emp-widget .imob-btn-relation,
+.imob-sidebar-const-widget .imob-btn-relation,
+.imob-sidebar-relations .imob-btn-relation,
+.imob-sidebar-emp-widget a.btn-primary,
+.imob-sidebar-const-widget a.btn-primary,
+.imob-sidebar-relations a.btn-primary {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 8px !important;
+	width: 100% !important;
+	box-sizing: border-box !important;
+	padding: 12px 24px !important;
+	background-color: var(--accent-color) !important; /* Dourado */
+	color: #FFFFFF !important; /* Letras Brancas */
+	border: 1px solid var(--accent-color) !important; /* Borda Dourada */
+	border-radius: 30px !important; /* Arredondado seguindo o padrão dos badges das categorias */
+	font-size: 0.88rem !important;
+	font-weight: 700 !important;
+	text-decoration: none !important;
+	letter-spacing: 0.3px !important;
+	box-shadow: 0 4px 12px rgba(178, 145, 90, 0.28) !important;
+	transition: all 0.25s ease-in-out !important;
+	cursor: pointer !important;
+}
+
+.imob-btn-relation:hover,
+.imob-sidebar-emp-widget .imob-btn-relation:hover,
+.imob-sidebar-const-widget .imob-btn-relation:hover,
+.imob-sidebar-relations .imob-btn-relation:hover,
+.imob-sidebar-emp-widget a.btn-primary:hover,
+.imob-sidebar-const-widget a.btn-primary:hover,
+.imob-sidebar-relations a.btn-primary:hover {
+	background-color: var(--primary-color) !important; /* Hover Azul Escuro */
+	color: #FFFFFF !important; /* Letras Brancas */
+	border-color: var(--primary-color) !important; /* Borda Azul Escuro */
+	box-shadow: 0 6px 18px rgba(14, 26, 43, 0.35) !important;
+	transform: translateY(-2px) !important;
+}
+
+.imob-btn-relation .material-symbols-outlined,
+.imob-sidebar-emp-widget a .material-symbols-outlined,
+.imob-sidebar-const-widget a .material-symbols-outlined {
+	color: #FFFFFF !important;
+	font-size: 19px !important;
+}
+
 @media (max-width: 768px) {
 	.imob-emp-slides {
 		height: 320px !important;
@@ -1321,3 +1370,4 @@ a.badge-tipo:hover {
 		height: 60px !important;
 	}
 }
+
