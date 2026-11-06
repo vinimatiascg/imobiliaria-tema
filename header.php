@@ -44,16 +44,16 @@
 				<?php if ( ! has_nav_menu( 'menu-1' ) ) : ?>
 					<ul id="primary-menu" class="menu">
 						<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Início</a></li>
-						<li><a href="#">Sobre</a></li>
-						<li class="menu-item-has-children"><a href="#">Imóveis</a></li>
-						<li><a href="#">Avaliações</a></li>
-						<li><a href="#">Blog</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/sobre/' ) ); ?>">Sobre</a></li>
+						<li class="menu-item-has-children"><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Imóveis</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/avaliacao-de-imoveis/' ) ); ?>">Avaliações</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/nosso-blog/' ) ); ?>">Blog</a></li>
 					</ul>
 				<?php endif; ?>
 			</nav><!-- #site-navigation -->
 
 			<div class="header-cta">
-				<a href="#" class="btn-primary">
+				<a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>" class="btn-primary">
 					<span class="material-symbols-outlined">home</span> Realize o seu sonho
 				</a>
 			</div>

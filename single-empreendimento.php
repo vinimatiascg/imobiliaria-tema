@@ -16,6 +16,7 @@ $gmaps_key = get_option( 'imob_gmaps_key' );
 			$emp_id         = get_the_ID();
 			$estagio        = get_post_meta( $emp_id, '_imob_emp_estagio', true );
 			$previsao       = get_post_meta( $emp_id, '_imob_emp_previsao', true );
+			$registro_inc   = trim( (string) get_post_meta( $emp_id, '_imob_emp_registro_incorporacao', true ) );
 			$construtora_id = get_post_meta( $emp_id, '_imob_emp_construtora_id', true );
 			$endereco       = get_post_meta( $emp_id, '_imob_emp_endereco', true );
 			$lat            = get_post_meta( $emp_id, '_imob_emp_lat', true );
@@ -85,6 +86,14 @@ $gmaps_key = get_option( 'imob_gmaps_key' );
 								<div style="display: inline-flex; align-items: center; gap: 6px;">
 									<span class="material-symbols-outlined" style="font-size: 18px; color: var(--accent-color);">location_on</span>
 									<?php echo esc_html( $endereco ); ?>
+								</div>
+							<?php endif; ?>
+
+							<?php if ( '' !== $registro_inc ) : ?>
+								<div class="imob-emp-registro-incorporacao" style="display: inline-flex; align-items: center; gap: 6px;">
+									<span class="material-symbols-outlined" style="font-size: 18px; color: var(--accent-color);">fact_check</span>
+									<?php _e( 'Registro de Incorporação:', 'imobiliaria-tema' ); ?>
+									<strong style="color: var(--primary-color);"><?php echo esc_html( $registro_inc ); ?></strong>
 								</div>
 							<?php endif; ?>
 						</div>

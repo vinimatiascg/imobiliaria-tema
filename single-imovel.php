@@ -25,6 +25,7 @@ get_header(); ?>
 		$mapa = get_post_meta( get_the_ID(), '_imob_mapa', true ); // lat,lng string
 		$endereco_completo = get_post_meta( get_the_ID(), '_imob_endereco', true );
 		$empreendimento = get_post_meta( get_the_ID(), '_imob_empreendimento', true );
+		$registro_incorporacao = trim( (string) get_post_meta( get_the_ID(), '_imob_registro_incorporacao', true ) );
 		
 		$tipos = wp_get_post_terms( get_the_ID(), 'tipo_imovel' );
 		$localidades = wp_get_post_terms( get_the_ID(), 'localidade' );
@@ -245,11 +246,14 @@ get_header(); ?>
 							<?php endif; ?>
 						</div>
 
-						<!-- Informações de Vínculo com Empreendimento e Construtora -->
+						<!-- Informações de Vínculo com Empreendimento, Construtora e Registro de Incorporação -->
 						<?php 
 						$emp_vinculo   = imob_get_imovel_empreendimento( get_the_ID() );
 						$const_vinculo = imob_get_imovel_construtora( get_the_ID() );
-						if ( $emp_vinculo || $const_vinculo ) : ?>
+						if ( '' === $registro_incorporacao && $emp_vinculo && ! empty( $emp_vinculo['id'] ) ) {
+							$registro_incorporacao = trim( (string) get_post_meta( $emp_vinculo['id'], '_imob_emp_registro_incorporacao', true ) );
+						}
+						if ( $emp_vinculo || $const_vinculo || '' !== $registro_incorporacao ) : ?>
 							<div class="imob-imovel-relations-banner" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 25px; padding: 16px 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
 								<?php if ( $emp_vinculo && ! empty( $emp_vinculo['nome'] ) ) : ?>
 									<div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem;">
@@ -276,6 +280,14 @@ get_header(); ?>
 										<?php else : ?>
 											<strong style="color: var(--primary-color);"><?php echo esc_html( $const_vinculo['nome'] ); ?></strong>
 										<?php endif; ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if ( '' !== $registro_incorporacao ) : ?>
+									<div class="imob-registro-incorporacao-item" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+										<span class="material-symbols-outlined" style="color: var(--accent-color); font-size: 20px;">fact_check</span>
+										<span style="color: var(--text-light);"><?php _e( 'Registro de Incorporação:', 'imobiliaria-tema' ); ?></span>
+										<strong style="color: var(--primary-color);"><?php echo esc_html( $registro_incorporacao ); ?></strong>
 									</div>
 								<?php endif; ?>
 							</div>
@@ -379,6 +391,15 @@ get_header(); ?>
 							<h3 style="margin: 0 0 12px; font-size: 1.15rem; color: var(--primary-color); font-weight: 700;">
 								<?php echo esc_html( $emp_side['nome'] ); ?>
 							</h3>
+							<?php
+							$emp_side_ri = ! empty( $emp_side['id'] ) ? trim( (string) get_post_meta( $emp_side['id'], '_imob_emp_registro_incorporacao', true ) ) : '';
+							if ( '' !== $emp_side_ri ) :
+								?>
+								<p style="margin: 0 0 12px; font-size: 0.85rem; color: var(--text-light); display: flex; align-items: center; gap: 5px;">
+									<span class="material-symbols-outlined" style="font-size: 16px; color: var(--accent-color);">fact_check</span>
+									<span><?php _e( 'Reg. Incorporação:', 'imobiliaria-tema' ); ?> <strong style="color: var(--primary-color);"><?php echo esc_html( $emp_side_ri ); ?></strong></span>
+								</p>
+							<?php endif; ?>
 							<?php if ( ! empty( $emp_side['url'] ) ) : ?>
 								<a href="<?php echo esc_url( $emp_side['url'] ); ?>" class="imob-btn-relation" title="<?php _e( 'Ver todos os imóveis deste empreendimento', 'imobiliaria-tema' ); ?>">
 									<span class="material-symbols-outlined" style="font-size: 18px;">domain</span>

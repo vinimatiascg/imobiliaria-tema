@@ -129,6 +129,7 @@ function imob_imovel_meta_box_callback( $post ) {
 	$construtora_id = get_post_meta( $post->ID, '_imob_construtora_id', true );
 	$proprietario_id = get_post_meta( $post->ID, '_imob_proprietario_id', true );
 	$empreendimento_id = get_post_meta( $post->ID, '_imob_empreendimento_id', true );
+	$registro_incorporacao = get_post_meta( $post->ID, '_imob_registro_incorporacao', true );
 	$endereco = get_post_meta( $post->ID, '_imob_endereco', true );
 	
 	$galeria = get_post_meta( $post->ID, '_imob_galeria', true );
@@ -295,6 +296,12 @@ function imob_imovel_meta_box_callback( $post ) {
 			<button type="button" class="imob-quick-btn" data-target="modal-quick-empreendimento">
 				<span class="dashicons dashicons-plus-alt2"></span> <?php _e( 'Novo Empreendimento', 'imobiliaria-tema' ); ?>
 			</button>
+		</div>
+
+		<div class="imob-meta-row">
+			<label for="imob_registro_incorporacao"><?php _e( 'Registro de Incorporação:', 'imobiliaria-tema' ); ?></label>
+			<input type="text" id="imob_registro_incorporacao" name="imob_registro_incorporacao" value="<?php echo esc_attr( $registro_incorporacao ); ?>" placeholder="<?php esc_attr_e( 'Opcional (Ex: R-4-12.345 - 1º Ofício)', 'imobiliaria-tema' ); ?>">
+			<span class="description" style="font-size: 12px; color: #64748b;"><?php _e( 'Opcional — exibido apenas se preenchido.', 'imobiliaria-tema' ); ?></span>
 		</div>
 	</div>
 
@@ -477,6 +484,10 @@ function imob_imovel_meta_box_callback( $post ) {
 					<input type="text" id="quick_emp_previsao" placeholder="Ex: Dez/2026">
 				</div>
 				<div class="imob-modal-field">
+					<label><?php _e( 'Registro de Incorporação (Opcional):', 'imobiliaria-tema' ); ?></label>
+					<input type="text" id="quick_emp_registro_incorporacao" placeholder="Ex: R-4-12.345 - 1º Ofício">
+				</div>
+				<div class="imob-modal-field">
 					<label><?php _e( 'Construtora:', 'imobiliaria-tema' ); ?></label>
 					<select id="quick_emp_construtora_id">
 						<option value=""><?php _e( 'Selecione', 'imobiliaria-tema' ); ?></option>
@@ -579,6 +590,7 @@ function imob_imovel_meta_box_callback( $post ) {
 				data.nome = $('#quick_emp_nome').val().trim();
 				data.estagio = $('#quick_emp_estagio').val();
 				data.previsao = $('#quick_emp_previsao').val().trim();
+				data.registro_incorporacao = $('#quick_emp_registro_incorporacao').val().trim();
 				data.construtora_id = $('#quick_emp_construtora_id').val();
 				if ( ! data.nome ) { alert('Por favor, informe o nome do empreendimento.'); return; }
 			}
@@ -602,7 +614,7 @@ function imob_imovel_meta_box_callback( $post ) {
 						$('#quick_prop_nome, #quick_prop_telefone, #quick_prop_whatsapp').val('');
 					} else if ( entityType === 'empreendimento' ) {
 						selectTarget = '#imob_empreendimento_id';
-						$('#quick_emp_nome, #quick_emp_previsao').val('');
+						$('#quick_emp_nome, #quick_emp_previsao, #quick_emp_registro_incorporacao').val('');
 					}
 
 					$(selectTarget).append('<option value="'+newId+'">'+newTitle+'</option>');
@@ -762,6 +774,7 @@ function imob_save_imovel_meta( $post_id ) {
 		'imob_construtora_id',
 		'imob_proprietario_id',
 		'imob_empreendimento_id',
+		'imob_registro_incorporacao',
 	);
 
 	foreach ( $fields as $field ) {
@@ -855,6 +868,7 @@ function imob_ajax_quick_create_relation() {
 			wp_set_object_terms( $post_id, $estagio_val, 'estagio_obra' );
 		}
 		if ( isset( $_POST['previsao'] ) ) update_post_meta( $post_id, '_imob_emp_previsao', sanitize_text_field( wp_unslash( $_POST['previsao'] ) ) );
+		if ( isset( $_POST['registro_incorporacao'] ) ) update_post_meta( $post_id, '_imob_emp_registro_incorporacao', sanitize_text_field( wp_unslash( $_POST['registro_incorporacao'] ) ) );
 		if ( isset( $_POST['construtora_id'] ) ) update_post_meta( $post_id, '_imob_emp_construtora_id', intval( $_POST['construtora_id'] ) );
 	}
 

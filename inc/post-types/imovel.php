@@ -47,7 +47,7 @@ function imob_register_cpt_imovel() {
 		'show_in_admin_bar'     => true,
 		'show_in_nav_menus'     => true,
 		'can_export'            => true,
-		'has_archive'           => true,
+		'has_archive'           => 'imoveis',
 		'exclude_from_search'   => false,
 		'publicly_queryable'    => true,
 		'capability_type'       => 'post',
@@ -55,8 +55,20 @@ function imob_register_cpt_imovel() {
 		'rewrite'               => array( 'slug' => 'imoveis/%localidade%', 'with_front' => false ),
 	);
 	register_post_type( 'imovel', $args );
+
+	// Regras explícitas de alta prioridade para garantir resolução de paginação e single de imóveis
+	add_rewrite_rule(
+		'^imoveis/page/([0-9]{1,})/?$',
+		'index.php?post_type=imovel&paged=$matches[1]',
+		'top'
+	);
+	add_rewrite_rule(
+		'^imoveis/(?!page/)([^/]+)/([^/]+)/?$',
+		'index.php?imovel=$matches[2]&post_type=imovel',
+		'top'
+	);
 }
-add_action( 'init', 'imob_register_cpt_imovel', 0 );
+add_action( 'init', 'imob_register_cpt_imovel', 5 );
 
 /**
  * Filtro para substituir %localidade% pelo slug do termo na URL

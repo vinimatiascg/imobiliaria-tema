@@ -61,7 +61,9 @@ function imob_advanced_search_query( $query ) {
 				$fin_val = strtolower( sanitize_text_field( $_GET['finalidade'] ) );
 				if ( in_array( $fin_val, array( 'venda', 'aluguel' ), true ) ) {
 					$tax_name = taxonomy_exists( 'finalidade' ) ? 'finalidade' : 'status_imovel';
-					$tax_terms = ( 'venda' === $fin_val ) ? array( 'venda', 'para-venda', 'vender' ) : array( 'aluguel', 'para-alugar', 'locacao', 'alugar' );
+					$tax_terms = ( 'venda' === $fin_val )
+						? array( 'a-venda', 'para-vender', 'venda', 'para-venda', 'vender', 'disponivel' )
+						: array( 'aluguel', 'para-alugar', 'locacao', 'alugar', 'alugado' );
 					
 					// Verifica se existe algum termo cadastrado
 					$existing_term = false;
@@ -105,15 +107,84 @@ function imob_advanced_search_query( $query ) {
 add_action( 'pre_get_posts', 'imob_advanced_search_query' );
 
 /**
- * Use archive-imovel.php template for search results of imoveis
+ * Retorna filtros padrão para páginas de listagem de imóveis baseadas no slug da página
+ *
+ * @param string $post_slug Slug da página atual
+ * @return array
+ */
+function imob_get_page_default_property_filters( $post_slug ) {
+	$map = array(
+		'imoveis'                                                     => array(),
+		'todos-os-imoveis'                                            => array(),
+		'resultados-da-pesquisa'                                      => array(),
+		'imoveis-em-destaque'                                         => array(),
+		'imoveis-a-venda'                                             => array( 'finalidade' => 'venda' ),
+		'lancamentos'                                                 => array( 'tipo' => 'lancamento' ),
+		'imoveis-com-possibilidade-de-entrada-zero-em-campina-grande' => array( 'tipo' => 'zero-de-entrada' ),
+		'imoveis-minha-casa-minha-vida-em-campina-grande'             => array( 'tipo' => 'mcmv' ),
+		'imoveis-com-subsidio-da-cehap-em-campina-grande'             => array( 'tipo' => 'subsidio-cehap' ),
+		'apartamentos'                                                => array( 'tipo' => 'apartamento' ),
+		'apartamentos-em-campina-grande'                              => array( 'tipo' => 'apartamento', 'localidade' => 'campina-grande' ),
+		'casas'                                                       => array( 'tipo' => 'casa' ),
+		'casas-em-condominio'                                         => array( 'tipo' => 'casa-em-condominio' ),
+		'casas-em-condominio-fechado-em-campina-grande'               => array( 'tipo' => 'casa-em-condominio' ),
+		'condominios-fechados-em-campina-grande'                      => array( 'tipo' => 'casa-em-condominio' ),
+		'imoveis-comerciais'                                          => array( 'tipo' => 'comercial' ),
+		'imoveis-rurais'                                              => array( 'tipo' => 'outros' ),
+		'terrenos'                                                    => array( 'tipo' => 'terreno' ),
+		'imoveis-no-ecoville'                                         => array( 'localidade' => 'ecoville' ),
+	);
+
+	return isset( $map[ $post_slug ] ) ? $map[ $post_slug ] : null;
+}
+
+/**
+ * Use archive-imovel.php / template-imoveis.php / template-blog.php for search and listing pages
+ * Executa com prioridade 99 para prevalecer sobre templates legados do Elementor / RealHomes
  */
 function imob_search_template_include( $template ) {
-	if ( ! is_admin() && is_search() && ( get_query_var( 'post_type' ) === 'imovel' || ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'imovel' ) ) ) {
+	if ( is_admin() ) {
+		return $template;
+	}
+
+	// Busca de imóveis
+	if ( is_search() && ( get_query_var( 'post_type' ) === 'imovel' || ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'imovel' ) ) ) {
 		$archive_template = locate_template( array( 'archive-imovel.php' ) );
 		if ( $archive_template ) {
 			return $archive_template;
 		}
 	}
+
+	// Páginas de Blog e Listagens de Imóveis
+	if ( is_page() ) {
+		$queried_obj = get_queried_object();
+		if ( $queried_obj && ! empty( $queried_obj->post_name ) ) {
+			$slug = $queried_obj->post_name;
+
+			// Página Nosso Blog
+			if ( 'nosso-blog' === $slug ) {
+				$blog_tpl = locate_template( array( 'template-blog.php' ) );
+				if ( $blog_tpl ) {
+					return $blog_tpl;
+				}
+			}
+
+			// Páginas de listagem de imóveis por slug ou template legado do RealHomes
+			$page_tpl_meta = get_post_meta( $queried_obj->ID, '_wp_page_template', true );
+			$is_legacy_prop_tpl = ! empty( $page_tpl_meta ) && (
+				strpos( $page_tpl_meta, 'templates/properties' ) === 0 ||
+				'template-imoveis.php' === $page_tpl_meta
+			);
+
+			if ( null !== imob_get_page_default_property_filters( $slug ) || $is_legacy_prop_tpl ) {
+				$imoveis_tpl = locate_template( array( 'template-imoveis.php' ) );
+				if ( $imoveis_tpl ) {
+					return $imoveis_tpl;
+				}
+			}
+		}
+	}
+
 	return $template;
 }
-add_filter( 'template_include', 'imob_search_template_include' );
+add_filter( 'template_include', 'imob_search_template_include', 99 );

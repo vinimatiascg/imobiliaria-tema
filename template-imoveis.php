@@ -7,12 +7,17 @@
 
 get_header(); 
 
-// Parâmetros selecionados
-$tipo_sel       = isset( $_GET['tipo'] ) ? sanitize_text_field( $_GET['tipo'] ) : '';
-$localidade_sel = isset( $_GET['localidade'] ) ? sanitize_text_field( $_GET['localidade'] ) : ( isset( $_GET['bairro'] ) ? sanitize_text_field( $_GET['bairro'] ) : '' );
-$finalidade_sel = isset( $_GET['finalidade'] ) ? sanitize_text_field( $_GET['finalidade'] ) : '';
-$estagio_sel    = isset( $_GET['estagio'] ) ? sanitize_text_field( $_GET['estagio'] ) : '';
-$has_filter     = ! empty( $tipo_sel ) || ! empty( $localidade_sel ) || ! empty( $finalidade_sel ) || ! empty( $estagio_sel );
+// Verifica se a página atual possui filtros padrão (ex: /lancamentos/, /apartamentos/, /terrenos/, etc.)
+$queried_page   = get_queried_object();
+$page_slug      = ( $queried_page && ! empty( $queried_page->post_name ) ) ? $queried_page->post_name : '';
+$default_filter = function_exists( 'imob_get_page_default_property_filters' ) ? (array) imob_get_page_default_property_filters( $page_slug ) : array();
+
+// Parâmetros selecionados (GET prevalece sobre o filtro padrão da página)
+$tipo_sel       = isset( $_GET['tipo'] ) ? sanitize_text_field( $_GET['tipo'] ) : ( isset( $default_filter['tipo'] ) ? $default_filter['tipo'] : '' );
+$localidade_sel = isset( $_GET['localidade'] ) ? sanitize_text_field( $_GET['localidade'] ) : ( isset( $_GET['bairro'] ) ? sanitize_text_field( $_GET['bairro'] ) : ( isset( $default_filter['localidade'] ) ? $default_filter['localidade'] : '' ) );
+$finalidade_sel = isset( $_GET['finalidade'] ) ? sanitize_text_field( $_GET['finalidade'] ) : ( isset( $default_filter['finalidade'] ) ? $default_filter['finalidade'] : '' );
+$estagio_sel    = isset( $_GET['estagio'] ) ? sanitize_text_field( $_GET['estagio'] ) : ( isset( $default_filter['estagio'] ) ? $default_filter['estagio'] : '' );
+$has_filter     = ! empty( $_GET['tipo'] ) || ! empty( $_GET['localidade'] ) || ! empty( $_GET['bairro'] ) || ! empty( $_GET['finalidade'] ) || ! empty( $_GET['estagio'] );
 
 // Termos para os filtros
 $termos_tipo = get_terms( array(
@@ -48,10 +53,19 @@ $args = array(
 
 $tax_query = array();
 if ( ! empty( $tipo_sel ) ) {
+	$tipo_terms_group = array( $tipo_sel );
+	if ( 'comercial' === $tipo_sel ) {
+		$tipo_terms_group = array( 'comercial', 'sala-comercial', 'loja', 'predio-comercial', 'terreno-comercial' );
+	} elseif ( 'terreno' === $tipo_sel ) {
+		$tipo_terms_group = array( 'terreno', 'lote-em-condominio', 'terreno-comercial' );
+	} elseif ( 'apartamento' === $tipo_sel ) {
+		$tipo_terms_group = array( 'apartamento', 'apartamentos-de-2-quartos', 'apartamento-de-2-quartos-com-suite', 'apartamento-de-3-quartos', 'apartamento-de-3-quartos-com-suite', 'flat', 'studio' );
+	}
+
 	$tax_query[] = array(
 		'taxonomy' => 'tipo_imovel',
 		'field'    => 'slug',
-		'terms'    => $tipo_sel,
+		'terms'    => $tipo_terms_group,
 	);
 }
 
@@ -74,7 +88,9 @@ if ( ! empty( $estagio_sel ) ) {
 if ( ! empty( $finalidade_sel ) ) {
 	$fin_val = strtolower( $finalidade_sel );
 	$tax_name = taxonomy_exists( 'finalidade' ) ? 'finalidade' : 'status_imovel';
-	$tax_terms = ( 'venda' === $fin_val ) ? array( 'venda', 'para-venda', 'vender' ) : array( 'aluguel', 'para-alugar', 'locacao', 'alugar' );
+	$tax_terms = ( 'venda' === $fin_val )
+		? array( 'a-venda', 'para-vender', 'venda', 'para-venda', 'vender', 'disponivel' )
+		: array( 'aluguel', 'para-alugar', 'locacao', 'alugar', 'alugado' );
 	
 	$existing_term = false;
 	foreach ( $tax_terms as $tt ) {

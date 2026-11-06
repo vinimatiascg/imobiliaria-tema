@@ -9,12 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.3.3' );
+define( 'IMOB_THEME_VERSION', '1.3.5' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
 /**
  * Autoload function for classes (if needed later) or require standard files.
+ * Taxonomies are loaded before Post Types so rewrite tags (e.g. %localidade%)
+ * are available when post type permastructs are registered.
  */
 $imob_includes = [
 	'inc/core/setup.php',
@@ -25,10 +27,6 @@ $imob_includes = [
 	'inc/core/seo.php',
 	'inc/core/watermark.php',
 	'inc/core/image-optimizer.php',
-	'inc/post-types/imovel.php',
-	'inc/post-types/construtora.php',
-	'inc/post-types/proprietario.php',
-	'inc/post-types/empreendimento.php',
 	'inc/taxonomies/tipo_imovel.php',
 	'inc/taxonomies/localidade.php',
 	'inc/taxonomies/caracteristica.php',
@@ -36,6 +34,10 @@ $imob_includes = [
 	// 'inc/taxonomies/finalidade.php', // Removido conforme solicitação
 	'inc/taxonomies/status_imovel.php',
 	'inc/taxonomies/corretor.php',
+	'inc/post-types/imovel.php',
+	'inc/post-types/construtora.php',
+	'inc/post-types/proprietario.php',
+	'inc/post-types/empreendimento.php',
 	'inc/meta-boxes/imovel-meta.php',
 	'inc/meta-boxes/empreendimento-meta.php',
 	'inc/meta-boxes/construtora-meta.php',
@@ -53,6 +55,50 @@ foreach ( $imob_includes as $file ) {
 		require_once $filepath;
 	}
 }
+
+/**
+ * Garante que as regras de rewrite (permalinks) de todos os CPTs e taxonomias
+ * estejam sempre atualizadas no banco de dados sem gerar erros 404.
+ */
+function imob_maybe_flush_rewrite_rules() {
+	$rules = get_option( 'rewrite_rules' );
+	$saved_version = get_option( 'imob_rewrite_version' );
+
+	$needs_flush = ( $saved_version !== IMOB_THEME_VERSION )
+		|| ! is_array( $rules )
+		|| ! isset( $rules['empreendimentos/?$'] )
+		|| ! isset( $rules['construtoras/?$'] )
+		|| ! isset( $rules['^imoveis/(?!page/)([^/]+)/([^/]+)/?$'] )
+		|| ! isset( $rules['^sitemap-news\.xml$'] )
+		|| ! isset( $rules['^llms\.txt$'] );
+
+	if ( $needs_flush ) {
+		flush_rewrite_rules( false );
+		update_option( 'imob_rewrite_version', IMOB_THEME_VERSION );
+	}
+}
+add_action( 'init', 'imob_maybe_flush_rewrite_rules', 99 );
+
+/**
+ * Corrige URLs legadas (http://localhost/vinicius) que possam estar salvas em templates do Elementor
+ */
+function imob_fix_legacy_localhost_urls( $content ) {
+	if ( empty( $content ) || strpos( $content, 'localhost/vinicius' ) === false ) {
+		return $content;
+	}
+	$home = untrailingslashit( home_url() );
+	$content = str_replace(
+		array( 'http://localhost/vinicius', 'https://localhost/vinicius' ),
+		$home,
+		$content
+	);
+	return $content;
+}
+add_filter( 'the_content', 'imob_fix_legacy_localhost_urls', 20 );
+add_filter( 'elementor/frontend/builder_content_data', function( $data ) {
+	return $data;
+}, 10 );
+add_filter( 'elementor/frontend/the_content', 'imob_fix_legacy_localhost_urls', 20 );
 
 /**
  * UTF-8 Multibyte uppercase helper for badges and labels

@@ -70,22 +70,22 @@ if ( ! empty( $clean_wa_num ) ) {
 					<ul>
 						<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Página inicial</a></li>
 						<li><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Todos os imóveis</a></li>
-						<li><a href="#">Avaliação de imóveis</a></li>
-						<li><a href="#">Perguntas frequentes</a></li>
-						<li><a href="#">Termos e condições</a></li>
-						<li><a href="#">Nosso blog</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/avaliacao-de-imoveis/' ) ); ?>">Avaliação de imóveis</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>">Perguntas frequentes</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/termos-e-condicoes/' ) ); ?>">Termos e condições</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/nosso-blog/' ) ); ?>">Nosso blog</a></li>
 					</ul>
 				</div>
 
 				<div class="footer-widget search-widget">
 					<h3>Mais pesquisados</h3>
 					<ul>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Imóveis com entrada zero</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Imóveis "Minha casa, minha vida"</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Imóveis em Campina Grande</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Apartamentos à venda</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Casas à venda</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Terrenos</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/imoveis-com-possibilidade-de-entrada-zero-em-campina-grande/' ) ); ?>">Imóveis com entrada zero</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/imoveis-minha-casa-minha-vida-em-campina-grande/' ) ); ?>">Imóveis "Minha casa, minha vida"</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/imoveis/?localidade=campina-grande' ) ); ?>">Imóveis em Campina Grande</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/apartamentos/' ) ); ?>">Apartamentos à venda</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/imoveis/?tipo=casa&finalidade=venda' ) ); ?>">Casas à venda</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/terrenos/' ) ); ?>">Terrenos</a></li>
 					</ul>
 				</div>
 			</div>

@@ -44,6 +44,7 @@ function imob_empreendimento_meta_box_callback( $post ) {
 
 	$estagio        = get_post_meta( $post->ID, '_imob_emp_estagio', true );
 	$previsao       = get_post_meta( $post->ID, '_imob_emp_previsao', true );
+	$registro_inc   = get_post_meta( $post->ID, '_imob_emp_registro_incorporacao', true );
 	$construtora_id = get_post_meta( $post->ID, '_imob_emp_construtora_id', true );
 	$endereco       = get_post_meta( $post->ID, '_imob_emp_endereco', true );
 	$lat            = get_post_meta( $post->ID, '_imob_emp_lat', true );
@@ -138,6 +139,11 @@ function imob_empreendimento_meta_box_callback( $post ) {
 				}
 				?>
 			</select>
+		</div>
+
+		<div class="imob-meta-field">
+			<label for="imob_emp_registro_incorporacao"><?php _e( 'Registro de Incorporação (Opcional):', 'imobiliaria-tema' ); ?></label>
+			<input type="text" id="imob_emp_registro_incorporacao" name="imob_emp_registro_incorporacao" value="<?php echo esc_attr( $registro_inc ); ?>" placeholder="<?php esc_attr_e( 'Ex: R-4-12.345 - 1º Ofício de Registro de Imóveis', 'imobiliaria-tema' ); ?>">
 		</div>
 	</div>
 
@@ -390,6 +396,7 @@ function imob_save_empreendimento_meta( $post_id ) {
 	$fields = array(
 		'imob_emp_estagio',
 		'imob_emp_previsao',
+		'imob_emp_registro_incorporacao',
 		'imob_emp_construtora_id',
 		'imob_emp_endereco',
 		'imob_emp_lat',

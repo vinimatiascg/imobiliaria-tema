@@ -4,7 +4,7 @@ Theme URI:
 Author: Antigravity
 Author URI: 
 Description: Tema customizado para Imobiliárias com alta performance, suporte a Elementor e otimizado para SEO técnico.
-Version: 1.3.3
+Version: 1.3.5
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: imobiliaria-tema
@@ -104,6 +104,22 @@ a:hover {
 
 .site-branding .logo-text span {
 	font-weight: 400;
+}
+
+.site-branding .custom-logo-link {
+	display: inline-flex;
+	align-items: center;
+}
+
+.site-branding img.custom-logo,
+.site-header .site-branding img,
+.site-footer .site-branding img {
+	max-width: 240px;
+	max-height: 56px;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	display: block;
 }
 
 .main-navigation ul {
@@ -1724,5 +1740,629 @@ ul.page-numbers li {
 	.emp-thumb-btn {
 		flex: 0 0 80px !important;
 		height: 60px !important;
+	}
+}
+
+/* ==========================================================================
+   Single Post (Blog), Páginas Institucionais & 404 (v1.3.5)
+   ========================================================================== */
+.imob-single-post-container,
+.imob-page-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 40px 15px 60px;
+}
+
+.imob-breadcrumb {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.88rem;
+	color: var(--text-light);
+	margin-bottom: 24px;
+}
+
+.imob-breadcrumb a {
+	color: var(--text-light);
+	font-weight: 500;
+}
+
+.imob-breadcrumb a:hover {
+	color: var(--accent-color);
+}
+
+.imob-breadcrumb-sep {
+	color: #cbd5e1;
+}
+
+.imob-breadcrumb-current {
+	color: var(--primary-color);
+	font-weight: 600;
+}
+
+.imob-single-post-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 340px;
+	gap: 35px;
+	align-items: start;
+}
+
+.imob-single-article-card,
+.imob-page-card {
+	background: #ffffff;
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	padding: 42px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.imob-single-article-header,
+.imob-page-header {
+	margin-bottom: 28px;
+	padding-bottom: 24px;
+	border-bottom: 1px solid #edf2f7;
+}
+
+.imob-single-article-title,
+.imob-page-title {
+	font-size: 2.15rem;
+	line-height: 1.28;
+	color: var(--primary-color);
+	font-weight: 800;
+	margin: 0 0 16px;
+}
+
+.imob-single-article-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 20px;
+	color: var(--text-light);
+	font-size: 0.9rem;
+}
+
+.imob-meta-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.imob-meta-item .material-symbols-outlined {
+	font-size: 18px;
+	color: var(--accent-color);
+}
+
+.imob-single-article-featured {
+	margin-bottom: 30px;
+	border-radius: 12px;
+	overflow: hidden;
+	background: #f8fafc;
+}
+
+.imob-single-featured-img {
+	width: 100%;
+	max-height: 480px;
+	object-fit: cover;
+	display: block;
+}
+
+.imob-single-post-content {
+	font-size: 1.06rem;
+	line-height: 1.8;
+	color: #334155;
+}
+
+.imob-single-post-content h2,
+.imob-single-post-content h3,
+.imob-single-post-content h4 {
+	color: var(--primary-color);
+	font-weight: 700;
+	line-height: 1.35;
+	margin: 32px 0 14px;
+}
+
+.imob-single-post-content h2 {
+	font-size: 1.55rem;
+}
+
+.imob-single-post-content h3 {
+	font-size: 1.3rem;
+}
+
+.imob-single-post-content p {
+	margin: 0 0 18px;
+}
+
+.imob-single-post-content ul,
+.imob-single-post-content ol {
+	margin: 0 0 22px 20px;
+	padding-left: 16px;
+}
+
+.imob-single-post-content li {
+	margin-bottom: 8px;
+}
+
+.imob-single-post-content img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 10px;
+}
+
+.imob-single-post-content hr {
+	border: none;
+	border-top: 1px solid var(--border-color);
+	margin: 30px 0;
+}
+
+.imob-single-post-content blockquote {
+	margin: 24px 0;
+	padding: 18px 24px;
+	border-left: 4px solid var(--accent-color);
+	background: #f8fafc;
+	border-radius: 0 8px 8px 0;
+	font-style: italic;
+	color: var(--primary-color);
+}
+
+/* Normalização de HTML externo colado no editor (ex: avatares SVG sem dimensão) */
+.imob-single-post-content .gizmo-bot-avatar,
+.imob-single-post-content .gizmo-shadow-stroke {
+	display: none !important;
+}
+
+.imob-single-article-footer {
+	margin-top: 36px;
+	padding-top: 24px;
+	border-top: 1px solid var(--border-color);
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.imob-single-tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}
+
+.imob-tags-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-weight: 600;
+	font-size: 0.9rem;
+	color: var(--primary-color);
+	margin-right: 4px;
+}
+
+.imob-tag-chip {
+	background: #f1f5f9;
+	color: #475569;
+	padding: 4px 12px;
+	border-radius: 20px;
+	font-size: 0.82rem;
+	font-weight: 500;
+}
+
+.imob-tag-chip:hover {
+	background: var(--accent-color);
+	color: #ffffff;
+}
+
+.imob-single-share {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 15px;
+	background: #f8fafc;
+	padding: 16px 20px;
+	border-radius: 10px;
+}
+
+.imob-share-label {
+	font-weight: 700;
+	font-size: 0.92rem;
+	color: var(--primary-color);
+}
+
+.imob-share-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.imob-share-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 14px;
+	border-radius: 6px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #ffffff !important;
+	text-decoration: none;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.imob-share-btn:hover {
+	opacity: 0.92;
+	transform: translateY(-1px);
+}
+
+.imob-share-btn .material-symbols-outlined {
+	font-size: 17px;
+}
+
+.imob-share-wa {
+	background: #25D366;
+}
+
+.imob-share-fb {
+	background: #1877F2;
+}
+
+.imob-share-in {
+	background: #0A66C2;
+}
+
+.imob-post-nav-cards {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	margin-top: 28px;
+}
+
+.imob-post-nav-card {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 16px 18px;
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	background: #ffffff;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.imob-post-nav-card.next {
+	text-align: right;
+	align-items: flex-end;
+}
+
+.imob-post-nav-card:hover {
+	border-color: var(--accent-color);
+	box-shadow: 0 4px 12px rgba(178, 145, 90, 0.12);
+}
+
+.imob-post-nav-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 0.78rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: var(--accent-color);
+	font-weight: 700;
+}
+
+.imob-post-nav-title {
+	font-size: 0.95rem;
+	color: var(--primary-color);
+	line-height: 1.4;
+}
+
+/* Sidebar do Blog */
+.imob-single-post-sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	position: sticky;
+	top: 24px;
+}
+
+.imob-blog-sidebar-card {
+	background: #ffffff;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	padding: 24px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.imob-blog-cta-box {
+	background: linear-gradient(145deg, var(--primary-color) 0%, #162B45 100%);
+	color: #ffffff;
+	border: none;
+	text-align: center;
+}
+
+.imob-blog-cta-icon {
+	width: 54px;
+	height: 54px;
+	border-radius: 50%;
+	background: rgba(178, 145, 90, 0.2);
+	color: var(--accent-color);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 14px;
+}
+
+.imob-blog-cta-icon .material-symbols-outlined {
+	font-size: 28px;
+}
+
+.imob-blog-cta-box h3 {
+	color: #ffffff;
+	font-size: 1.2rem;
+	margin: 0 0 10px;
+	line-height: 1.35;
+}
+
+.imob-blog-cta-box p {
+	color: #cbd5e1;
+	font-size: 0.92rem;
+	line-height: 1.55;
+	margin: 0 0 20px;
+}
+
+.imob-blog-sidebar-title {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 1.1rem;
+	color: var(--primary-color);
+	margin: 0 0 18px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #edf2f7;
+}
+
+.imob-blog-sidebar-title .material-symbols-outlined {
+	color: var(--accent-color);
+	font-size: 20px;
+}
+
+.imob-blog-recent-list {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.imob-blog-recent-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	text-decoration: none;
+}
+
+.imob-blog-recent-thumb {
+	flex: 0 0 68px;
+	height: 56px;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #f1f5f9;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #94a3b8;
+}
+
+.imob-blog-recent-thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.imob-blog-recent-info h4 {
+	margin: 0 0 4px;
+	font-size: 0.92rem;
+	line-height: 1.35;
+	color: var(--primary-color);
+	font-weight: 600;
+	transition: color 0.2s ease;
+}
+
+.imob-blog-recent-item:hover .imob-blog-recent-info h4 {
+	color: var(--accent-color);
+}
+
+.imob-blog-recent-info span {
+	font-size: 0.78rem;
+	color: var(--text-light);
+}
+
+.imob-blog-cat-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.imob-blog-cat-list li a {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 12px;
+	border-radius: 8px;
+	background: #f8fafc;
+	color: var(--primary-color);
+	font-size: 0.9rem;
+	font-weight: 500;
+}
+
+.imob-blog-cat-list li a:hover {
+	background: rgba(178, 145, 90, 0.12);
+	color: var(--accent-color);
+}
+
+.imob-cat-count {
+	background: #e2e8f0;
+	color: #475569;
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 2px 8px;
+	border-radius: 12px;
+}
+
+.imob-related-posts-section {
+	margin-top: 55px;
+	padding-top: 40px;
+	border-top: 1px solid var(--border-color);
+}
+
+.imob-section-heading {
+	font-size: 1.65rem;
+	color: var(--primary-color);
+	margin: 0 0 24px;
+	font-weight: 800;
+}
+
+/* Páginas Institucionais & Fale Conosco */
+.imob-page-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: rgba(178, 145, 90, 0.12);
+	color: var(--accent-color);
+	padding: 5px 14px;
+	border-radius: 20px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	margin-bottom: 12px;
+}
+
+.imob-contact-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 24px;
+}
+
+.imob-contact-card {
+	background: #ffffff;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	padding: 32px 24px;
+	text-align: center;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.imob-contact-card-icon {
+	font-size: 36px;
+	color: var(--accent-color);
+	background: rgba(178, 145, 90, 0.12);
+	width: 68px;
+	height: 68px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 16px;
+}
+
+.imob-contact-card h3 {
+	margin: 0 0 8px;
+	font-size: 1.2rem;
+	color: var(--primary-color);
+}
+
+.imob-contact-card p {
+	margin: 0 0 22px;
+	color: var(--text-light);
+	font-size: 0.98rem;
+	flex-grow: 1;
+}
+
+/* Página 404 */
+.imob-404-card {
+	background: #ffffff;
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	padding: 60px 30px;
+	text-align: center;
+	max-width: 680px;
+	margin: 20px auto;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.imob-404-icon {
+	width: 72px;
+	height: 72px;
+	border-radius: 50%;
+	background: rgba(178, 145, 90, 0.12);
+	color: var(--accent-color);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 12px;
+}
+
+.imob-404-icon .material-symbols-outlined {
+	font-size: 38px;
+}
+
+.imob-404-code {
+	display: block;
+	font-size: 3.5rem;
+	font-weight: 800;
+	color: var(--primary-color);
+	line-height: 1;
+	margin-bottom: 10px;
+}
+
+.imob-404-title {
+	font-size: 1.75rem;
+	color: var(--primary-color);
+	margin: 0 0 12px;
+}
+
+.imob-404-desc {
+	color: var(--text-light);
+	max-width: 500px;
+	margin: 0 auto 28px;
+}
+
+.imob-404-actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 14px;
+}
+
+.imob-btn-accent {
+	background-color: var(--accent-color) !important;
+}
+
+@media (max-width: 991px) {
+	.imob-single-post-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.imob-single-post-sidebar {
+		position: static;
+	}
+}
+
+@media (max-width: 640px) {
+	.imob-single-article-card,
+	.imob-page-card {
+		padding: 24px 18px;
+	}
+
+	.imob-single-article-title,
+	.imob-page-title {
+		font-size: 1.65rem;
+	}
+
+	.imob-post-nav-cards {
+		grid-template-columns: 1fr;
 	}
 }

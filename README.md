@@ -4,11 +4,31 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.4`
+## 🚀 Versão Atual: `1.3.5`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.4** (Atualização Recente)
+#### **Versão 1.3.5** (Atualização Recente)
+- **1. Otimização Avançada para SEO, GEO (Generative Engine Optimization + Local Geo Tags), Discovery de Redes Sociais e Google News (`inc/core/seo.php`, `inc/seo/schema.php`)**:
+  - **Schema.org `@graph` Unificado**: Entidades conectadas (`RealEstateAgent` + `Organization` com CRECI-PB 9972-F, `WebSite` com `SearchAction`, `RealEstateListing` + `Apartment`/`SingleFamilyResidence`, `ApartmentComplex`, `HomeAndConstructionBusiness`, `NewsArticle` + `BlogPosting`, `CollectionPage` + `ItemList` e `BreadcrumbList`), incluindo `SpeakableSpecification` para assistentes de voz/IA.
+  - **Google News & Google Discover**: Diretivas `max-image-preview:large, max-snippet:-1, max-video-preview:-1` no `wp_robots`, priorização de imagem LCP (`fetchpriority="high"`), meta tags `news_keywords`, imagens no feed RSS e sitemap dedicado em `/sitemap-news.xml`.
+  - **GEO (`/llms.txt` & Local Geo Meta Tags)**: Geração e sincronização automática de `/llms.txt` e `/llms-full.txt` para motores de busca generativos (ChatGPT, Perplexity, Gemini, Claude), permissões explícitas no `robots.txt` e meta tags geográficas (`geo.region`, `geo.placename`, `geo.position`, `ICBM`).
+  - **Social Media Discovery**: Open Graph completo, Twitter Cards (`summary_large_image` + `twitter:label1/data1`), tags comerciais (`product:price:amount`, `product:price:currency`, `product:availability`) e integração com filtros do Yoast SEO.
+- **2. Campo Opcional "Registro de Incorporação" em Imóveis e Empreendimentos (`inc/meta-boxes/imovel-meta.php`, `inc/meta-boxes/empreendimento-meta.php`, `single-imovel.php`, `single-empreendimento.php`)**:
+  - Adicionado o campo de texto opcional **Registro de Incorporação** no cadastro de Imóveis (`_imob_registro_incorporacao`), no cadastro de Empreendimentos (`_imob_emp_registro_incorporacao`) e no modal de criação rápida de empreendimento.
+  - Exibição condicional no frontend (`single-imovel.php` e `single-empreendimento.php`) e nos dados estruturados (`Schema.org` e `/llms.txt`) apenas quando o campo estiver preenchido.
+- **3. Correção de Permalinks, Rewrite Rules e Rotas de CPTs (`functions.php`, `inc/post-types/imovel.php`)**:
+  - Reordenado o carregamento de taxonomias antes dos Custom Post Types em `functions.php` para garantir o registro de `%localidade%` antes da permastruct de `imovel`.
+  - Corrigido `'has_archive' => 'imoveis'` no CPT `imovel` e adicionadas regras explícitas de rewrite para single (`/imoveis/{localidade}/{slug}/`) e paginação (`/imoveis/page/{n}/`), além de auto-flush inteligente (`imob_maybe_flush_rewrite_rules`).
+- **4. Novos Templates de Artigo, Páginas Institucionais e 404 (`single.php`, `page.php`, `404.php`, `index.php`)**:
+  - Criado `single.php` com layout em duas colunas (artigo completo + sidebar com CTA de imóveis, últimos artigos e categorias), breadcrumbs, tempo de leitura, compartilhamento e artigos relacionados.
+  - Criado `page.php` compatível com páginas Elementor (sem duplicar `h1.entry-title`), páginas institucionais (`Termos e Condições`, `Política de Privacidade`, `FAQ`) e layout dedicado para `Fale Conosco`.
+  - Criado `404.php` estilizado e atualizado `index.php` com container e grid padronizados.
+- **5. Compatibilidade com Páginas de Menu e Links de Cabeçalho/Rodapé (`inc/core/search-logic.php`, `template-imoveis.php`, `header.php`, `footer.php`, `style.css`)**:
+  - Mapeamento automático das páginas do menu principal (`Todos os Imóveis`, `Lançamentos`, `Apartamentos`, `Casas em Condomínio`, `Imóveis Comerciais`, `Imóveis Rurais`, `Terrenos`, `Entrada Zero`, `Minha Casa Minha Vida`, `Subsídio CEHAP`) para `template-imoveis.php` com filtros pré-selecionados, e `/nosso-blog/` para `template-blog.php`.
+  - Correção de todos os links `href="#"` no `header.php` e `footer.php`, filtro de URLs legadas `http://localhost/vinicius` e restrição responsiva de dimensões para `.custom-logo`.
+
+#### **Versão 1.3.4**
 - **1. Correção do CSS da Paginação (Eliminação de Background Branco Externo)**:
   - Corrigido o problema onde o elemento `ul.page-numbers` gerado pelo `paginate_links()` recebia regras genéricas de `.page-numbers`, exibindo um bloco com fundo branco retangular por fora dos botões.
   - Resetados containers (`.imob-pagination`, `ul.page-numbers`, `li`) com `background: transparent !important`, `border: none !important` e `box-shadow: none !important`, restringindo o background e bordas exclusivamente aos botões e links de navegação (`a.page-numbers` e `span.page-numbers`).
