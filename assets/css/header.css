@@ -1,0 +1,157 @@
+/**
+ * Cabeçalho do tema (layout Figma): logo, menu com submenu e botão de chamada.
+ */
+
+.site-header {
+	position: relative;
+	z-index: 100;
+	padding: 18px 0;
+	background: var(--primary-color);
+	border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.site-header .header-container {
+	max-width: 1320px;
+	padding: 0 24px;
+	gap: 32px;
+}
+
+.site-header .site-branding { flex: none; }
+.site-header .site-branding img.custom-logo { max-width: 220px; max-height: 44px; }
+
+.site-header .main-navigation { flex: 1; display: flex; justify-content: flex-end; }
+
+.site-header .menu-toggle {
+	display: none;
+	width: 42px;
+	height: 42px;
+	border: 1px solid rgba(255, 255, 255, .35);
+	border-radius: 8px;
+	background: transparent;
+	color: #fff;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+}
+
+.site-header #primary-menu {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.site-header #primary-menu > li { position: relative; }
+
+.site-header #primary-menu a {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 10px 14px;
+	border-radius: 6px;
+	color: #fff;
+	font-size: .95rem;
+	font-weight: 500;
+	white-space: nowrap;
+	opacity: 1;
+}
+
+.site-header #primary-menu a:hover,
+.site-header #primary-menu .current-menu-item > a { color: #9cc0ff; }
+
+.site-header #primary-menu > .menu-item-has-children > a::after {
+	content: "expand_more";
+	font-family: "Material Symbols Outlined";
+	font-size: 18px;
+	line-height: 1;
+	transition: transform .2s ease;
+}
+
+/* Submenu (desktop) */
+.site-header #primary-menu .sub-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	display: block;
+	min-width: 280px;
+	margin: 0;
+	padding: 8px;
+	list-style: none;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 16px 40px rgba(14, 26, 43, .25);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(8px);
+	transition: opacity .2s ease, transform .2s ease, visibility .2s;
+}
+
+.site-header #primary-menu li:hover > .sub-menu,
+.site-header #primary-menu li:focus-within > .sub-menu {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.site-header #primary-menu li:hover > a::after { transform: rotate(180deg); }
+
+.site-header #primary-menu .sub-menu a {
+	padding: 9px 12px;
+	color: var(--primary-color);
+	font-size: .9rem;
+	white-space: normal;
+}
+
+.site-header #primary-menu .sub-menu a:hover { background: #f1f5fb; color: #2F74E4; }
+
+/* Botão de chamada */
+.site-header .header-cta { flex: none; }
+.site-header .header-cta .btn-primary {
+	padding: 10px 18px;
+	border-radius: 8px;
+	background: #4C8DF6;
+	font-size: .95rem;
+}
+.site-header .header-cta .btn-primary:hover { background: #2F74E4; }
+.site-header .header-cta .material-symbols-outlined { font-size: 18px; }
+
+/* Celular / tablet */
+@media (max-width: 1100px) {
+	.site-header .header-container { flex-wrap: wrap; gap: 16px; }
+	.site-header .main-navigation { order: 3; flex-basis: 100%; flex-direction: column; align-items: flex-end; }
+	.site-header .menu-toggle { display: inline-flex; position: absolute; top: 18px; right: 24px; }
+	.site-header .header-cta { margin-left: auto; margin-right: 58px; }
+	.site-header #primary-menu {
+		display: none;
+		width: 100%;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+		padding: 8px 0 4px;
+	}
+	.site-header.is-menu-open #primary-menu { display: flex; }
+	.site-header #primary-menu a { padding: 12px 4px; border-bottom: 1px solid rgba(255, 255, 255, .08); border-radius: 0; }
+	.site-header #primary-menu > .menu-item-has-children > a { justify-content: space-between; }
+	.site-header #primary-menu .sub-menu {
+		position: static;
+		display: none;
+		min-width: 0;
+		padding: 0 0 0 14px;
+		background: transparent;
+		box-shadow: none;
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+	}
+	.site-header #primary-menu li.is-open > .sub-menu { display: block; }
+	.site-header #primary-menu li.is-open > a::after { transform: rotate(180deg); }
+	.site-header #primary-menu li:hover > a::after { transform: none; }
+	.site-header #primary-menu .sub-menu a { color: rgba(255, 255, 255, .85); }
+	.site-header #primary-menu .sub-menu a:hover { background: transparent; color: #9cc0ff; }
+}
+
+@media (max-width: 640px) {
+	.site-header .header-container { padding: 0 16px; }
+	.site-header .menu-toggle { right: 16px; }
+	.site-header .site-branding img.custom-logo { max-width: 170px; }
+	.site-header .header-cta { display: none; }
+}

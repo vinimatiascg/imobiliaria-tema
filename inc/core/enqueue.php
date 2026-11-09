@@ -7,13 +7,17 @@
 
 function imob_theme_scripts() {
 	// Google Fonts: Inter
-	wp_enqueue_style( 'imob-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap', array(), null );
+	wp_enqueue_style( 'imob-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap', array(), null );
 
 	// Material Symbols Outlined
 	wp_enqueue_style( 'imob-material-symbols', 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200', array(), null );
 
 	// Enqueue main stylesheet.
 	wp_enqueue_style( 'imob-theme-style', get_stylesheet_uri(), array(), IMOB_THEME_VERSION );
+
+	// Cabeçalho (menu com submenu e versão móvel).
+	wp_enqueue_style( 'imob-header', get_template_directory_uri() . '/assets/css/header.css', array( 'imob-theme-style' ), (string) filemtime( get_template_directory() . '/assets/css/header.css' ) );
+	wp_enqueue_script( 'imob-header', get_template_directory_uri() . '/assets/js/header.js', array(), (string) filemtime( get_template_directory() . '/assets/js/header.js' ), true );
 
 	// GLightbox (for gallery slide show)
 	wp_enqueue_style( 'glightbox-css', 'https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css', array(), null );

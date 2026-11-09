@@ -38,6 +38,7 @@ $imob_includes = [
 	'inc/post-types/construtora.php',
 	'inc/post-types/proprietario.php',
 	'inc/post-types/empreendimento.php',
+	'inc/post-types/depoimento.php',
 	'inc/meta-boxes/imovel-meta.php',
 	'inc/meta-boxes/empreendimento-meta.php',
 	'inc/meta-boxes/construtora-meta.php',
@@ -47,6 +48,8 @@ $imob_includes = [
 	'inc/seo/schema.php',
 	'inc/api/xml-feed.php',
 	'inc/importers/realhomes-importer.php',
+	'inc/home/home-options.php',
+	'inc/home/lead-form.php',
 ];
 
 foreach ( $imob_includes as $file ) {

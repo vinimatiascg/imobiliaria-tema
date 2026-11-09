@@ -3,3 +3,6 @@
 .vscode/
 .idea/
 *.log
+
+# Claude Code (pessoal)
+.claude/settings.local.json

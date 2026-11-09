@@ -38,12 +38,12 @@ function imob_render_importer_page() {
 					headers: {
 						'Content-Type': 'application/x-www-form-urlencoded',
 					},
-					body: 'action=imob_run_import_batch&offset=' + currentOffset + '&batch_size=' + batchSize
+					body: 'action=imob_run_import_batch&batch_size=' + batchSize + '&_ajax_nonce=<?php echo esc_js( wp_create_nonce( 'imob_run_import_batch' ) ); ?>'
 				})
 				.then(res => res.json())
 				.then(data => {
 					if ( data.success ) {
-						logDiv.innerHTML += '<p>' + data.message + '</p>';
+						logDiv.innerHTML += '<p>' + data.data.message + '</p>';
 						logDiv.scrollTop = logDiv.scrollHeight;
 						
 						if ( data.data.has_more ) {
@@ -70,11 +70,14 @@ function imob_run_import_batch() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_send_json_error( 'Permissão negada.' );
 	}
+	check_ajax_referer( 'imob_run_import_batch' );
 
 	global $wpdb;
 
-	$offset = isset( $_POST['offset'] ) ? intval( $_POST['offset'] ) : 0;
-	$batch_size = isset( $_POST['batch_size'] ) ? intval( $_POST['batch_size'] ) : 10;
+	// Sem offset: cada lote marca os itens com _imob_importado, então eles saem da
+	// consulta seguinte. Avançar o offset aqui pulava imóveis ainda não migrados.
+	$offset = 0;
+	$batch_size = isset( $_POST['batch_size'] ) ? max( 1, min( 50, intval( $_POST['batch_size'] ) ) ) : 10;
 	
 	// Query properties that haven't been imported yet
 	$args = array(
@@ -165,7 +168,7 @@ function imob_run_import_batch() {
 	wp_send_json_success( array( 
 		'has_more' => ( count($properties) == $batch_size ),
 		'next_offset' => $next_offset,
-		'message' => "Lote processado (Offset: $offset): $count propriedades migradas com sucesso." 
+		'message' => "Lote processado: $count imóveis migrados com sucesso." 
 	) );
 }
 add_action( 'wp_ajax_imob_run_import_batch', 'imob_run_import_batch' );
