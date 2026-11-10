@@ -4,11 +4,15 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.4.1`
+## 🚀 Versão Atual: `1.4.2`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.4.1** (Atualização Recente)
+#### **Versão 1.4.2** (Atualização Recente)
+- **"Apresentação com foto (texto + imagem)"**: colunas com 50% de largura cada; nova aba **Estilo** no Elementor com tipografia (fonte, tamanho, peso, altura de linha, espaçamento etc.) e cor da chamada superior, título, subtítulo, texto e botões.
+- Base dos widgets de seção (`inc/elementor/widgets/sections.php`) ganhou `register_style_controls()` e `add_text_style()` para adicionar controles de estilo em outras seções.
+
+#### **Versão 1.4.1**
 - **Nova seção/widget Elementor "Apresentação com foto (texto + imagem)" (`template-parts/sections/split_image.php`)**: chamada, título, subtítulo e texto de um lado e foto em PNG com fundo transparente do outro. Configurável como a "Apresentação": botões, título grande e linha dourada, além de posição da foto (direita ou esquerda), texto alternativo e fundo atrás da foto (arco azul com detalhe dourado, círculo dourado ou sem fundo). A foto fica apoiada na base da seção. O layout padrão da página Sobre passa a usar essa seção em "Quem está por trás da IS22".
 
 #### **Versão 1.4.0**

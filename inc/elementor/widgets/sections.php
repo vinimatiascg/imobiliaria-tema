@@ -169,6 +169,46 @@ abstract class Imob_Section_Widget extends \Elementor\Widget_Base {
 		}
 
 		$this->end_controls_section();
+
+		$this->register_style_controls();
+	}
+
+	/**
+	 * Controles da aba Estilo (cada seção pode sobrescrever).
+	 */
+	protected function register_style_controls() {}
+
+	/**
+	 * Grupo de estilo (tipografia + cor) para um texto da seção.
+	 *
+	 * @param string $id       ID do grupo.
+	 * @param string $label    Rótulo.
+	 * @param string $selector Seletor CSS dentro do widget.
+	 */
+	protected function add_text_style( $id, $label, $selector ) {
+		$this->start_controls_section(
+			'style_' . $id,
+			array(
+				'label' => $label,
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			array(
+				'name'     => $id . '_typography',
+				'selector' => '{{WRAPPER}} ' . $selector,
+			)
+		);
+		$this->add_control(
+			$id . '_color',
+			array(
+				'label'     => __( 'Cor', 'imobiliaria-tema' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} ' . $selector => 'color: {{VALUE}};' ),
+			)
+		);
+		$this->end_controls_section();
 	}
 
 	protected function render() {
@@ -191,7 +231,16 @@ class Imob_Section_Widget_Lead extends Imob_Section_Widget { protected $section 
 class Imob_Section_Widget_Blog extends Imob_Section_Widget { protected $section = 'blog'; }
 class Imob_Section_Widget_Testimonials extends Imob_Section_Widget { protected $section = 'testimonials'; }
 class Imob_Section_Widget_Split extends Imob_Section_Widget { protected $section = 'split'; }
-class Imob_Section_Widget_Split_Image extends Imob_Section_Widget { protected $section = 'split_image'; }
+class Imob_Section_Widget_Split_Image extends Imob_Section_Widget {
+	protected $section = 'split_image';
+	protected function register_style_controls() {
+		$this->add_text_style( 'eyebrow', __( 'Tipografia: chamada superior', 'imobiliaria-tema' ), '.hm-photo-content .hm-eyebrow' );
+		$this->add_text_style( 'title', __( 'Tipografia: título', 'imobiliaria-tema' ), '.hm-photo-title' );
+		$this->add_text_style( 'subtitle', __( 'Tipografia: subtítulo', 'imobiliaria-tema' ), '.hm-photo-subtitle' );
+		$this->add_text_style( 'text', __( 'Tipografia: texto', 'imobiliaria-tema' ), '.hm-photo-text, {{WRAPPER}} .hm-photo-text p' );
+		$this->add_text_style( 'buttons', __( 'Tipografia: botões', 'imobiliaria-tema' ), '.hm-photo-content .hm-btn' );
+	}
+}
 class Imob_Section_Widget_Pillars extends Imob_Section_Widget { protected $section = 'pillars'; }
 class Imob_Section_Widget_Checklist extends Imob_Section_Widget { protected $section = 'checklist'; }
 class Imob_Section_Widget_Features extends Imob_Section_Widget { protected $section = 'features'; }
