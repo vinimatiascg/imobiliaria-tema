@@ -32,6 +32,13 @@ final class Imob_Elementor_Widgets_Manager {
 				'icon'  => 'fa fa-home',
 			]
 		);
+		$elements_manager->add_category(
+			'imobiliaria-secoes',
+			[
+				'title' => __( 'Imobiliária - Seções do site', 'imobiliaria-tema' ),
+				'icon'  => 'fa fa-th-large',
+			]
+		);
 	}
 
 	public function register_widgets( $widgets_manager ) {
@@ -54,6 +61,13 @@ final class Imob_Elementor_Widgets_Manager {
 			if ( class_exists( $class_name ) ) {
 				$widgets_manager->register( new $class_name() );
 			}
+		}
+
+		// Seções do layout Figma (home, Sobre, Avaliação...).
+		require_once IMOB_THEME_DIR . 'inc/elementor/widgets/sections.php';
+		foreach ( array( 'Hero', 'Process', 'Properties', 'Numbers', 'Lead', 'Blog', 'Testimonials', 'Split', 'Pillars', 'Checklist', 'Features', 'Divider', 'Cta' ) as $section ) {
+			$class_name = 'Imob_Section_Widget_' . $section;
+			$widgets_manager->register( new $class_name() );
 		}
 	}
 }

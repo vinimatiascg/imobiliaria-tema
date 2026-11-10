@@ -50,6 +50,8 @@ $imob_includes = [
 	'inc/importers/realhomes-importer.php',
 	'inc/home/home-options.php',
 	'inc/home/lead-form.php',
+	'inc/sections/sections.php',
+	'inc/sections/layouts.php',
 ];
 
 foreach ( $imob_includes as $file ) {
