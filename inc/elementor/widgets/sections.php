@@ -191,6 +191,7 @@ class Imob_Section_Widget_Lead extends Imob_Section_Widget { protected $section 
 class Imob_Section_Widget_Blog extends Imob_Section_Widget { protected $section = 'blog'; }
 class Imob_Section_Widget_Testimonials extends Imob_Section_Widget { protected $section = 'testimonials'; }
 class Imob_Section_Widget_Split extends Imob_Section_Widget { protected $section = 'split'; }
+class Imob_Section_Widget_Split_Image extends Imob_Section_Widget { protected $section = 'split_image'; }
 class Imob_Section_Widget_Pillars extends Imob_Section_Widget { protected $section = 'pillars'; }
 class Imob_Section_Widget_Checklist extends Imob_Section_Widget { protected $section = 'checklist'; }
 class Imob_Section_Widget_Features extends Imob_Section_Widget { protected $section = 'features'; }

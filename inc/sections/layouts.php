@@ -77,13 +77,12 @@ function imob_sections_layouts() {
 				),
 			),
 			array(
-				'split',
+				'split_image',
 				array(
-					'eyebrow'  => 'Seu imóvel, meu compromisso',
-					'title'    => 'Quem está por trás da IS22',
-					'subtitle' => 'Experiência, estratégia e atendimento para ajudar você a encontrar o imóvel certo.',
-					'content'  => '<p><strong>Sou Vinicius Matias, corretor e avaliador de imóveis, CRECI-PB 9972-F e CNAI 35503.</strong></p><p>Minha trajetória no mercado imobiliário é construída a partir da união entre conhecimento do mercado, experiência com marketing digital e um olhar atento às novas formas de apresentar e conectar pessoas aos imóveis.</p><p>Essa experiência com internet e comunicação faz parte da forma como trabalho: busco apresentar cada imóvel de maneira estratégica, com informações claras, anúncios atrativos e ferramentas que facilitem a jornada de compra e venda.</p>',
-					'reverse'  => true,
+					'eyebrow'    => 'Seu imóvel, meu compromisso',
+					'title'      => 'Quem está por trás da IS22',
+					'image_side' => 'right',
+					'backdrop'   => 'arch',
 				),
 			),
 			array(

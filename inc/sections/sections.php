@@ -323,6 +323,45 @@ function imob_sections_schema() {
 				)
 			),
 		),
+		'split_image'  => array(
+			'title'  => 'Apresentação com foto (texto + imagem)',
+			'icon'   => 'eicon-image-box',
+			'fields' => array_merge(
+				array(
+					'eyebrow'     => array( 'text', 'Chamada superior', 'Seu imóvel, meu compromisso' ),
+					'title'       => array( 'textarea', 'Título', 'Quem está por trás da IS22' ),
+					'subtitle'    => array( 'textarea', 'Subtítulo', 'Experiência, estratégia e atendimento para ajudar você a encontrar o imóvel certo.' ),
+					'content'     => array( 'html', 'Texto', '<p><strong>Sou Vinicius Matias, corretor e avaliador de imóveis, CRECI-PB 9972-F e CNAI 35503.</strong></p><p>Minha trajetória no mercado imobiliário é construída a partir da união entre conhecimento do mercado, experiência com marketing digital e um olhar atento às novas formas de apresentar e conectar pessoas aos imóveis.</p><p>Essa experiência com internet e comunicação faz parte da forma como trabalho: busco apresentar cada imóvel de maneira estratégica, com informações claras, anúncios atrativos e ferramentas que facilitem a jornada de compra e venda.</p>' ),
+					'image'       => array( 'image', 'Foto (PNG com fundo transparente)', 0 ),
+					'image_alt'   => array( 'text', 'Texto alternativo da foto', 'Vinicius Matias, corretor de imóveis em Campina Grande' ),
+					'image_side'  => array(
+						'select',
+						'Posição da foto',
+						'right',
+						array(
+							'right' => 'Foto à direita',
+							'left'  => 'Foto à esquerda',
+						),
+					),
+					'backdrop'    => array(
+						'select',
+						'Fundo atrás da foto',
+						'arch',
+						array(
+							'arch'   => 'Arco azul com detalhe dourado',
+							'circle' => 'Círculo dourado suave',
+							'none'   => 'Sem fundo',
+						),
+					),
+					'show_buttons' => array( 'switcher', 'Mostrar botões', 'yes' ),
+				),
+				$btn_fields(),
+				array(
+					'title_large' => array( 'switcher', 'Título grande', 'yes' ),
+					'divider'     => array( 'switcher', 'Linha dourada no fim', '' ),
+				)
+			),
+		),
 		'pillars'      => array(
 			'title'  => 'Blocos coloridos (missão, visão, valores)',
 			'icon'   => 'eicon-gallery-justified',
@@ -556,7 +595,7 @@ function imob_section_image( $img, $size = 'large', $attrs = array() ) {
 		foreach ( $attrs as $k => $v ) {
 			$attr_html .= ' ' . esc_attr( $k ) . '="' . esc_attr( $v ) . '"';
 		}
-		return '<img src="' . esc_url( $img['url'] ) . '" alt=""' . $attr_html . '>';
+		return '<img src="' . esc_url( $img['url'] ) . '"' . ( isset( $attrs['alt'] ) ? '' : ' alt=""' ) . $attr_html . '>';
 	}
 	return '';
 }
