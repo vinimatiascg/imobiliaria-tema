@@ -13,7 +13,7 @@ function imob_theme_scripts() {
 	wp_enqueue_style( 'imob-material-symbols', 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200', array(), null );
 
 	// Enqueue main stylesheet.
-	wp_enqueue_style( 'imob-theme-style', get_stylesheet_uri(), array(), IMOB_THEME_VERSION );
+	wp_enqueue_style( 'imob-theme-style', get_stylesheet_uri(), array(), (string) filemtime( get_stylesheet_directory() . '/style.css' ) );
 
 	// Cabeçalho (menu com submenu e versão móvel).
 	wp_enqueue_style( 'imob-header', get_template_directory_uri() . '/assets/css/header.css', array( 'imob-theme-style' ), (string) filemtime( get_template_directory() . '/assets/css/header.css' ) );
