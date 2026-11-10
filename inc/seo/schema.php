@@ -456,7 +456,7 @@ function imob_generate_schema_json() {
 				'@type'    => 'Person',
 				'name'     => $author_nm,
 				'jobTitle' => 'Corretor e Avaliador de Imóveis (CRECI-PB 9972-F)',
-				'url'      => home_url( '/sobre/' ),
+				'url'      => $author_id ? get_author_posts_url( $author_id ) : home_url( '/' ),
 				'worksFor' => array( '@id' => $site_url . '#organization' ),
 			),
 			'publisher'            => array( '@id' => $site_url . '#organization' ),
@@ -609,13 +609,21 @@ function imob_render_google_news_sitemap() {
 
 	$site_name = get_bloginfo( 'name' ) ?: 'IS22 Imóveis | Vinicius Matias';
 
+	// Regras do Google News: somente artigos jornalísticos (posts) publicados nos últimos 2 dias, até 1.000 URLs.
+	// Imóveis e empreendimentos são anúncios e continuam no sitemap padrão, não no de notícias.
 	$news_posts = get_posts(
 		array(
-			'post_type'      => array( 'post', 'imovel', 'empreendimento' ),
+			'post_type'      => 'post',
 			'post_status'    => 'publish',
-			'posts_per_page' => 50,
+			'posts_per_page' => 1000,
 			'orderby'        => 'date',
 			'order'          => 'DESC',
+			'date_query'     => array(
+				array(
+					'column' => 'post_date_gmt',
+					'after'  => gmdate( 'Y-m-d H:i:s', time() - 2 * DAY_IN_SECONDS ),
+				),
+			),
 		)
 	);
 

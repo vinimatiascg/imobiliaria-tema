@@ -65,22 +65,29 @@ get_header();
 						<div class="imob-single-article-meta">
 							<span class="imob-meta-item">
 								<span class="material-symbols-outlined">calendar_today</span>
-								<?php echo esc_html( get_the_date( 'j \d\e F \d\e Y' ) ); ?>
+								<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'j \d\e F \d\e Y' ) ); ?></time>
 							</span>
+							<?php if ( get_the_modified_time( 'U' ) - get_the_time( 'U' ) > DAY_IN_SECONDS ) : ?>
+								<span class="imob-meta-item">
+									<span class="material-symbols-outlined">update</span>
+									<?php esc_html_e( 'Atualizado em', 'imobiliaria-tema' ); ?>
+									<time datetime="<?php echo esc_attr( get_the_modified_date( 'c' ) ); ?>"><?php echo esc_html( get_the_modified_date( 'j \d\e F \d\e Y' ) ); ?></time>
+								</span>
+							<?php endif; ?>
 							<span class="imob-meta-item">
 								<span class="material-symbols-outlined">schedule</span>
 								<?php printf( esc_html__( '%d min de leitura', 'imobiliaria-tema' ), $reading_time ); ?>
 							</span>
 							<span class="imob-meta-item">
 								<span class="material-symbols-outlined">person</span>
-								<?php echo esc_html( get_the_author() ); ?>
+								<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" rel="author"><?php echo esc_html( get_the_author() ); ?></a>
 							</span>
 						</div>
 					</header>
 
 					<?php if ( has_post_thumbnail() ) : ?>
 						<div class="imob-single-article-featured">
-							<?php the_post_thumbnail( 'large', array( 'class' => 'imob-single-featured-img' ) ); ?>
+							<?php the_post_thumbnail( 'full', array( 'class' => 'imob-single-featured-img', 'sizes' => '(max-width: 900px) 100vw, 860px' ) ); ?>
 						</div>
 					<?php endif; ?>
 

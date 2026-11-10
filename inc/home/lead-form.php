@@ -62,7 +62,15 @@ function imob_handle_lead_form() {
 		exit;
 	}
 
+	// Origem do lead (ex.: landing page da Black Friday).
+	$origem = sanitize_key( wp_unslash( $_POST['origem'] ?? '' ) );
+	$origens = array(
+		'black-friday' => 'Landing page Black Friday',
+	);
+	$fields['origem'] = isset( $origens[ $origem ] ) ? $origens[ $origem ] : 'Página inicial';
+
 	$labels = array(
+		'origem'     => 'Origem',
 		'nome'       => 'Nome',
 		'email'      => 'E-mail',
 		'whatsapp'   => 'Celular/WhatsApp',
@@ -80,7 +88,7 @@ function imob_handle_lead_form() {
 		array(
 			'post_type'    => 'imob_lead',
 			'post_status'  => 'private',
-			'post_title'   => $fields['nome'] . ' (' . $fields['email'] . ')',
+			'post_title'   => ( 'black-friday' === $origem ? '[Black Friday] ' : '' ) . $fields['nome'] . ' (' . $fields['email'] . ')',
 			'post_content' => $body,
 		)
 	);
@@ -88,7 +96,7 @@ function imob_handle_lead_form() {
 	$to = get_option( 'imob_contact_email' ) ? get_option( 'imob_contact_email' ) : get_option( 'admin_email' );
 	wp_mail(
 		$to,
-		sprintf( '[%s] Novo interesse em imóvel: %s', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $fields['nome'] ),
+		sprintf( '[%s] %s: %s', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), 'black-friday' === $origem ? 'Novo lead da Black Friday' : 'Novo interesse em imóvel', $fields['nome'] ),
 		$body,
 		array( 'Reply-To: ' . $fields['nome'] . ' <' . $fields['email'] . '>' )
 	);

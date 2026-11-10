@@ -160,14 +160,21 @@ $imob_tipo_query = function ( $slug, $count = 24 ) {
 	<section class="hm-section hm-section--light">
 		<div class="hm-container">
 			<?php $imob_section_head( imob_home_mod( 'process_title' ), imob_home_mod( 'process_text' ) ); ?>
-			<ol class="hm-steps">
+			<?php $imob_step_cols = imob_home_process_columns(); ?>
+			<ol class="hm-steps hm-steps--cols-<?php echo (int) $imob_step_cols; ?>" style="--hm-step-cols: <?php echo (int) $imob_step_cols; ?>;">
 				<?php for ( $i = 1; $i <= 5; $i++ ) : ?>
 					<li class="hm-step">
 						<div class="hm-step-media">
 							<?php
 							$step_img = (int) get_theme_mod( "imob_home_step_{$i}_image", 0 );
 							if ( $step_img ) {
-								echo wp_get_attachment_image( $step_img, 'medium', false, array( 'loading' => 'lazy' ) );
+								echo wp_get_attachment_image( $step_img, $imob_step_cols <= 2 ? 'imob_large' : 'medium_large', false, array( 'loading' => 'lazy' ) );
+							} else {
+								printf(
+									'<img src="%1$s" alt="%2$s" width="400" height="240" loading="lazy" decoding="async">',
+									esc_url( imob_home_step_default_image( $i ) ),
+									esc_attr( imob_home_mod( "step_{$i}_label" ) . ' - ' . imob_home_mod( "step_{$i}_title" ) )
+								);
 							}
 							?>
 						</div>
@@ -434,9 +441,11 @@ $imob_tipo_query = function ( $slug, $count = 24 ) {
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
-			<div class="hm-testimonials-cta">
-				<a class="hm-btn hm-btn--blue" href="<?php echo esc_url( $imob_wa_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo imob_home_whatsapp_icon(); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Realize o seu sonho', 'imobiliaria-tema' ); ?></a>
-			</div>
+			<?php if ( get_theme_mod( 'imob_home_testimonials_whatsapp', true ) ) : ?>
+				<div class="hm-testimonials-cta">
+					<a class="hm-btn hm-btn--blue" href="<?php echo esc_url( $imob_wa_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo imob_home_whatsapp_icon(); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php echo esc_html( get_theme_mod( 'imob_home_testimonials_whatsapp_label', __( 'Realize o seu sonho', 'imobiliaria-tema' ) ) ?: __( 'Realize o seu sonho', 'imobiliaria-tema' ) ); ?></a>
+				</div>
+			<?php endif; ?>
 		</div>
 	</section>
 

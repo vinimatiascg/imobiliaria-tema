@@ -4,11 +4,23 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.5`
+## 🚀 Versão Atual: `1.3.6`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.5** (Atualização Recente)
+#### **Versão 1.3.6** (Atualização Recente)
+- **1. Etapas do processo com colunas configuráveis e ilustrações (`front-page.php`, `inc/home/home-options.php`, `assets/images/etapas/`)**:
+  - Nova opção **Etapas por linha** (1 a 5) em Personalizar > Página Inicial > Processo de compra.
+  - 5 ilustrações SVG criadas para cada etapa (Simulação, Avaliação, Análise de crédito, Escolha do imóvel, Assinatura), usadas por padrão quando nenhuma imagem é enviada.
+- **2. Botão de WhatsApp opcional nos depoimentos**: opção **Exibir botão do WhatsApp** (e texto do botão) em Personalizar > Página Inicial > Depoimentos e no widget Elementor "Depoimentos".
+- **3. Landing page da Black Friday (`template-black-friday.php`, `inc/landing/black-friday.php`, `assets/css/black-friday.css`, `assets/js/black-friday.js`)**:
+  - Modelo de página "Landing Page - Black Friday" com hero, contagem regressiva, benefícios (R$ 1.000 de desconto extra mínimo, documentação grátis, descontos, brindes, 1 ano de condomínio grátis nas casas em condomínio), imóveis em oferta, formulário de lead (origem "Black Friday"), FAQ e schema `SaleEvent`.
+  - Datas, valor do desconto e mensagem do WhatsApp em Personalizar > Black Friday.
+- **4. Conteúdo inicial (`inc/content/`)**: na primeira visita de um administrador ao painel, o tema cria a página `/black-friday/` e 5 notícias do mercado imobiliário (Selic, Minha Casa Minha Vida, crédito SBPE, FipeZAP e reforma tributária) com imagens destacadas 1600x900. Nada é duplicado: itens com o mesmo slug são ignorados.
+- **5. Google News / Discover**: sitemap de notícias apenas com posts dos últimos 2 dias (regra do Google News), autor com link para a página do autor, data de atualização visível, imagem destacada em tamanho cheio e verificador de elegibilidade na tela de edição do post.
+- **6. CTA de WhatsApp no final de todos os posts (`inc/blog/post-cta.php`)**: "Quer comprar o seu imóvel em Campina Grande com condições especiais, entre em contato conosco."
+
+#### **Versão 1.3.5**
 - **1. Otimização Avançada para SEO, GEO (Generative Engine Optimization + Local Geo Tags), Discovery de Redes Sociais e Google News (`inc/core/seo.php`, `inc/seo/schema.php`)**:
   - **Schema.org `@graph` Unificado**: Entidades conectadas (`RealEstateAgent` + `Organization` com CRECI-PB 9972-F, `WebSite` com `SearchAction`, `RealEstateListing` + `Apartment`/`SingleFamilyResidence`, `ApartmentComplex`, `HomeAndConstructionBusiness`, `NewsArticle` + `BlogPosting`, `CollectionPage` + `ItemList` e `BreadcrumbList`), incluindo `SpeakableSpecification` para assistentes de voz/IA.
   - **Google News & Google Discover**: Diretivas `max-image-preview:large, max-snippet:-1, max-video-preview:-1` no `wp_robots`, priorização de imagem LCP (`fetchpriority="high"`), meta tags `news_keywords`, imagens no feed RSS e sitemap dedicado em `/sitemap-news.xml`.

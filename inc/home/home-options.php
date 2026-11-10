@@ -338,3 +338,95 @@ function imob_home_customize_toggle( $wp_customize ) {
 	);
 }
 add_action( 'customize_register', 'imob_home_customize_toggle', 20 );
+
+/**
+ * Imagens padrão (ilustrações do tema) das etapas do processo.
+ *
+ * @param int $i Número da etapa (1 a 5).
+ * @return string URL da ilustração.
+ */
+function imob_home_step_default_image( $i ) {
+	$files = array(
+		1 => 'etapa-1-simulacao.svg',
+		2 => 'etapa-2-avaliacao.svg',
+		3 => 'etapa-3-analise-credito.svg',
+		4 => 'etapa-4-escolha-imovel.svg',
+		5 => 'etapa-5-assinatura.svg',
+	);
+	return isset( $files[ $i ] ) ? get_template_directory_uri() . '/assets/images/etapas/' . $files[ $i ] : '';
+}
+
+/**
+ * Quantidade de etapas por linha (1 a 5).
+ *
+ * @return int
+ */
+function imob_home_process_columns() {
+	$cols = (int) get_theme_mod( 'imob_home_process_columns', 5 );
+	return ( $cols >= 1 && $cols <= 5 ) ? $cols : 5;
+}
+
+/**
+ * Controles extras: colunas das etapas e botão de WhatsApp dos depoimentos.
+ *
+ * @param WP_Customize_Manager $wp_customize Gerenciador do Customizer.
+ */
+function imob_home_customize_extra( $wp_customize ) {
+	$wp_customize->add_setting(
+		'imob_home_process_columns',
+		array(
+			'default'           => 5,
+			'sanitize_callback' => 'absint',
+		)
+	);
+	$wp_customize->add_control(
+		'imob_home_process_columns',
+		array(
+			'label'       => __( 'Etapas por linha', 'imobiliaria-tema' ),
+			'description' => __( 'Quantidade de etapas exibidas lado a lado em telas grandes. Em tablets e celulares o layout se ajusta automaticamente.', 'imobiliaria-tema' ),
+			'section'     => 'imob_home_process',
+			'type'        => 'select',
+			'priority'    => 5,
+			'choices'     => array(
+				1 => __( '1 por linha', 'imobiliaria-tema' ),
+				2 => __( '2 por linha', 'imobiliaria-tema' ),
+				3 => __( '3 por linha', 'imobiliaria-tema' ),
+				4 => __( '4 por linha', 'imobiliaria-tema' ),
+				5 => __( '5 por linha', 'imobiliaria-tema' ),
+			),
+		)
+	);
+
+	$wp_customize->add_setting(
+		'imob_home_testimonials_whatsapp',
+		array(
+			'default'           => true,
+			'sanitize_callback' => 'rest_sanitize_boolean',
+		)
+	);
+	$wp_customize->add_control(
+		'imob_home_testimonials_whatsapp',
+		array(
+			'label'       => __( 'Exibir botão do WhatsApp', 'imobiliaria-tema' ),
+			'description' => __( 'Mostra o botão "Realize o seu sonho" abaixo dos depoimentos.', 'imobiliaria-tema' ),
+			'section'     => 'imob_home_testimonials',
+			'type'        => 'checkbox',
+		)
+	);
+	$wp_customize->add_setting(
+		'imob_home_testimonials_whatsapp_label',
+		array(
+			'default'           => __( 'Realize o seu sonho', 'imobiliaria-tema' ),
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+	$wp_customize->add_control(
+		'imob_home_testimonials_whatsapp_label',
+		array(
+			'label'   => __( 'Texto do botão do WhatsApp', 'imobiliaria-tema' ),
+			'section' => 'imob_home_testimonials',
+			'type'    => 'text',
+		)
+	);
+}
+add_action( 'customize_register', 'imob_home_customize_extra', 25 );

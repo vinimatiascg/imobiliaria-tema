@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.3.5' );
+define( 'IMOB_THEME_VERSION', '1.3.6' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -50,6 +50,9 @@ $imob_includes = [
 	'inc/importers/realhomes-importer.php',
 	'inc/home/home-options.php',
 	'inc/home/lead-form.php',
+	'inc/blog/post-cta.php',
+	'inc/landing/black-friday.php',
+	'inc/content/seed-content.php',
 ];
 
 foreach ( $imob_includes as $file ) {

@@ -81,6 +81,29 @@ class Imob_Elementor_Widget_depoimentos extends \Elementor\Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'show_whatsapp',
+			[
+				'label'        => __( 'Exibir botão do WhatsApp', 'imobiliaria-tema' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Sim', 'imobiliaria-tema' ),
+				'label_off'    => __( 'Não', 'imobiliaria-tema' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'separator'    => 'before',
+			]
+		);
+
+		$this->add_control(
+			'whatsapp_label',
+			[
+				'label'     => __( 'Texto do botão', 'imobiliaria-tema' ),
+				'type'      => \Elementor\Controls_Manager::TEXT,
+				'default'   => __( 'Realize o seu sonho', 'imobiliaria-tema' ),
+				'condition' => [ 'show_whatsapp' => 'yes' ],
+			]
+		);
+
 		$this->end_controls_section();
 	}
 
@@ -107,5 +130,16 @@ class Imob_Elementor_Widget_depoimentos extends \Elementor\Widget_Base {
 			<?php endforeach; ?>
 		</div>
 		<?php
+		if ( 'yes' === ( $settings['show_whatsapp'] ?? '' ) && function_exists( 'imob_home_whatsapp_url' ) ) :
+			$label = ! empty( $settings['whatsapp_label'] ) ? $settings['whatsapp_label'] : __( 'Realize o seu sonho', 'imobiliaria-tema' );
+			?>
+			<div class="imob-depoimentos-cta" style="display: flex; justify-content: center; margin-top: 36px;">
+				<a href="<?php echo esc_url( imob_home_whatsapp_url() ); ?>" target="_blank" rel="noopener noreferrer" class="imob-btn-whatsapp" style="display: inline-flex; align-items: center; gap: 8px; background: var(--secondary-color, #2F80ED); color: #fff; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none;">
+					<?php echo imob_home_whatsapp_icon(); // phpcs:ignore WordPress.Security.EscapeOutput -- SVG fixo. ?>
+					<?php echo esc_html( $label ); ?>
+				</a>
+			</div>
+			<?php
+		endif;
 	}
 }

@@ -1,0 +1,285 @@
+/**
+ * Landing page Black Friday — usa os componentes .hm- da home.
+ * Prefixo .bf-
+ */
+
+.bf {
+	--bf-black: #07090D;
+	--bf-black-2: #11151C;
+	--bf-gold: #D4AF6A;
+	--bf-gold-2: #B2915A;
+	--bf-yellow: #FFC93C;
+}
+
+/* ---------- Botão principal ---------- */
+.bf-btn-primary {
+	background: linear-gradient(135deg, var(--bf-yellow), var(--bf-gold));
+	color: var(--bf-black);
+	font-weight: 700;
+	padding: 14px 26px;
+	box-shadow: 0 10px 28px rgba(212, 175, 106, .35);
+	transition: transform .2s ease, box-shadow .2s ease;
+}
+.bf-btn-primary:hover { color: var(--bf-black); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(212, 175, 106, .5); }
+.bf .hm-btn--ghost { padding: 14px 26px; }
+
+.bf-kicker {
+	margin: 0 0 10px;
+	font-size: .78rem;
+	font-weight: 700;
+	letter-spacing: .3em;
+	text-transform: uppercase;
+	color: var(--bf-gold-2);
+}
+
+/* ---------- Hero ---------- */
+.bf-hero {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+	padding: 96px 0 88px;
+	background:
+		radial-gradient(60% 80% at 85% 10%, rgba(212, 175, 106, .22), transparent 60%),
+		radial-gradient(50% 60% at 0% 100%, rgba(47, 128, 237, .18), transparent 60%),
+		linear-gradient(160deg, var(--bf-black-2), var(--bf-black));
+	color: #fff;
+}
+.bf-hero::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .025) 0 2px, transparent 2px 22px);
+}
+.bf-hero-inner {
+	display: grid;
+	grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+	gap: 56px;
+	align-items: center;
+}
+.bf-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 22px;
+	padding: 8px 16px;
+	border: 1px solid rgba(212, 175, 106, .5);
+	border-radius: 999px;
+	font-size: .82rem;
+	font-weight: 600;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	color: var(--bf-gold);
+}
+.bf-tag .material-symbols-outlined { font-size: 18px; }
+.bf-hero-title { margin: 0 0 24px; line-height: 1; }
+.bf-hero-title-big {
+	display: block;
+	font-size: clamp(3.2rem, 8vw, 6.4rem);
+	font-weight: 900;
+	letter-spacing: -.02em;
+	text-transform: uppercase;
+	background: linear-gradient(90deg, #fff 0%, var(--bf-gold) 55%, var(--bf-yellow) 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+.bf-hero-title-sub {
+	display: block;
+	margin-top: 14px;
+	font-size: clamp(1.5rem, 3vw, 2.3rem);
+	font-weight: 700;
+	color: #fff;
+	line-height: 1.15;
+}
+.bf-hero-text { margin: 0 0 32px; max-width: 36em; font-size: 1.12rem; line-height: 1.6; color: rgba(255, 255, 255, .88); }
+.bf-hero-text strong { color: var(--bf-yellow); }
+.bf-period { display: flex; align-items: center; gap: 8px; margin: 24px 0 0; color: rgba(255, 255, 255, .7); font-size: .95rem; }
+
+.bf-hero-card {
+	position: relative;
+	padding: 36px 32px;
+	border-radius: 20px;
+	background: linear-gradient(160deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .02));
+	border: 1px solid rgba(212, 175, 106, .45);
+	box-shadow: 0 30px 60px rgba(0, 0, 0, .45);
+	text-align: center;
+	backdrop-filter: blur(6px);
+}
+.bf-hero-card-label { margin: 0 0 6px; font-size: .8rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--bf-gold); }
+.bf-hero-card-value { margin: 0; font-size: clamp(2.8rem, 6vw, 4.4rem); font-weight: 900; line-height: 1.05; color: #fff; }
+.bf-hero-card-value small { display: block; font-size: 1rem; font-weight: 500; color: rgba(255, 255, 255, .7); letter-spacing: .05em; }
+.bf-hero-card-text { margin: 10px 0 0; color: rgba(255, 255, 255, .8); line-height: 1.5; }
+
+.bf-countdown { margin-top: 28px; padding-top: 24px; border-top: 1px dashed rgba(255, 255, 255, .2); }
+.bf-countdown-title { margin: 0 0 12px; font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255, 255, 255, .7); }
+.bf-countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.bf-countdown-grid span {
+	display: flex;
+	flex-direction: column;
+	padding: 12px 4px;
+	border-radius: 12px;
+	background: rgba(0, 0, 0, .45);
+	font-size: .72rem;
+	text-transform: uppercase;
+	letter-spacing: .08em;
+	color: rgba(255, 255, 255, .65);
+}
+.bf-countdown-grid strong { font-size: 1.8rem; font-weight: 800; color: var(--bf-yellow); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.bf-countdown-over { margin: 24px 0 0; color: rgba(255, 255, 255, .8); }
+
+/* ---------- Benefícios ---------- */
+.bf-benefits { background: #F6F3EE; }
+.bf-benefits-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.bf-benefit {
+	padding: 30px 26px;
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 8px 24px rgba(14, 26, 43, .08);
+	border-top: 4px solid var(--bf-gold-2);
+	transition: transform .2s ease, box-shadow .2s ease;
+}
+.bf-benefit:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(14, 26, 43, .14); }
+.bf-benefit h3 { margin: 14px 0 10px; font-size: 1.2rem; font-weight: 800; color: var(--hm-ink); }
+.bf-benefit p { margin: 0; color: var(--hm-muted); line-height: 1.55; }
+.bf-benefit-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 54px;
+	height: 54px;
+	border-radius: 14px;
+	background: var(--hm-navy);
+	color: var(--bf-gold);
+	font-size: 28px;
+}
+.bf-benefit--highlight { background: linear-gradient(160deg, var(--bf-black-2), var(--bf-black)); border-top-color: var(--bf-yellow); }
+.bf-benefit--highlight h3 { color: var(--bf-yellow); }
+.bf-benefit--highlight p { color: rgba(255, 255, 255, .8); }
+.bf-benefit--highlight .bf-benefit-icon { background: var(--bf-yellow); color: var(--bf-black); }
+
+.bf-intro { max-width: 860px; margin: 44px auto 0; text-align: center; font-size: 1.05rem; line-height: 1.7; color: var(--hm-ink); }
+.bf-intro p:last-child { margin-bottom: 0; }
+.bf-lead .hm-eyebrow { color: var(--bf-gold); }
+
+/* ---------- Ofertas ---------- */
+.bf-offers { background: linear-gradient(180deg, var(--bf-black), var(--hm-navy)); }
+.bf-offers .bf-kicker { color: var(--bf-gold); }
+.bf-card-wrap { position: relative; display: flex; flex-direction: column; }
+.bf-card-wrap > .hm-card { flex: 1; }
+.bf-card-ribbon {
+	position: absolute;
+	top: 14px;
+	left: -6px;
+	z-index: 3;
+	padding: 6px 14px;
+	border-radius: 0 6px 6px 0;
+	background: linear-gradient(135deg, var(--bf-yellow), var(--bf-gold));
+	color: var(--bf-black);
+	font-size: .72rem;
+	font-weight: 800;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	box-shadow: 0 6px 14px rgba(0, 0, 0, .3);
+	pointer-events: none;
+}
+.bf-grid [hidden] { display: none !important; }
+.bf-offers .hm-pager-pages a,
+.bf-offers .hm-pager-pages button { color: #fff; }
+
+/* ---------- Condomínio ---------- */
+.bf-condo-banner {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	gap: 28px;
+	align-items: center;
+	margin-bottom: 44px;
+	padding: 32px;
+	border-radius: 20px;
+	background: linear-gradient(135deg, var(--hm-navy), #17325A);
+	color: #fff;
+}
+.bf-condo-banner h2 { margin: 0 0 8px; font-size: clamp(1.4rem, 2.4vw, 1.9rem); color: #fff; }
+.bf-condo-banner p { margin: 0; color: rgba(255, 255, 255, .85); line-height: 1.55; }
+.bf-condo-badge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 96px;
+	height: 96px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, var(--bf-yellow), var(--bf-gold));
+	color: var(--bf-black);
+	font-size: 2rem;
+	font-weight: 900;
+}
+
+/* ---------- Como funciona ---------- */
+.bf-how-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; counter-reset: none; }
+.bf-how-list li { position: relative; padding: 34px 26px 28px; border-radius: 16px; background: #F6F3EE; text-align: center; }
+.bf-how-list h3 { margin: 18px 0 8px; font-size: 1.15rem; color: var(--hm-ink); }
+.bf-how-list p { margin: 0; color: var(--hm-muted); line-height: 1.55; }
+.bf-how-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	background: var(--hm-navy);
+	color: var(--bf-gold);
+	font-size: 1.4rem;
+	font-weight: 800;
+}
+
+/* ---------- Formulário ---------- */
+.bf-lead { background: linear-gradient(160deg, var(--bf-black-2), var(--bf-black)); }
+
+/* ---------- FAQ ---------- */
+.bf-faq-list { max-width: 880px; margin: 0 auto; display: grid; gap: 12px; }
+.bf-faq-list details { border-radius: 12px; background: #fff; border: 1px solid #E3E8EF; overflow: hidden; }
+.bf-faq-list summary {
+	cursor: pointer;
+	list-style: none;
+	padding: 18px 52px 18px 22px;
+	position: relative;
+	font-weight: 700;
+	color: var(--hm-ink);
+}
+.bf-faq-list summary::-webkit-details-marker { display: none; }
+.bf-faq-list summary::after {
+	content: "+";
+	position: absolute;
+	right: 22px;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 1.4rem;
+	color: var(--bf-gold-2);
+}
+.bf-faq-list details[open] summary::after { content: "–"; }
+.bf-faq-list details p { margin: 0; padding: 0 22px 20px; color: var(--hm-muted); line-height: 1.6; }
+.bf-legal { max-width: 880px; margin: 28px auto 0; font-size: .82rem; color: var(--hm-muted); text-align: center; line-height: 1.5; }
+
+/* ---------- CTA final ---------- */
+.bf-final { padding: 72px 0; background: linear-gradient(135deg, var(--bf-black), var(--hm-navy)); }
+.bf-final-inner { display: flex; flex-direction: column; align-items: center; gap: 26px; text-align: center; }
+.bf-final h2 { margin: 0; max-width: 22em; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.2; color: #fff; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 992px) {
+	.bf-hero { padding: 64px 0; }
+	.bf-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+	.bf-benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.bf-condo-banner { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+}
+@media (max-width: 640px) {
+	.bf-benefits-grid,
+	.bf-how-list { grid-template-columns: 1fr; }
+	.bf-hero-card { padding: 28px 18px; }
+	.bf-countdown-grid strong { font-size: 1.4rem; }
+	.bf .hm-actions .hm-btn { width: 100%; justify-content: center; }
+	.bf-card-ribbon { left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.bf * { transition: none !important; }
+}

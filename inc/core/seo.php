@@ -605,3 +605,69 @@ function imob_enhance_rss_feed_content( $content ) {
 }
 add_filter( 'the_excerpt_rss', 'imob_enhance_rss_feed_content' );
 add_filter( 'the_content_feed', 'imob_enhance_rss_feed_content' );
+
+/**
+ * 8. Verificador de elegibilidade para Google Discover / Google News no editor de posts.
+ *    Mostra um aviso na tela de edição quando o post não atende aos requisitos principais.
+ *
+ * @param int $post_id ID do post.
+ * @return string[] Lista de problemas encontrados.
+ */
+function imob_discover_issues( $post_id ) {
+	$issues = array();
+	$title  = get_the_title( $post_id );
+
+	$thumb_id = get_post_thumbnail_id( $post_id );
+	if ( ! $thumb_id ) {
+		$issues[] = __( 'Sem imagem destacada. O Google Discover exige uma imagem grande e de qualidade.', 'imobiliaria-tema' );
+	} else {
+		$meta = wp_get_attachment_metadata( $thumb_id );
+		if ( ! empty( $meta['width'] ) && (int) $meta['width'] < 1200 ) {
+			/* translators: %d: largura em pixels. */
+			$issues[] = sprintf( __( 'A imagem destacada tem %dpx de largura. Use no mínimo 1200px (ideal 1600x900, proporção 16:9).', 'imobiliaria-tema' ), (int) $meta['width'] );
+		}
+		if ( ! get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) ) {
+			$issues[] = __( 'A imagem destacada está sem texto alternativo (alt).', 'imobiliaria-tema' );
+		}
+	}
+
+	if ( function_exists( 'mb_strlen' ) ? mb_strlen( $title ) > 110 : strlen( $title ) > 110 ) {
+		$issues[] = __( 'O título passa de 110 caracteres e pode ser cortado no Google News.', 'imobiliaria-tema' );
+	}
+	if ( ! has_excerpt( $post_id ) ) {
+		$issues[] = __( 'Sem resumo (excerpt). Ele é usado como meta descrição e no card do Discover.', 'imobiliaria-tema' );
+	}
+	if ( ! get_the_category( $post_id ) ) {
+		$issues[] = __( 'Sem categoria definida.', 'imobiliaria-tema' );
+	}
+	$words = str_word_count( wp_strip_all_tags( get_post_field( 'post_content', $post_id ) ) );
+	if ( $words < 300 ) {
+		$issues[] = __( 'Texto com menos de 300 palavras. Conteúdos mais completos têm mais chance no Discover.', 'imobiliaria-tema' );
+	}
+	if ( 'publish' === get_post_status( $post_id ) && '0' === (string) get_option( 'blog_public' ) ) {
+		$issues[] = __( 'O site está configurado para não ser indexado (Configurações > Leitura).', 'imobiliaria-tema' );
+	}
+	return $issues;
+}
+
+function imob_discover_editor_notice() {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || 'post' !== $screen->base || 'post' !== $screen->post_type ) {
+		return;
+	}
+	$post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+	if ( ! $post_id ) {
+		return;
+	}
+	$issues = imob_discover_issues( $post_id );
+	if ( empty( $issues ) ) {
+		echo '<div class="notice notice-success"><p>' . esc_html__( 'Google Discover / News: este post atende aos requisitos técnicos do tema.', 'imobiliaria-tema' ) . '</p></div>';
+		return;
+	}
+	echo '<div class="notice notice-warning"><p><strong>' . esc_html__( 'Google Discover / News: ajuste os pontos abaixo.', 'imobiliaria-tema' ) . '</strong></p><ul style="list-style:disc;margin-left:20px">';
+	foreach ( $issues as $issue ) {
+		echo '<li>' . esc_html( $issue ) . '</li>';
+	}
+	echo '</ul></div>';
+}
+add_action( 'admin_notices', 'imob_discover_editor_notice' );
