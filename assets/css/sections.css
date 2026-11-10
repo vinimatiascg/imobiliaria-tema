@@ -296,3 +296,7 @@
 	.hm-cta-section { padding: 48px 0; }
 	.hm-cta { padding: 32px 20px; }
 }
+
+/* O Elementor aplica ".elementor img { height: auto }": reforça a altura das imagens do topo. */
+.hm-hero img.hm-hero-img { height: 100%; max-width: none; }
+.hm-hero--portrait img.hm-hero-img { height: 96%; }

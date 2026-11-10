@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" aria-labelledby="t6"><title id="t6">Entrega das chaves: família realizando o sonho do imóvel próprio</title>
+<defs><linearGradient id="bg6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8F0FB"/><stop offset="1" stop-color="#F3E9D8"/></linearGradient></defs>
+<rect width="400" height="240" fill="url(#bg6)"/>
+<circle cx="60" cy="48" r="60" fill="#2F80ED" opacity=".10"/><circle cx="350" cy="200" r="70" fill="#B2915A" opacity=".14"/>
+<g fill="#B2915A"><rect x="70" y="30" width="8" height="8" rx="2" transform="rotate(20 74 34)"/><rect x="320" y="40" width="8" height="8" rx="2" transform="rotate(-25 324 44)"/><rect x="292" y="22" width="6" height="6" rx="1"/></g>
+<g fill="#2F80ED"><circle cx="104" cy="58" r="4"/><circle cx="300" cy="70" r="4"/><rect x="340" y="80" width="7" height="7" rx="2" transform="rotate(30 343 83)"/></g>
+<path d="M0 206 Q120 192 220 202 T400 198 V240 H0z" fill="#9FC08B"/>
+<!-- casa -->
+<polygon points="196,92 266,40 336,92" fill="#0E1A2B"/>
+<rect x="208" y="90" width="116" height="114" fill="#fff"/>
+<rect x="252" y="142" width="28" height="62" rx="2" fill="#B2915A"/>
+<circle cx="274" cy="174" r="2.5" fill="#0E1A2B"/>
+<rect x="220" y="106" width="24" height="22" rx="2" fill="#2F80ED"/><rect x="288" y="106" width="24" height="22" rx="2" fill="#2F80ED"/>
+<path d="M266 66c-5-7-16-3-14 5 1 5 14 13 14 13s13-8 14-13c2-8-9-12-14-5z" fill="#FF6B6B"/>
+<!-- adulto 1 -->
+<circle cx="110" cy="112" r="15" fill="#E7B98F"/><path d="M95 104c2-12 28-14 30 0-8-4-22-4-30 0z" fill="#2C2016"/>
+<path d="M88 204v-48c0-14 10-24 22-24s22 10 22 24v48z" fill="#2F80ED"/>
+<!-- adulto 2 -->
+<circle cx="160" cy="118" r="14" fill="#C98E63"/><path d="M146 116c0-16 28-16 28 0l2 14c-6-4-26-4-32 0z" fill="#5A3A22"/>
+<path d="M140 204v-42c0-13 9-22 20-22s20 9 20 22v42z" fill="#B2915A"/>
+<!-- criança -->
+<circle cx="136" cy="150" r="10" fill="#E7B98F"/>
+<path d="M124 204v-26c0-8 5-14 12-14s12 6 12 14v26z" fill="#0E1A2B"/>
+<!-- braço com chaves erguidas -->
+<path d="M180 152l20-34" stroke="#C98E63" stroke-width="8" stroke-linecap="round"/>
+<g stroke="#B2915A" stroke-width="5" fill="none" stroke-linecap="round"><circle cx="206" cy="104" r="10"/><line x1="214" y1="96" x2="230" y2="80"/><line x1="224" y1="86" x2="230" y2="92"/></g>
+</svg>

@@ -238,10 +238,11 @@
 	background: var(--hm-card);
 	box-shadow: 0 6px 20px rgba(14, 26, 43, .12);
 }
-.hm-step-media { height: 120px; background: linear-gradient(135deg, #d9e1ec, #b8c6d9); }
+.hm-step-media { position: relative; height: 120px; overflow: hidden; background: linear-gradient(135deg, #d9e1ec, #b8c6d9); }
 .hm-steps--cols-3 .hm-step-media { height: 190px; }
 .hm-steps--cols-4 .hm-step-media { height: 150px; }
-.hm-step-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Seletor reforçado: o Elementor aplica ".elementor img { height: auto }", que esticava a imagem sobre o texto. */
+.hm-steps .hm-step-media img { width: 100%; height: 100%; max-width: none; object-fit: cover; display: block; border-radius: 0; }
 .hm-step-body {
 	position: relative;
 	flex: 1;

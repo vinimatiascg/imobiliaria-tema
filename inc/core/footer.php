@@ -49,6 +49,7 @@ function imob_footer_register_sidebars() {
 	}
 	register_widget( 'Imob_Footer_Brand_Widget' );
 	register_widget( 'Imob_Most_Visited_Widget' );
+	register_widget( 'Imob_Social_Icons_Widget' );
 }
 add_action( 'widgets_init', 'imob_footer_register_sidebars' );
 
@@ -270,7 +271,58 @@ function imob_most_visited_list( $count = 6, $types = array() ) {
  * ---------------------------------------------------------------------- */
 
 /**
- * Coluna 1: logo, texto, Instagram e botão "Fale conosco".
+ * Links das redes sociais (Opções do Tema: Facebook, Instagram e WhatsApp).
+ *
+ * @return array<string,array{url:string,label:string,svg:string}>
+ */
+function imob_social_links() {
+	$icons = array(
+		'facebook'  => '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5H16.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3z"/></svg>',
+		'instagram' => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>',
+		'whatsapp'  => function_exists( 'imob_home_whatsapp_icon' ) ? str_replace( 'width="16" height="16"', 'width="18" height="18"', imob_home_whatsapp_icon() ) : '',
+	);
+	$links = array();
+	if ( get_option( 'imob_social_facebook' ) ) {
+		$links['facebook'] = array( 'url' => get_option( 'imob_social_facebook' ), 'label' => 'Facebook', 'svg' => $icons['facebook'] );
+	}
+	if ( get_option( 'imob_social_instagram' ) ) {
+		$links['instagram'] = array( 'url' => get_option( 'imob_social_instagram' ), 'label' => 'Instagram', 'svg' => $icons['instagram'] );
+	}
+	if ( ( get_option( 'imob_contact_whatsapp' ) || get_option( 'imob_contact_phone' ) ) && function_exists( 'imob_home_whatsapp_url' ) ) {
+		$links['whatsapp'] = array( 'url' => imob_home_whatsapp_url(), 'label' => 'WhatsApp', 'svg' => $icons['whatsapp'] );
+	}
+	return $links;
+}
+
+/**
+ * Ícones das redes sociais.
+ *
+ * @param string[] $only Redes a exibir (vazio = todas configuradas).
+ * @return string
+ */
+function imob_social_icons_html( $only = array() ) {
+	$links = imob_social_links();
+	if ( $only ) {
+		$links = array_intersect_key( $links, array_flip( $only ) );
+	}
+	if ( ! $links ) {
+		return '';
+	}
+	$html = '<div class="footer-social-icons">';
+	foreach ( $links as $key => $l ) {
+		$html .= sprintf(
+			'<a class="footer-social footer-social--%1$s" href="%2$s" target="_blank" rel="noopener noreferrer" title="%3$s" aria-label="%3$s">%4$s</a>',
+			esc_attr( $key ),
+			esc_url( $l['url'] ),
+			esc_attr( $l['label'] ),
+			$l['svg']
+		);
+	}
+	return $html . '</div>';
+}
+
+/**
+ * Coluna 1: logo, texto, redes sociais e botão "Fale conosco".
  *
  * @param string $wa_url URL do WhatsApp.
  * @param array  $o      Textos.
@@ -289,10 +341,12 @@ function imob_footer_brand_html( $wa_url, $o = array() ) {
 	<?php if ( $text ) : ?>
 		<p class="footer-brand-text"><?php echo nl2br( esc_html( $text ) ); ?></p>
 	<?php endif; ?>
+	<?php
+	if ( ! isset( $o['social'] ) || $o['social'] ) {
+		echo imob_social_icons_html(); // phpcs:ignore WordPress.Security.EscapeOutput
+	}
+	?>
 	<div class="footer-brand-actions">
-		<?php if ( get_option( 'imob_social_instagram' ) ) : ?>
-			<a class="footer-social" href="<?php echo esc_url( get_option( 'imob_social_instagram' ) ); ?>" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><span class="material-symbols-outlined" aria-hidden="true">photo_camera</span></a>
-		<?php endif; ?>
 		<?php if ( $button ) : ?>
 			<a href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener noreferrer" class="btn-primary footer-contact-btn"><?php echo esc_html( $button ); ?></a>
 		<?php endif; ?>
@@ -371,6 +425,7 @@ class Imob_Footer_Brand_Widget extends WP_Widget {
 			array(
 				'text'   => $instance['text'] ?? imob_footer_mod( 'brand_text' ),
 				'button' => $instance['button'] ?? imob_footer_mod( 'button_text' ),
+				'social' => ! isset( $instance['social'] ) || $instance['social'],
 			)
 		);
 		echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput
@@ -384,6 +439,7 @@ class Imob_Footer_Brand_Widget extends WP_Widget {
 		<textarea class="widefat" rows="4" id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>"><?php echo esc_textarea( $text ); ?></textarea></p>
 		<p><label for="<?php echo esc_attr( $this->get_field_id( 'button' ) ); ?>"><?php esc_html_e( 'Texto do botão (vazio = sem botão)', 'imobiliaria-tema' ); ?></label>
 		<input class="widefat" type="text" id="<?php echo esc_attr( $this->get_field_id( 'button' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'button' ) ); ?>" value="<?php echo esc_attr( $button ); ?>"></p>
+		<p><label><input type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'social' ) ); ?>" value="1" <?php checked( ! isset( $instance['social'] ) || $instance['social'] ); ?>> <?php esc_html_e( 'Mostrar ícones das redes sociais (Facebook, Instagram e WhatsApp das Opções do Tema)', 'imobiliaria-tema' ); ?></label></p>
 		<?php
 	}
 
@@ -391,6 +447,7 @@ class Imob_Footer_Brand_Widget extends WP_Widget {
 		return array(
 			'text'   => sanitize_textarea_field( $new['text'] ?? '' ),
 			'button' => sanitize_text_field( $new['button'] ?? '' ),
+			'social' => ! empty( $new['social'] ),
 		);
 	}
 }
@@ -448,6 +505,68 @@ class Imob_Most_Visited_Widget extends WP_Widget {
 			'title' => sanitize_text_field( $new['title'] ?? '' ),
 			'count' => max( 1, min( 20, absint( $new['count'] ?? 6 ) ) ),
 			'types' => $types ? $types : array( 'page' ),
+		);
+	}
+}
+
+/**
+ * Widget: ícones das redes sociais (dados de Opções do Tema).
+ */
+class Imob_Social_Icons_Widget extends WP_Widget {
+
+	public function __construct() {
+		parent::__construct( 'imob_social_icons', __( 'Imobiliária - Redes sociais', 'imobiliaria-tema' ), array( 'description' => __( 'Ícones do Facebook, Instagram e WhatsApp cadastrados em Opções do Tema.', 'imobiliaria-tema' ) ) );
+	}
+
+	private function networks() {
+		return array(
+			'facebook'  => 'Facebook',
+			'instagram' => 'Instagram',
+			'whatsapp'  => 'WhatsApp',
+		);
+	}
+
+	public function widget( $args, $instance ) {
+		$only = isset( $instance['networks'] ) ? (array) $instance['networks'] : array_keys( $this->networks() );
+		$html = imob_social_icons_html( $only );
+		if ( ! $html ) {
+			return;
+		}
+		echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput
+		if ( ! empty( $instance['title'] ) ) {
+			echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput
+		}
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput
+		echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput
+	}
+
+	public function form( $instance ) {
+		$title = $instance['title'] ?? '';
+		$only  = isset( $instance['networks'] ) ? (array) $instance['networks'] : array_keys( $this->networks() );
+		?>
+		<p><label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Título (opcional)', 'imobiliaria-tema' ); ?></label>
+		<input class="widefat" type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $title ); ?>"></p>
+		<p><?php esc_html_e( 'Exibir:', 'imobiliaria-tema' ); ?><br>
+		<?php foreach ( $this->networks() as $key => $label ) : ?>
+			<label style="display:block"><input type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'networks' ) ); ?>[]" value="<?php echo esc_attr( $key ); ?>" <?php checked( in_array( $key, $only, true ) ); ?>> <?php echo esc_html( $label ); ?></label>
+		<?php endforeach; ?>
+		</p>
+		<p class="description">
+			<?php
+			printf(
+				/* translators: %s: link para Opções do Tema. */
+				esc_html__( 'Os links vêm de %s. Redes sem link cadastrado não aparecem.', 'imobiliaria-tema' ),
+				'<a href="' . esc_url( admin_url( 'admin.php?page=imobiliaria-options' ) ) . '">' . esc_html__( 'Opções do Tema', 'imobiliaria-tema' ) . '</a>'
+			);
+			?>
+		</p>
+		<?php
+	}
+
+	public function update( $new, $old ) {
+		return array(
+			'title'    => sanitize_text_field( $new['title'] ?? '' ),
+			'networks' => array_values( array_intersect( (array) ( $new['networks'] ?? array() ), array_keys( $this->networks() ) ) ),
 		);
 	}
 }

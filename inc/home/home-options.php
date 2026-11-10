@@ -141,7 +141,7 @@ function imob_home_whatsapp_icon() {
  * Ilustração padrão (do tema) de cada etapa do processo de compra.
  * Usada quando nenhuma imagem foi enviada para a etapa.
  *
- * @param int $i Número da etapa (1 a 5).
+ * @param int $i Número da etapa (1 a 6).
  * @return string URL da ilustração ou vazio.
  */
 function imob_home_step_default_image( $i ) {
@@ -151,6 +151,7 @@ function imob_home_step_default_image( $i ) {
 		3 => 'etapa-3-analise-credito.svg',
 		4 => 'etapa-4-escolha-imovel.svg',
 		5 => 'etapa-5-assinatura.svg',
+		6 => 'etapa-6-entrega.svg',
 	);
 	return isset( $files[ $i ] ) ? get_template_directory_uri() . '/assets/images/etapas/' . $files[ $i ] : '';
 }

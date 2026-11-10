@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.3.8' );
+define( 'IMOB_THEME_VERSION', '1.3.9' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -539,11 +539,48 @@ function imob_render_empreendimento_badges( $emp_id ) {
 }
 
 /**
+ * Slugs das localidades que são cidades (não devem aparecer como "Bairro").
+ * Configurável em Personalizar > Imóveis: localidades. Termos que têm termos filhos também contam como cidade.
+ *
+ * @return string[]
+ */
+function imob_get_city_slugs() {
+	$raw = (string) get_theme_mod( 'imob_city_slugs', 'campina-grande, joao-pessoa' );
+	return array_filter( array_map( 'sanitize_title', array_map( 'trim', explode( ',', $raw ) ) ) );
+}
+
+/**
+ * O termo é uma cidade (está na lista de cidades ou tem bairros filhos)?
+ *
+ * @param WP_Term $term Termo.
+ * @return bool
+ */
+function imob_localidade_is_city( $term ) {
+	static $cache = array();
+	$id = (int) $term->term_id;
+	if ( ! isset( $cache[ $id ] ) ) {
+		$cache[ $id ] = in_array( $term->slug, imob_get_city_slugs(), true )
+			|| (bool) get_terms(
+				array(
+					'taxonomy'   => 'localidade',
+					'parent'     => $id,
+					'hide_empty' => false,
+					'number'     => 1,
+					'fields'     => 'ids',
+				)
+			);
+	}
+	return $cache[ $id ];
+}
+
+/**
  * Localidade a exibir de um imóvel (bairro).
  *
- * Ordem de preferência:
- * 1. Termo marcado como primário (Yoast SEO ou Rank Math), se estiver atribuído ao imóvel.
- * 2. O termo mais específico: quando pai (cidade) e filho (bairro) estão marcados, exibe o filho.
+ * 1. Descarta cidades (lista em Personalizar ou termos com filhos) e termos que são pais de outro
+ *    termo marcado, desde que reste algum bairro: com "Campina Grande" + "Catolé", mostra "Catolé".
+ * 2. Entre os bairros que sobraram, dá preferência ao marcado como primário (Yoast SEO ou Rank Math).
+ * 3. Sem primário válido, usa o bairro mais específico (mais fundo na hierarquia) ou o primeiro.
+ * 4. Se o imóvel só tiver a cidade, mostra a cidade.
  *
  * @param int $post_id ID do imóvel.
  * @return WP_Term|null
@@ -554,20 +591,7 @@ function imob_get_localidade_term( $post_id ) {
 		return null;
 	}
 
-	$by_id = array();
-	foreach ( $terms as $t ) {
-		$by_id[ (int) $t->term_id ] = $t;
-	}
-
-	foreach ( array( '_yoast_wpseo_primary_localidade', 'rank_math_primary_localidade' ) as $meta_key ) {
-		$primary = (int) get_post_meta( $post_id, $meta_key, true );
-		if ( $primary && isset( $by_id[ $primary ] ) ) {
-			return $by_id[ $primary ];
-		}
-	}
-
-	$best       = null;
-	$best_depth = -1;
+	$candidates = array();
 	foreach ( $terms as $t ) {
 		$is_parent_of_other = false;
 		foreach ( $terms as $other ) {
@@ -576,18 +600,68 @@ function imob_get_localidade_term( $post_id ) {
 				break;
 			}
 		}
-		if ( $is_parent_of_other ) {
-			continue;
+		if ( ! $is_parent_of_other && ! imob_localidade_is_city( $t ) ) {
+			$candidates[ (int) $t->term_id ] = $t;
 		}
+	}
+	if ( ! $candidates ) {
+		// Só há cidade(s): mantém o primário, se houver, ou o primeiro termo.
+		foreach ( $terms as $t ) {
+			$candidates[ (int) $t->term_id ] = $t;
+		}
+	}
+
+	foreach ( array( '_yoast_wpseo_primary_localidade', 'rank_math_primary_localidade' ) as $meta_key ) {
+		$primary = (int) get_post_meta( $post_id, $meta_key, true );
+		if ( $primary && isset( $candidates[ $primary ] ) ) {
+			return $candidates[ $primary ];
+		}
+	}
+
+	$best       = null;
+	$best_depth = -1;
+	foreach ( $candidates as $t ) {
 		$depth = count( get_ancestors( $t->term_id, 'localidade', 'taxonomy' ) );
 		if ( $depth > $best_depth ) {
 			$best       = $t;
 			$best_depth = $depth;
 		}
 	}
-
-	return $best ? $best : $terms[0];
+	return $best;
 }
+
+/**
+ * Personalizar > Imóveis: localidades.
+ *
+ * @param WP_Customize_Manager $wp_customize Gerenciador do Customizer.
+ */
+function imob_localidade_customize( $wp_customize ) {
+	$wp_customize->add_section(
+		'imob_localidades',
+		array(
+			'title'       => __( 'Imóveis: localidades', 'imobiliaria-tema' ),
+			'description' => __( 'Define quais localidades são cidades. Nas listagens, "Bairro" mostra o bairro marcado no imóvel e nunca a cidade (a cidade só aparece quando o imóvel não tem bairro).', 'imobiliaria-tema' ),
+			'priority'    => 125,
+		)
+	);
+	$wp_customize->add_setting(
+		'imob_city_slugs',
+		array(
+			'default'           => 'campina-grande, joao-pessoa',
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+	$wp_customize->add_control(
+		'imob_city_slugs',
+		array(
+			'label'       => __( 'Slugs das cidades (separados por vírgula)', 'imobiliaria-tema' ),
+			'description' => __( 'Ex.: campina-grande, joao-pessoa, cabedelo. Localidades com bairros filhos já são tratadas como cidade automaticamente.', 'imobiliaria-tema' ),
+			'section'     => 'imob_localidades',
+			'type'        => 'text',
+		)
+	);
+}
+add_action( 'customize_register', 'imob_localidade_customize' );
 
 /**
  * Nome da localidade a exibir (ver imob_get_localidade_term()).

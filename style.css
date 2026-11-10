@@ -4,7 +4,7 @@ Theme URI:
 Author: Antigravity
 Author URI: 
 Description: Tema customizado para Imobiliárias com alta performance, suporte a Elementor e otimizado para SEO técnico.
-Version: 1.3.8
+Version: 1.3.9
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: imobiliaria-tema
@@ -180,7 +180,9 @@ a:hover {
 .footer-widget-item + .footer-widget-item { margin-top: 28px; }
 .footer-branding { margin-bottom: 20px; }
 .footer-brand-text { margin: 0; line-height: 1.6; }
-.footer-brand-actions { margin-top: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.footer-brand-actions { margin-top: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.footer-social-icons { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+.footer-widget .footer-social,
 .footer-social {
 	background: rgba(255, 255, 255, .1);
 	width: 40px;
@@ -190,7 +192,11 @@ a:hover {
 	justify-content: center;
 	border-radius: 50%;
 	color: #fff;
+	transition: background .2s ease, color .2s ease, transform .2s ease;
 }
+.footer-widget .footer-social:hover,
+.footer-social:hover { background: var(--accent-color); color: var(--primary-color); transform: translateY(-2px); }
+.footer-social svg { display: block; }
 .footer-widget .footer-contact-btn,
 .footer-contact-btn { background-color: var(--accent-color); color: var(--primary-color); }
 .footer-widget .footer-contact-btn:hover { color: var(--primary-color); opacity: .9; }
