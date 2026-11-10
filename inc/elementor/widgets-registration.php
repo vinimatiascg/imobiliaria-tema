@@ -65,7 +65,7 @@ final class Imob_Elementor_Widgets_Manager {
 
 		// Seções do layout Figma (home, Sobre, Avaliação...).
 		require_once IMOB_THEME_DIR . 'inc/elementor/widgets/sections.php';
-		foreach ( array( 'Hero', 'Process', 'Properties', 'Numbers', 'Lead', 'Blog', 'Testimonials', 'Split', 'Pillars', 'Checklist', 'Features', 'Divider', 'Cta' ) as $section ) {
+		foreach ( array( 'Hero', 'Slider', 'Process', 'Properties', 'Numbers', 'Lead', 'Blog', 'Testimonials', 'Split', 'Pillars', 'Checklist', 'Features', 'Divider', 'Cta' ) as $section ) {
 			$class_name = 'Imob_Section_Widget_' . $section;
 			$widgets_manager->register( new $class_name() );
 		}

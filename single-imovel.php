@@ -32,7 +32,7 @@ get_header(); ?>
 		$status_terms = wp_get_post_terms( get_the_ID(), 'status_imovel' );
 
 		$tipo = (!empty($tipos) && !is_wp_error($tipos)) ? $tipos[0]->name : 'IMÓVEL';
-		$bairro = (!empty($localidades) && !is_wp_error($localidades)) ? $localidades[0]->name : 'Bairro não informado';
+		$bairro = imob_get_localidade_name( get_the_ID(), 'Bairro não informado' );
 		$status_imovel = (!empty($status_terms) && !is_wp_error($status_terms)) ? $status_terms[0]->name : '';
 		
 		// Contact WhatsApp: check corretor, then user profile, then global option

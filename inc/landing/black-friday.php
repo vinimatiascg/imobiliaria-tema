@@ -133,14 +133,55 @@ function imob_bf_assets() {
 	if ( ! imob_is_black_friday_page() ) {
 		return;
 	}
+	if ( function_exists( 'imob_sections_register_assets' ) && ! wp_style_is( 'imob-hero-offer', 'registered' ) ) {
+		imob_sections_register_assets();
+	}
 	$dir = get_template_directory();
 	$uri = get_template_directory_uri();
-	wp_enqueue_style( 'imob-home', $uri . '/assets/css/home.css', array( 'imob-theme-style' ), (string) filemtime( $dir . '/assets/css/home.css' ) );
-	wp_enqueue_style( 'imob-black-friday', $uri . '/assets/css/black-friday.css', array( 'imob-home' ), (string) filemtime( $dir . '/assets/css/black-friday.css' ) );
-	wp_enqueue_script( 'imob-home', $uri . '/assets/js/home.js', array(), (string) filemtime( $dir . '/assets/js/home.js' ), true );
-	wp_enqueue_script( 'imob-black-friday', $uri . '/assets/js/black-friday.js', array(), (string) filemtime( $dir . '/assets/js/black-friday.js' ), true );
+	wp_enqueue_style( 'imob-black-friday', $uri . '/assets/css/black-friday.css', array( 'imob-home', 'imob-hero-offer' ), (string) filemtime( $dir . '/assets/css/black-friday.css' ) );
+	wp_enqueue_script( 'imob-home' );
+	wp_enqueue_script( 'imob-hero-offer' );
 }
 add_action( 'wp_enqueue_scripts', 'imob_bf_assets', 20 );
+
+/**
+ * Argumentos do hero de oferta com os dados da campanha (template-parts/sections/hero-offer.php).
+ *
+ * @param array $overrides Valores que substituem os padrões.
+ * @return array
+ */
+function imob_bf_hero_args( $overrides = array() ) {
+	$discount = imob_bf_mod( 'extra_discount' );
+	$start    = imob_bf_timestamp( 'start' );
+	$end      = imob_bf_timestamp( 'end' );
+	$page     = get_page_by_path( 'black-friday' );
+
+	$period = '';
+	if ( $start && $end ) {
+		/* translators: 1: data de início, 2: data de fim. */
+		$period = sprintf( __( 'De %1$s a %2$s', 'imobiliaria-tema' ), wp_date( 'j \\d\\e F', $start ), wp_date( 'j \\d\\e F \\d\\e Y', $end ) );
+	}
+
+	$defaults = array(
+		'tag'         => __( 'Black Friday de Imóveis em Campina Grande', 'imobiliaria-tema' ),
+		'title_big'   => __( 'Black Friday', 'imobiliaria-tema' ),
+		'title_sub'   => __( 'Todos os imóveis entraram em oferta', 'imobiliaria-tema' ),
+		/* translators: %s: valor do desconto extra. */
+		'text'        => sprintf( __( 'Descontos e brindes conforme o imóvel e, no mínimo, %s de desconto extra em qualquer imóvel à venda. Tem documentação grátis, descontos especiais e 1 ano de condomínio grátis nas casas em condomínio.', 'imobiliaria-tema' ), '<strong>' . esc_html( $discount ) . '</strong>' ),
+		'btn1_text'   => __( 'Quero aproveitar a oferta', 'imobiliaria-tema' ),
+		'btn1_url'    => imob_bf_whatsapp_url(),
+		'btn2_text'   => __( 'Ver imóveis em oferta', 'imobiliaria-tema' ),
+		'btn2_url'    => $page ? get_permalink( $page ) . '#bf-imoveis' : home_url( '/imoveis/' ),
+		'period'      => $period,
+		'card_label'  => __( 'Desconto extra garantido', 'imobiliaria-tema' ),
+		'card_prefix' => __( 'mínimo de', 'imobiliaria-tema' ),
+		'card_value'  => $discount,
+		'card_text'   => __( 'em qualquer imóvel à venda, somado às demais condições da campanha.', 'imobiliaria-tema' ),
+		'countdown'   => $end,
+		'is_over'     => $end && time() > $end,
+	);
+	return array_merge( $defaults, $overrides );
+}
 
 /**
  * Classe no body para estilos da campanha.

@@ -18,7 +18,7 @@ $localidades = wp_get_post_terms( $post_id, 'localidade', array( 'fields' => 'na
 
 $tipo       = ( ! is_wp_error( $tipos ) && ! empty( $tipos ) ) ? $tipos[0] : __( 'Imóvel', 'imobiliaria-tema' );
 $finalidade = ( ! is_wp_error( $status_list ) && ! empty( $status_list ) ) ? $status_list[0] : __( 'Venda', 'imobiliaria-tema' );
-$bairro     = ( ! is_wp_error( $localidades ) && ! empty( $localidades ) ) ? $localidades[0] : '';
+$bairro     = imob_get_localidade_name( $post_id, '' );
 $emp_info   = imob_get_imovel_empreendimento( $post_id );
 ?>
 <article <?php post_class( 'hm-card' ); ?>>

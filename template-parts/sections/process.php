@@ -12,14 +12,14 @@
 		<?php if ( $args['steps'] ) : ?>
 			<?php
 			$cols = isset( $args['columns'] ) ? (int) $args['columns'] : 5;
-			$cols = ( $cols >= 1 && $cols <= 5 ) ? $cols : 5;
+			$cols = in_array( $cols, array( 3, 4, 5 ), true ) ? $cols : ( $cols && $cols < 3 ? 3 : 5 );
 			?>
-			<ol class="hm-steps hm-steps--cols-<?php echo (int) $cols; ?>" style="--hm-steps: <?php echo (int) $cols; ?>; --hm-step-cols: <?php echo (int) $cols; ?>;">
+			<ol class="hm-steps hm-steps--cols-<?php echo (int) $cols; ?>">
 				<?php foreach ( $args['steps'] as $i => $step ) : ?>
 					<li class="hm-step">
 						<div class="hm-step-media">
 							<?php
-							$step_html = imob_section_image( $step['image'], $cols <= 2 ? 'imob_large' : 'medium_large', array( 'loading' => 'lazy' ) );
+							$step_html = imob_section_image( $step['image'], 'medium_large', array( 'loading' => 'lazy' ) );
 							if ( ! $step_html && imob_home_step_default_image( $i + 1 ) ) {
 								// Sem imagem enviada: usa a ilustração do tema para a etapa.
 								$step_html = sprintf(

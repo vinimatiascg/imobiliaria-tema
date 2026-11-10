@@ -92,7 +92,7 @@ class Imob_Elementor_Widget_imovel_card extends \Elementor\Widget_Base {
 
 		$tipo = ( ! is_wp_error( $tipos ) && ! empty( $tipos ) ) ? $tipos[0] : 'IMÓVEL';
 		$finalidade = ( ! is_wp_error( $status_list ) && ! empty( $status_list ) ) ? $status_list[0] : 'VENDA';
-		$bairro = ( ! is_wp_error( $localidades ) && ! empty( $localidades ) ) ? $localidades[0] : 'Bairro não informado';
+		$bairro = imob_get_localidade_name( get_the_ID(), 'Bairro não informado' );
 		?>
 		<div class="imob-elementor-imovel-card-widget">
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'imob-card' ); ?> style="max-width: 400px; margin: 0 auto;">

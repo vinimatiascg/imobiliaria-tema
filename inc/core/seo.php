@@ -154,7 +154,7 @@ function imob_get_seo_context() {
 		$status_list = wp_get_post_terms( $post_id, 'status_imovel', array( 'fields' => 'slugs' ) );
 
 		$tipo_nome   = ( ! empty( $tipos ) && ! is_wp_error( $tipos ) ) ? $tipos[0] : 'Imóvel';
-		$bairro_nome = ( ! empty( $localidades ) && ! is_wp_error( $localidades ) ) ? $localidades[0] : 'Campina Grande';
+		$bairro_nome = imob_get_localidade_name( $post_id, 'Campina Grande' );
 
 		// Construção de resumo rico para SEO, GEO e compartilhamento social
 		$specs = array();

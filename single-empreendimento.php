@@ -434,7 +434,7 @@ $gmaps_key = get_option( 'imob_gmaps_key' );
 
 							$tipo       = ( ! is_wp_error( $tipos ) && ! empty( $tipos ) ) ? $tipos[0] : 'IMÓVEL';
 							$finalidade = ( ! is_wp_error( $status_list ) && ! empty( $status_list ) ) ? $status_list[0] : 'VENDA';
-							$bairro     = ( ! is_wp_error( $localidades ) && ! empty( $localidades ) ) ? $localidades[0] : '';
+							$bairro     = imob_get_localidade_name( get_the_ID(), '' );
 							$badge_emp_html = imob_render_empreendimento_badge( get_the_ID() );
 							?>
 							<article class="imob-card">

@@ -95,54 +95,7 @@ $bf_grid = function ( WP_Query $query, $id ) use ( $bf_archive_url ) {
 	<?php while ( have_posts() ) : the_post(); ?>
 
 	<!-- ============ HERO ============ -->
-	<section class="bf-hero">
-		<span class="bf-hero-glow" aria-hidden="true"></span>
-		<div class="hm-container bf-hero-inner">
-			<div class="bf-hero-content">
-				<p class="bf-tag"><span class="material-symbols-outlined">local_offer</span><?php esc_html_e( 'Black Friday de Imóveis em Campina Grande', 'imobiliaria-tema' ); ?></p>
-				<h1 class="bf-hero-title">
-					<span class="bf-hero-title-big"><?php esc_html_e( 'Black Friday', 'imobiliaria-tema' ); ?></span>
-					<span class="bf-hero-title-sub"><?php esc_html_e( 'Todos os imóveis entraram em oferta', 'imobiliaria-tema' ); ?></span>
-				</h1>
-				<p class="bf-hero-text">
-					<?php
-					printf(
-						/* translators: %s: valor do desconto extra. */
-						esc_html__( 'Descontos e brindes conforme o imóvel e, no mínimo, %s de desconto extra em qualquer imóvel à venda. Tem documentação grátis, descontos especiais e 1 ano de condomínio grátis nas casas em condomínio.', 'imobiliaria-tema' ),
-						'<strong>' . esc_html( $bf_discount ) . '</strong>'
-					);
-					?>
-				</p>
-				<div class="hm-actions">
-					<a class="hm-btn bf-btn-primary" href="<?php echo esc_url( $bf_wa_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo $bf_wa_icon; // phpcs:ignore WordPress.Security.EscapeOutput -- SVG fixo. ?><?php esc_html_e( 'Quero aproveitar a oferta', 'imobiliaria-tema' ); ?></a>
-					<a class="hm-btn hm-btn--ghost" href="#bf-imoveis"><span class="material-symbols-outlined">home</span><?php esc_html_e( 'Ver imóveis em oferta', 'imobiliaria-tema' ); ?></a>
-				</div>
-				<?php if ( $bf_period_label ) : ?>
-					<p class="bf-period"><span class="material-symbols-outlined">event</span><?php echo esc_html( $bf_period_label ); ?></p>
-				<?php endif; ?>
-			</div>
-
-			<div class="bf-hero-card">
-				<p class="bf-hero-card-label"><?php esc_html_e( 'Desconto extra garantido', 'imobiliaria-tema' ); ?></p>
-				<p class="bf-hero-card-value"><small><?php esc_html_e( 'mínimo de', 'imobiliaria-tema' ); ?></small><?php echo esc_html( $bf_discount ); ?></p>
-				<p class="bf-hero-card-text"><?php esc_html_e( 'em qualquer imóvel à venda, somado às demais condições da campanha.', 'imobiliaria-tema' ); ?></p>
-
-				<?php if ( $bf_end_ts && ! $bf_is_over ) : ?>
-					<div class="bf-countdown" data-bf-countdown="<?php echo esc_attr( $bf_end_ts ); ?>" aria-live="polite">
-						<p class="bf-countdown-title"><?php esc_html_e( 'A oferta termina em', 'imobiliaria-tema' ); ?></p>
-						<div class="bf-countdown-grid">
-							<span><strong data-bf-unit="d">--</strong><?php esc_html_e( 'dias', 'imobiliaria-tema' ); ?></span>
-							<span><strong data-bf-unit="h">--</strong><?php esc_html_e( 'horas', 'imobiliaria-tema' ); ?></span>
-							<span><strong data-bf-unit="m">--</strong><?php esc_html_e( 'min', 'imobiliaria-tema' ); ?></span>
-							<span><strong data-bf-unit="s">--</strong><?php esc_html_e( 'seg', 'imobiliaria-tema' ); ?></span>
-						</div>
-					</div>
-				<?php elseif ( $bf_is_over ) : ?>
-					<p class="bf-countdown-over"><?php esc_html_e( 'A campanha foi encerrada. Fale conosco e veja as condições especiais vigentes.', 'imobiliaria-tema' ); ?></p>
-				<?php endif; ?>
-			</div>
-		</div>
-	</section>
+	<?php get_template_part( 'template-parts/sections/hero-offer', null, imob_bf_hero_args( array( 'btn2_url' => '#bf-imoveis' ) ) ); ?>
 
 	<!-- ============ BENEFÍCIOS ============ -->
 	<section class="hm-section bf-benefits">

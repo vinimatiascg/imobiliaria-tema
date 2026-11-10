@@ -4,11 +4,18 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.6`
+## 🚀 Versão Atual: `1.3.7`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.6** (Atualização Recente)
+#### **Versão 1.3.7** (Atualização Recente)
+- **1. Novo widget Elementor "Slider (largura total)" (`template-parts/sections/slider.php`, `assets/css/slider.css`, `assets/js/slider.js`)**: slides com imagem de fundo, chamada, título, texto, 2 botões e link do slide inteiro; alinhamento por slide; altura (420px, 560px, 720px ou tela inteira); escurecimento da imagem; transição em fade; passagem automática com tempo configurável (pausa ao passar o mouse); setas, indicadores, teclado e deslizar no celular; opção de ocupar 100% da largura da tela mesmo dentro de container.
+- **2. Etapas do processo**: opções de 3, 4 ou 5 etapas por linha; CSS refeito com flexbox para qualquer quantidade de etapas (linhas incompletas ficam centralizadas) e responsivo (3 > 2 > 1 coluna).
+- **3. Página Sobre**: quadros de texto da seção "Apresentação" voltam a encostar na borda da tela, topo sem imagem usa a largura toda (sem a moldura vazia), blocos Missão/Visão/Valores com espaçamento uniforme e fundo da seção "Trajetória e formação" limpo.
+- **4. Topo da página inicial no layout da Black Friday**: a seção/widget "Topo (hero)" ganhou o campo **Layout do topo** (Automático, Oferta ou Clássico). No automático, a página inicial usa o mesmo hero da landing da Black Friday (componente `template-parts/sections/hero-offer.php` + `assets/css/hero-offer.css`), com textos, botões, quadro de desconto e contagem regressiva editáveis.
+- **5. Bairro nas listagens**: nova função `imob_get_localidade_term()` exibe o termo marcado como primário (Yoast SEO / Rank Math) e, sem primário, o termo mais específico (bairro) em vez da cidade. Aplicada em cards, listagens, widgets, página do imóvel, SEO e llms.txt.
+
+#### **Versão 1.3.6**
 - **1. Etapas do processo com colunas configuráveis e ilustrações (`template-parts/sections/process.php`, `inc/sections/sections.php`, `assets/images/etapas/`)**:
   - Novo campo **Etapas por linha** (1 a 5) na seção/widget Elementor "Etapas do processo".
   - 5 ilustrações SVG criadas para cada etapa (Simulação, Avaliação, Análise de crédito, Escolha do imóvel, Assinatura), usadas por padrão quando nenhuma imagem é enviada.

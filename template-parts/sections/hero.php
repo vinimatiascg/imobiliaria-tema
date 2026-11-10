@@ -6,6 +6,39 @@
  * @var array $args
  */
 
+$layout = isset( $args['layout'] ) ? $args['layout'] : 'auto';
+if ( 'auto' === $layout || '' === $layout ) {
+	$layout = is_front_page() ? 'offer' : 'classic';
+}
+
+if ( 'offer' === $layout && function_exists( 'imob_bf_hero_args' ) ) {
+	$bf   = imob_bf_hero_args();
+	$url1 = ! empty( $args['offer_btn1_url'] ) ? imob_section_url( $args['offer_btn1_url'] ) : $bf['btn1_url'];
+	$url2 = ! empty( $args['offer_btn2_url'] ) ? imob_section_url( $args['offer_btn2_url'] ) : $bf['btn2_url'];
+	get_template_part(
+		'template-parts/sections/hero-offer',
+		null,
+		array(
+			'tag'         => $args['offer_tag'] ?? $bf['tag'],
+			'title_big'   => $args['offer_title_big'] ?? $bf['title_big'],
+			'title_sub'   => $args['offer_title_sub'] ?? $bf['title_sub'],
+			'text'        => $args['offer_text'] ?? $bf['text'],
+			'btn1_text'   => $args['offer_btn1_text'] ?? $bf['btn1_text'],
+			'btn1_url'    => $url1,
+			'btn2_text'   => $args['offer_btn2_text'] ?? $bf['btn2_text'],
+			'btn2_url'    => $url2,
+			'period'      => ( ! isset( $args['offer_period'] ) || $args['offer_period'] ) ? $bf['period'] : '',
+			'card_label'  => $args['card_label'] ?? $bf['card_label'],
+			'card_prefix' => $args['card_prefix'] ?? $bf['card_prefix'],
+			'card_value'  => $args['card_value'] ?? $bf['card_value'],
+			'card_text'   => $args['card_text'] ?? $bf['card_text'],
+			'countdown'   => ( ! isset( $args['card_countdown'] ) || $args['card_countdown'] ) ? $bf['countdown'] : 0,
+			'is_over'     => $bf['is_over'],
+		)
+	);
+	return;
+}
+
 $style    = ( 'portrait' === $args['image_style'] ) ? 'portrait' : 'angled';
 $img_html = imob_section_image(
 	$args['image'],
@@ -32,7 +65,7 @@ if ( $args['show_partners'] ) {
 }
 $track_id = 'hm-partners-' . wp_unique_id();
 ?>
-<section class="hm-hero hm-hero--<?php echo esc_attr( $style ); ?><?php echo $construtoras ? ' hm-hero--has-partners' : ''; ?>">
+<section class="hm-hero hm-hero--<?php echo esc_attr( $style ); ?><?php echo $construtoras ? ' hm-hero--has-partners' : ''; ?><?php echo ( ! $img_html && ! $bg_html ) ? ' hm-hero--no-media' : ''; ?>">
 	<span class="hm-hero-line hm-hero-line--1" aria-hidden="true"></span>
 	<span class="hm-hero-line hm-hero-line--2" aria-hidden="true"></span>
 
@@ -48,12 +81,14 @@ $track_id = 'hm-partners-' . wp_unique_id();
 			<?php imob_section_buttons( $args, true ); ?>
 		</div>
 
-		<div class="hm-hero-media">
-			<?php
-			echo $bg_html; // phpcs:ignore WordPress.Security.EscapeOutput
-			echo $img_html ? $img_html : '<span class="hm-hero-img hm-hero-img--placeholder"></span>'; // phpcs:ignore WordPress.Security.EscapeOutput
-			?>
-		</div>
+		<?php if ( $img_html || $bg_html ) : ?>
+			<div class="hm-hero-media">
+				<?php
+				echo $bg_html; // phpcs:ignore WordPress.Security.EscapeOutput
+				echo $img_html; // phpcs:ignore WordPress.Security.EscapeOutput
+				?>
+			</div>
+		<?php endif; ?>
 	</div>
 
 	<?php if ( $construtoras ) : ?>

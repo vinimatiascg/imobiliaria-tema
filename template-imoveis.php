@@ -264,7 +264,7 @@ $current_page_url = get_permalink();
 
 					$tipo = ( ! is_wp_error( $tipos ) && ! empty( $tipos ) ) ? $tipos[0] : 'IMÓVEL';
 					$finalidade = ( ! is_wp_error( $status_list ) && ! empty( $status_list ) ) ? $status_list[0] : 'VENDA';
-					$bairro = ( ! is_wp_error( $localidades ) && ! empty( $localidades ) ) ? $localidades[0] : '';
+					$bairro = imob_get_localidade_name( get_the_ID(), '' );
 					
 					// Dados do Empreendimento vinculado (Requisito 4)
 					$badge_emp_html = imob_render_empreendimento_badge( get_the_ID() );

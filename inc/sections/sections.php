@@ -53,6 +53,9 @@ function imob_sections_schema() {
 		);
 	}
 
+	// Padrões do layout "Oferta" do topo: dados da campanha da Black Friday.
+	$bf = function_exists( 'imob_bf_hero_args' ) ? imob_bf_hero_args() : array_fill_keys( array( 'tag', 'title_big', 'title_sub', 'text', 'btn1_text', 'btn2_text', 'card_label', 'card_prefix', 'card_value', 'card_text' ), '' );
+
 	$schema = array(
 		'hero'         => array(
 			'title'  => 'Topo (hero)',
@@ -78,7 +81,116 @@ function imob_sections_schema() {
 				array(
 					'show_partners'  => array( 'switcher', 'Mostrar construtoras parceiras', 'yes' ),
 					'partners_title' => array( 'text', 'Texto das construtoras', imob_home_mod( 'construtoras_title' ) ),
+				),
+				array(
+					'layout'          => array(
+						'select',
+						'Layout do topo',
+						'auto',
+						array(
+							'auto'    => 'Automático (Oferta na página inicial, Clássico nas demais)',
+							'offer'   => 'Oferta (igual à landing da Black Friday)',
+							'classic' => 'Clássico (texto + imagem)',
+						),
+					),
+					'offer_tag'       => array( 'text', 'Oferta: etiqueta', $bf['tag'] ),
+					'offer_title_big' => array( 'text', 'Oferta: título grande (H1)', $bf['title_big'] ),
+					'offer_title_sub' => array( 'text', 'Oferta: subtítulo', $bf['title_sub'] ),
+					'offer_text'      => array( 'textarea', 'Oferta: texto (aceita <strong>)', $bf['text'] ),
+					'offer_btn1_text' => array( 'text', 'Oferta: botão 1 texto', $bf['btn1_text'] ),
+					'offer_btn1_url'  => array( 'url', 'Oferta: botão 1 link (vazio = WhatsApp da campanha)', '' ),
+					'offer_btn2_text' => array( 'text', 'Oferta: botão 2 texto', $bf['btn2_text'] ),
+					'offer_btn2_url'  => array( 'url', 'Oferta: botão 2 link (vazio = página da Black Friday)', '' ),
+					'offer_period'    => array( 'switcher', 'Oferta: mostrar período da campanha', 'yes' ),
+					'card_label'      => array( 'text', 'Quadro: etiqueta', $bf['card_label'] ),
+					'card_prefix'     => array( 'text', 'Quadro: texto acima do valor', $bf['card_prefix'] ),
+					'card_value'      => array( 'text', 'Quadro: valor em destaque', $bf['card_value'] ),
+					'card_text'       => array( 'text', 'Quadro: texto abaixo do valor', $bf['card_text'] ),
+					'card_countdown'  => array( 'switcher', 'Quadro: contagem regressiva (datas em Personalizar > Black Friday)', 'yes' ),
 				)
+			),
+		),
+		'slider'       => array(
+			'title'  => 'Slider (largura total)',
+			'icon'   => 'eicon-slides',
+			'fields' => array(
+				'slides'      => array(
+					'repeater',
+					'Slides',
+					array(
+						array(
+							'image'     => 0,
+							'eyebrow'   => 'O endereço dos seus planos.',
+							'title'     => 'Encontre o imóvel ideal em Campina Grande',
+							'text'      => 'Apartamentos, casas, terrenos e lançamentos com as melhores condições.',
+							'btn1_text' => 'Ver imóveis',
+							'btn1_url'  => '{imoveis}',
+							'btn2_text' => 'Fale conosco',
+							'btn2_url'  => '{whatsapp}',
+							'align'     => 'left',
+						),
+						array(
+							'image'     => 0,
+							'eyebrow'   => 'Minha Casa Minha Vida',
+							'title'     => 'Seu imóvel com subsídio e juros reduzidos',
+							'text'      => 'Simule o financiamento e descubra a sua faixa do programa.',
+							'btn1_text' => 'Simular agora',
+							'btn1_url'  => '{whatsapp}',
+							'btn2_text' => '',
+							'btn2_url'  => '',
+							'align'     => 'center',
+						),
+					),
+					array(
+						'image'     => array( 'image', 'Imagem de fundo', 0 ),
+						'eyebrow'   => array( 'text', 'Chamada superior', '' ),
+						'title'     => array( 'text', 'Título', '' ),
+						'text'      => array( 'textarea', 'Texto', '' ),
+						'btn1_text' => array( 'text', 'Botão 1: texto', '' ),
+						'btn1_url'  => array( 'url', 'Botão 1: link ({imoveis}, {whatsapp} ou URL)', '' ),
+						'btn2_text' => array( 'text', 'Botão 2: texto', '' ),
+						'btn2_url'  => array( 'url', 'Botão 2: link ({imoveis}, {whatsapp} ou URL)', '' ),
+						'link_url'  => array( 'url', 'Link do slide inteiro (opcional)', '' ),
+						'align'     => array(
+							'select',
+							'Alinhamento do texto',
+							'left',
+							array(
+								'left'   => 'Esquerda',
+								'center' => 'Centro',
+								'right'  => 'Direita',
+							),
+						),
+					),
+				),
+				'height'      => array(
+					'select',
+					'Altura',
+					'md',
+					array(
+						'sm'   => 'Baixa (420px)',
+						'md'   => 'Média (560px)',
+						'lg'   => 'Alta (720px)',
+						'full' => 'Tela inteira',
+					),
+				),
+				'overlay'     => array(
+					'select',
+					'Escurecer a imagem',
+					'50',
+					array(
+						'0'  => 'Sem escurecer',
+						'30' => 'Leve (30%)',
+						'50' => 'Médio (50%)',
+						'70' => 'Forte (70%)',
+					),
+				),
+				'autoplay'    => array( 'switcher', 'Passar automaticamente', 'yes' ),
+				'interval'    => array( 'number', 'Tempo de cada slide (segundos)', 6 ),
+				'arrows'      => array( 'switcher', 'Mostrar setas', 'yes' ),
+				'dots'        => array( 'switcher', 'Mostrar indicadores', 'yes' ),
+				'full_bleed'  => array( 'switcher', 'Forçar 100% da largura da tela (mesmo dentro de container)', 'yes' ),
+				'first_is_h1' => array( 'switcher', 'Título do 1º slide como H1 (use se for o topo da página)', '' ),
 			),
 		),
 		'process'      => array(
@@ -92,8 +204,6 @@ function imob_sections_schema() {
 					'Etapas por linha',
 					'5',
 					array(
-						'1' => '1 por linha',
-						'2' => '2 por linha',
 						'3' => '3 por linha',
 						'4' => '4 por linha',
 						'5' => '5 por linha',
@@ -586,8 +696,12 @@ function imob_sections_register_assets() {
 	$dir = get_template_directory();
 	$uri = get_template_directory_uri();
 	wp_register_style( 'imob-home', $uri . '/assets/css/home.css', array( 'imob-theme-style' ), (string) filemtime( $dir . '/assets/css/home.css' ) );
-	wp_register_style( 'imob-sections', $uri . '/assets/css/sections.css', array( 'imob-home' ), (string) filemtime( $dir . '/assets/css/sections.css' ) );
+	wp_register_style( 'imob-hero-offer', $uri . '/assets/css/hero-offer.css', array( 'imob-home' ), (string) filemtime( $dir . '/assets/css/hero-offer.css' ) );
+	wp_register_style( 'imob-sections', $uri . '/assets/css/sections.css', array( 'imob-home', 'imob-hero-offer' ), (string) filemtime( $dir . '/assets/css/sections.css' ) );
+	wp_register_style( 'imob-slider', $uri . '/assets/css/slider.css', array( 'imob-sections' ), (string) filemtime( $dir . '/assets/css/slider.css' ) );
 	wp_register_script( 'imob-home', $uri . '/assets/js/home.js', array(), (string) filemtime( $dir . '/assets/js/home.js' ), true );
+	wp_register_script( 'imob-hero-offer', $uri . '/assets/js/hero-offer.js', array(), (string) filemtime( $dir . '/assets/js/hero-offer.js' ), true );
+	wp_register_script( 'imob-slider', $uri . '/assets/js/slider.js', array(), (string) filemtime( $dir . '/assets/js/slider.js' ), true );
 }
 add_action( 'wp_enqueue_scripts', 'imob_sections_register_assets', 5 );
 
@@ -615,6 +729,10 @@ function imob_sections_maybe_enqueue() {
 		$data = get_post_meta( get_queried_object_id(), '_elementor_data', true );
 		if ( is_string( $data ) && false !== strpos( $data, 'imob_sec_' ) ) {
 			imob_sections_enqueue();
+		}
+		if ( is_string( $data ) && false !== strpos( $data, 'imob_sec_slider' ) ) {
+			wp_enqueue_style( 'imob-slider' );
+			wp_enqueue_script( 'imob-slider' );
 		}
 	}
 }

@@ -17,10 +17,6 @@
 .hm-btn--outline { background: transparent; color: var(--hm-ink); border-color: var(--hm-ink); }
 .hm-btn--outline:hover { background: var(--hm-ink); color: #fff; }
 
-/* Etapas: quantidade de colunas segue o número de etapas */
-@media (min-width: 1201px) {
-	.hm-steps { grid-template-columns: repeat(var(--hm-steps, 5), minmax(0, 1fr)); }
-}
 
 /* Números encostados na seção anterior (fundo azul contínuo) */
 .hm-numbers-section--tight { padding-top: 24px; }
@@ -28,6 +24,12 @@
 /* Linha dourada como widget */
 .hm-divider-wrap { background: var(--hm-light); padding: 0; }
 .hm-divider-wrap--dark { background: var(--hm-navy); padding: 24px 0; }
+
+/* ---------- Hero sem imagem: texto ocupa a largura toda ---------- */
+.hm-hero.hm-hero--no-media .hm-hero-inner { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+.hm-hero.hm-hero--no-media .hm-hero-content { padding-top: 96px; padding-bottom: 96px; padding-right: max(24px, calc((100vw - 1320px) / 2 + 24px)); }
+.hm-hero.hm-hero--no-media .hm-hero-title { max-width: 16em; }
+.hm-hero--no-media .hm-hero-text { max-width: 44em; }
 
 /* ---------- Hero sem construtoras ---------- */
 .hm-hero:not(.hm-hero--has-partners) { border-radius: 0 0 48px 48px; }
@@ -76,8 +78,9 @@
 	grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
 	gap: 56px;
 	align-items: center;
-	max-width: 1320px;
-	margin: 0 auto;
+	/* O quadro vai até a borda da tela; o texto segue o alinhamento do container (1320px). */
+	max-width: none;
+	margin: 0;
 	padding-left: max(24px, calc((100vw - 1320px) / 2 + 24px));
 }
 .hm-split-head { padding: 8px 0 8px 64px; }
@@ -139,7 +142,8 @@
 .hm-pillar--mid { background: #2D4A70; }
 .hm-pillar--deep { background: var(--hm-navy-2); }
 .hm-pillar--steel { background: #4A6386; }
-.hm-pillar-inner { padding: 36px 48px 40px; max-width: 760px; }
+.hm-pillar { display: flex; }
+.hm-pillar-inner { padding: 44px 48px 48px; max-width: 760px; width: 100%; }
 .hm-pillar--half:nth-child(odd) .hm-pillar-inner,
 .hm-pillar--full .hm-pillar-inner,
 .hm-pillar--third:first-child .hm-pillar-inner { margin-left: auto; margin-right: 0; padding-left: max(48px, calc((100vw - 1320px) / 2 + 64px)); max-width: none; }
@@ -157,10 +161,7 @@
 /* ---------- Texto + lista ---------- */
 .hm-checklist-section {
 	padding: 80px 0;
-	background:
-		linear-gradient(115deg, rgba(14, 26, 43, .035) 0 22%, transparent 22% 100%),
-		linear-gradient(245deg, rgba(14, 26, 43, .03) 0 18%, transparent 18% 100%),
-		var(--hm-light);
+	background: var(--hm-light);
 }
 .hm-checklist { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 0; align-items: center; }
 .hm-checklist-intro { padding: 0 56px 0 40px; color: var(--hm-ink); font-size: 1.12rem; line-height: 1.55; }

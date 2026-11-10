@@ -1,5 +1,5 @@
 /**
- * Contagem regressiva da landing page Black Friday.
+ * Contagem regressiva do hero de oferta (landing Black Friday e home).
  */
 ( function () {
 	'use strict';

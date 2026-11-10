@@ -215,16 +215,22 @@
 
 /* ---------- Processo ---------- */
 .hm-steps {
+	--hm-step-cols: 5;
+	--hm-step-gap: 20px;
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	display: grid;
-	--hm-step-cols: 5;
-	grid-template-columns: repeat(var(--hm-step-cols), minmax(0, 1fr));
-	gap: 20px;
-	row-gap: 44px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 44px var(--hm-step-gap);
 }
+.hm-steps--cols-3 { --hm-step-cols: 3; }
+.hm-steps--cols-4 { --hm-step-cols: 4; }
+.hm-steps--cols-5 { --hm-step-cols: 5; }
 .hm-step {
+	flex: 0 0 calc((100% - (var(--hm-step-cols) - 1) * var(--hm-step-gap)) / var(--hm-step-cols));
+	min-width: 0;
 	display: flex;
 	flex-direction: column;
 	border-radius: var(--hm-radius);
@@ -233,10 +239,8 @@
 	box-shadow: 0 6px 20px rgba(14, 26, 43, .12);
 }
 .hm-step-media { height: 120px; background: linear-gradient(135deg, #d9e1ec, #b8c6d9); }
-.hm-steps--cols-1 .hm-step-media,
-.hm-steps--cols-2 .hm-step-media { height: 220px; }
-.hm-steps--cols-3 .hm-step-media { height: 170px; }
-.hm-steps--cols-4 .hm-step-media { height: 140px; }
+.hm-steps--cols-3 .hm-step-media { height: 190px; }
+.hm-steps--cols-4 .hm-step-media { height: 150px; }
 .hm-step-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .hm-step-body {
 	position: relative;
@@ -499,7 +503,8 @@
 /* ---------- Responsivo ---------- */
 @media (max-width: 1200px) {
 	.hm-steps--cols-4,
-	.hm-steps--cols-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 40px; }
+	.hm-steps--cols-5 { --hm-step-cols: 3; }
+	.hm-steps .hm-step-media { height: 170px; }
 	.hm-grid--3 { gap: 28px; }
 	.hm-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -507,7 +512,7 @@
 @media (max-width: 992px) {
 	.hm-steps--cols-3,
 	.hm-steps--cols-4,
-	.hm-steps--cols-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.hm-steps--cols-5 { --hm-step-cols: 2; }
 	.hm-hero { border-radius: 0; }
 	.hm-hero-inner { grid-template-columns: 1fr; min-height: 0; }
 	.hm-hero-content { padding: 64px 24px 40px; }
@@ -533,8 +538,10 @@
 	.hm-partners-title { padding: 28px 16px 12px; font-size: 1.05rem; }
 	.hm-partners-panel { padding: 20px 40px; }
 	.hm-partner { flex-basis: 120px; height: 120px; }
-	.hm-steps { grid-template-columns: 1fr; }
-	.hm-steps .hm-step-media { height: 180px; }
+	.hm-steps--cols-3,
+	.hm-steps--cols-4,
+	.hm-steps--cols-5 { --hm-step-cols: 1; }
+	.hm-steps .hm-step-media { height: 190px; }
 	.hm-grid--3,
 	.hm-grid--4 { grid-template-columns: 1fr; }
 	.hm-form { grid-template-columns: 1fr; padding: 20px; }

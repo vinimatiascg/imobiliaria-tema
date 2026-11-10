@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.3.6' );
+define( 'IMOB_THEME_VERSION', '1.3.7' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -535,4 +535,67 @@ function imob_render_empreendimento_badges( $emp_id ) {
 	}
 
 	return $output;
+}
+
+/**
+ * Localidade a exibir de um imóvel (bairro).
+ *
+ * Ordem de preferência:
+ * 1. Termo marcado como primário (Yoast SEO ou Rank Math), se estiver atribuído ao imóvel.
+ * 2. O termo mais específico: quando pai (cidade) e filho (bairro) estão marcados, exibe o filho.
+ *
+ * @param int $post_id ID do imóvel.
+ * @return WP_Term|null
+ */
+function imob_get_localidade_term( $post_id ) {
+	$terms = wp_get_post_terms( $post_id, 'localidade' );
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		return null;
+	}
+
+	$by_id = array();
+	foreach ( $terms as $t ) {
+		$by_id[ (int) $t->term_id ] = $t;
+	}
+
+	foreach ( array( '_yoast_wpseo_primary_localidade', 'rank_math_primary_localidade' ) as $meta_key ) {
+		$primary = (int) get_post_meta( $post_id, $meta_key, true );
+		if ( $primary && isset( $by_id[ $primary ] ) ) {
+			return $by_id[ $primary ];
+		}
+	}
+
+	$best       = null;
+	$best_depth = -1;
+	foreach ( $terms as $t ) {
+		$is_parent_of_other = false;
+		foreach ( $terms as $other ) {
+			if ( (int) $other->parent === (int) $t->term_id ) {
+				$is_parent_of_other = true;
+				break;
+			}
+		}
+		if ( $is_parent_of_other ) {
+			continue;
+		}
+		$depth = count( get_ancestors( $t->term_id, 'localidade', 'taxonomy' ) );
+		if ( $depth > $best_depth ) {
+			$best       = $t;
+			$best_depth = $depth;
+		}
+	}
+
+	return $best ? $best : $terms[0];
+}
+
+/**
+ * Nome da localidade a exibir (ver imob_get_localidade_term()).
+ *
+ * @param int    $post_id  ID do imóvel.
+ * @param string $fallback Texto quando não houver localidade.
+ * @return string
+ */
+function imob_get_localidade_name( $post_id, $fallback = '' ) {
+	$term = imob_get_localidade_term( $post_id );
+	return $term ? $term->name : $fallback;
 }

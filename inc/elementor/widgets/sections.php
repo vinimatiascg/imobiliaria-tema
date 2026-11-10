@@ -179,6 +179,11 @@ abstract class Imob_Section_Widget extends \Elementor\Widget_Base {
 
 // phpcs:disable Generic.Files.OneObjectStructurePerFile, Squiz.Commenting
 class Imob_Section_Widget_Hero extends Imob_Section_Widget { protected $section = 'hero'; }
+class Imob_Section_Widget_Slider extends Imob_Section_Widget {
+	protected $section = 'slider';
+	public function get_style_depends() { return array( 'imob-home', 'imob-sections', 'imob-slider' ); }
+	public function get_script_depends() { return array( 'imob-slider' ); }
+}
 class Imob_Section_Widget_Process extends Imob_Section_Widget { protected $section = 'process'; }
 class Imob_Section_Widget_Properties extends Imob_Section_Widget { protected $section = 'properties'; }
 class Imob_Section_Widget_Numbers extends Imob_Section_Widget { protected $section = 'numbers'; }

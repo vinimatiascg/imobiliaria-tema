@@ -253,7 +253,7 @@ function imob_generate_schema_json() {
 		}
 
 		// Endereço e Coordenadas
-		$bairro_nome = ( ! empty( $localidades ) && ! is_wp_error( $localidades ) ) ? $localidades[0]->name : 'Campina Grande';
+		$bairro_nome = imob_get_localidade_name( $post_id, 'Campina Grande' );
 		$listing['address'] = array(
 			'@type'           => 'PostalAddress',
 			'streetAddress'   => $endereco ?: $bairro_nome,
@@ -734,7 +734,7 @@ function imob_get_llms_txt_content() {
 			$qts   = get_post_meta( $imv->ID, '_imob_quartos', true );
 			$ri    = trim( (string) get_post_meta( $imv->ID, '_imob_registro_incorporacao', true ) );
 			$locs  = wp_get_post_terms( $imv->ID, 'localidade', array( 'fields' => 'names' ) );
-			$loc   = ( ! empty( $locs ) && ! is_wp_error( $locs ) ) ? $locs[0] : 'Campina Grande';
+			$loc   = imob_get_localidade_name( $imv->ID, 'Campina Grande' );
 
 			$details = array( $loc );
 			if ( $qts ) {
