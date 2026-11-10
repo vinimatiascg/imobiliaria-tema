@@ -7,7 +7,7 @@
 
 function imob_theme_scripts() {
 	// Google Fonts: Inter
-	wp_enqueue_style( 'imob-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap', array(), null );
+	wp_enqueue_style( 'imob-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap', array(), null );
 
 	// Material Symbols Outlined
 	wp_enqueue_style( 'imob-material-symbols', 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200', array(), null );

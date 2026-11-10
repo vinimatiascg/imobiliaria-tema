@@ -46,60 +46,43 @@ if ( ! empty( $clean_wa_num ) ) {
 		<div class="container">
 			<div class="footer-widgets">
 				<div class="footer-widget brand-widget">
-					<div class="site-branding" style="margin-bottom: 20px;">
-						<?php if ( has_custom_logo() ) : ?>
-							<?php the_custom_logo(); ?>
-						<?php else : ?>
-							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" class="logo-text" style="color: #fff; font-size: 1.5rem; font-weight: 700;">
-								IS22 <span style="font-weight: 400;">IMÓVEIS</span> | VINICIUS <span style="font-weight: 400;">MATIAS</span>
-							</a>
-						<?php endif; ?>
-					</div>
-					<p>Compre seu imóvel com quem é referência em qualidade de atendimento em Campina Grande e região.<br>Os melhores imóveis estão aqui.</p>
-					<div class="social-links" style="margin-top: 20px; display: flex; gap: 10px;">
-						<a href="<?php echo esc_url( $whatsapp_click_url ); ?>" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #fff;" title="WhatsApp"><span class="material-symbols-outlined">chat</span></a>
-						<?php if ( get_option('imob_social_instagram') ) : ?>
-							<a href="<?php echo esc_url( get_option('imob_social_instagram') ); ?>" target="_blank" rel="noopener noreferrer" style="background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #fff;" title="Instagram"><span class="material-symbols-outlined">photo_camera</span></a>
-						<?php endif; ?>
-						<a href="<?php echo esc_url( $whatsapp_click_url ); ?>" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background-color: var(--accent-color); color: var(--primary-color);">Fale conosco</a>
-					</div>
+					<?php
+					if ( is_active_sidebar( 'footer-1' ) ) {
+						dynamic_sidebar( 'footer-1' );
+					} else {
+						imob_footer_brand_html( $whatsapp_click_url );
+					}
+					?>
 				</div>
 
 				<div class="footer-widget links-widget">
-					<h3>Acesso rápido</h3>
-					<ul>
-						<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Página inicial</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Todos os imóveis</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/avaliacao-de-imoveis/' ) ); ?>">Avaliação de imóveis</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>">Perguntas frequentes</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/termos-e-condicoes/' ) ); ?>">Termos e condições</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/nosso-blog/' ) ); ?>">Nosso blog</a></li>
-					</ul>
+					<?php
+					if ( is_active_sidebar( 'footer-2' ) ) {
+						dynamic_sidebar( 'footer-2' );
+					} else {
+						imob_footer_menu_html();
+					}
+					?>
 				</div>
 
 				<div class="footer-widget search-widget">
-					<h3>Mais pesquisados</h3>
-					<ul>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis-com-possibilidade-de-entrada-zero-em-campina-grande/' ) ); ?>">Imóveis com entrada zero</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis-minha-casa-minha-vida-em-campina-grande/' ) ); ?>">Imóveis "Minha casa, minha vida"</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/?localidade=campina-grande' ) ); ?>">Imóveis em Campina Grande</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/apartamentos/' ) ); ?>">Apartamentos à venda</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/imoveis/?tipo=casa&finalidade=venda' ) ); ?>">Casas à venda</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/terrenos/' ) ); ?>">Terrenos</a></li>
-					</ul>
+					<?php
+					if ( is_active_sidebar( 'footer-3' ) ) {
+						dynamic_sidebar( 'footer-3' );
+					} else {
+						imob_footer_visited_html();
+					}
+					?>
 				</div>
 			</div>
+		</div>
 
-			<div class="footer-bottom">
+		<div class="footer-bottom">
+			<div class="container footer-bottom-inner">
 				<div class="copyright">
-					© <?php echo date('Y'); ?>. Todos os Direitos Reservados
+					&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?>. <?php echo esc_html( imob_footer_mod( 'copyright' ) ); ?>
 				</div>
-				<div class="developer">
-					Desenvolvido por <strong>Vinicius Matias</strong>
-				</div>
-				<a href="<?php echo esc_url( $whatsapp_click_url ); ?>" class="footer-whatsapp-btn" target="_blank" rel="noopener noreferrer">
-					<span class="material-symbols-outlined">chat</span> Faça sua Simulação Agora!
-				</a>
+				<?php imob_footer_developer_html(); ?>
 			</div>
 		</div>
 	</footer>

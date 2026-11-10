@@ -4,11 +4,20 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.7`
+## 🚀 Versão Atual: `1.3.8`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.7** (Atualização Recente)
+#### **Versão 1.3.8** (Atualização Recente)
+- **1. Rodapé personalizável (`footer.php`, `inc/core/footer.php`)**:
+  - Áreas de widgets **Rodapé - Coluna 1/2/3** (Aparência > Widgets). Coluna sem widgets mostra o conteúdo padrão.
+  - Novos widgets **Imobiliária - Marca do rodapé** (logo, texto e botão) e **Imobiliária - Mais visitados** (título, quantidade e tipos de conteúdo).
+  - Coluna 1 com um único botão de WhatsApp ("Fale conosco"); removido o ícone de chat duplicado.
+  - Coluna "Acesso rápido" carrega o menu do novo local **Menu do rodapé (Acesso rápido)** (Aparência > Menus).
+  - Coluna "Mais visitados" lista as páginas e imóveis mais acessados, com contador de visitas próprio (funciona com cache/Cloudflare, ignora robôs e usuários logados). Quantidade e tipos configuráveis em Personalizar > Rodapé ou no widget.
+  - Faixa inferior preta com a assinatura "Desenvolvido por Vinicius Matias especialista em wordpress." no estilo do logo de vmatias.dev (Inter + JetBrains Mono e ponto verde), com link para https://vmatias.dev/. Removido o botão "Faça sua Simulação Agora!".
+
+#### **Versão 1.3.7**
 - **1. Novo widget Elementor "Slider (largura total)" (`template-parts/sections/slider.php`, `assets/css/slider.css`, `assets/js/slider.js`)**: slides com imagem de fundo, chamada, título, texto, 2 botões e link do slide inteiro; alinhamento por slide; altura (420px, 560px, 720px ou tela inteira); escurecimento da imagem; transição em fade; passagem automática com tempo configurável (pausa ao passar o mouse); setas, indicadores, teclado e deslizar no celular; opção de ocupar 100% da largura da tela mesmo dentro de container.
 - **2. Etapas do processo**: opções de 3, 4 ou 5 etapas por linha; CSS refeito com flexbox para qualquer quantidade de etapas (linhas incompletas ficam centralizadas) e responsivo (3 > 2 > 1 coluna).
 - **3. Página Sobre**: quadros de texto da seção "Apresentação" voltam a encostar na borda da tela, topo sem imagem usa a largura toda (sem a moldura vazia), blocos Missão/Visão/Valores com espaçamento uniforme e fundo da seção "Trajetória e formação" limpo.
