@@ -17,7 +17,7 @@
 }
 
 .site-header .site-branding { flex: none; }
-.site-header .site-branding img.custom-logo { max-width: 220px; max-height: 44px; }
+.site-header .site-branding img.custom-logo { width: 360px; height: auto; max-width: none; max-height: none; }
 
 .site-header .main-navigation { flex: 1; display: flex; justify-content: flex-end; }
 
@@ -152,6 +152,6 @@
 @media (max-width: 640px) {
 	.site-header .header-container { padding: 0 16px; }
 	.site-header .menu-toggle { right: 16px; }
-	.site-header .site-branding img.custom-logo { max-width: 170px; }
+	.site-header .site-branding img.custom-logo { width: min(360px, calc(100vw - 100px)); }
 	.site-header .header-cta { display: none; }
 }

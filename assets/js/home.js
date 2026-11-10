@@ -4,8 +4,12 @@
 ( function () {
 	'use strict';
 
+	function init( root ) {
+	root = root || document;
+
 	// Paginação no navegador: mostra N cards por página.
-	document.querySelectorAll( '[data-hm-paginate]' ).forEach( function ( grid ) {
+	root.querySelectorAll( '[data-hm-paginate]:not([data-hm-ready])' ).forEach( function ( grid ) {
+		grid.setAttribute( 'data-hm-ready', '' );
 		var perPage = parseInt( grid.getAttribute( 'data-hm-paginate' ), 10 ) || 6;
 		var cards = Array.prototype.slice.call( grid.children );
 		var pager = document.querySelector( '[data-hm-pager-for="' + grid.id + '"] .hm-pager-pages' );
@@ -50,7 +54,8 @@
 	} );
 
 	// Setas de rolagem dos carrosséis.
-	document.querySelectorAll( '[data-hm-scroll]' ).forEach( function ( btn ) {
+	root.querySelectorAll( '[data-hm-scroll]:not([data-hm-ready])' ).forEach( function ( btn ) {
+		btn.setAttribute( 'data-hm-ready', '' );
 		btn.addEventListener( 'click', function () {
 			var track = document.getElementById( btn.getAttribute( 'data-hm-scroll' ) );
 			if ( ! track ) {
@@ -60,4 +65,18 @@
 			track.scrollBy( { left: dir * track.clientWidth * 0.8, behavior: 'smooth' } );
 		} );
 	} );
+	}
+
+	init( document );
+
+	// Editor do Elementor: reaplica quando um widget é redesenhado.
+	if ( window.jQuery ) {
+		window.jQuery( window ).on( 'elementor/frontend/init', function () {
+			if ( window.elementorFrontend && window.elementorFrontend.hooks ) {
+				window.elementorFrontend.hooks.addAction( 'frontend/element_ready/widget', function ( $scope ) {
+					init( $scope[ 0 ] );
+				} );
+			}
+		} );
+	}
 } )();

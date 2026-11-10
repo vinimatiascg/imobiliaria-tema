@@ -114,9 +114,8 @@ a:hover {
 .site-branding img.custom-logo,
 .site-header .site-branding img,
 .site-footer .site-branding img {
-	max-width: 240px;
-	max-height: 56px;
-	width: auto;
+	width: 360px;
+	max-width: 100%;
 	height: auto;
 	object-fit: contain;
 	display: block;
@@ -2365,6 +2364,13 @@ ul.page-numbers li {
 	.imob-post-nav-cards {
 		grid-template-columns: 1fr;
 	}
+}
+
+
+/* Logo de 360px não pode forçar a largura das colunas do rodapé */
+.footer-widgets > * { min-width: 0; }
+@media (max-width: 768px) {
+	.footer-widgets { grid-template-columns: 1fr; gap: 28px; }
 }
 
 /* ---------- CTA de WhatsApp no final dos posts ---------- */

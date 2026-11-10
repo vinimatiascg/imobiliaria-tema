@@ -1,8 +1,9 @@
 <?php
 /**
- * Opções editáveis da Página Inicial (Personalizar > Página Inicial).
+ * Textos padrão da Página Inicial (layout do Figma) e ajudantes de WhatsApp.
  *
- * Todos os textos da home vêm daqui, com os textos do layout do Figma como padrão.
+ * A home é editada no Elementor com os widgets "Imobiliária - Seções do site"
+ * (inc/sections/sections.php); estes textos são o conteúdo inicial desses widgets.
  *
  * @package ImobiliariaTema
  */
@@ -109,134 +110,6 @@ function imob_home_mod( $key ) {
 }
 
 /**
- * Registra o painel "Página Inicial" no Personalizar.
- *
- * @param WP_Customize_Manager $wp_customize Gerenciador do Customizer.
- */
-function imob_home_customize_register( $wp_customize ) {
-	$defaults = imob_home_defaults();
-
-	$wp_customize->add_panel(
-		'imob_home_panel',
-		array(
-			'title'       => __( 'Página Inicial', 'imobiliaria-tema' ),
-			'description' => __( 'Textos, imagens e números das seções da home.', 'imobiliaria-tema' ),
-			'priority'    => 30,
-		)
-	);
-
-	$sections = array(
-		'hero'         => array( __( 'Topo (Hero)', 'imobiliaria-tema' ), array( 'hero_eyebrow', 'hero_title', 'hero_text', 'hero_image', 'construtoras_title' ) ),
-		'process'      => array( __( 'Processo de compra', 'imobiliaria-tema' ), array( 'process_title', 'process_text' ) ),
-		'latest'       => array( __( 'Últimos imóveis', 'imobiliaria-tema' ), array( 'latest_title', 'latest_text' ) ),
-		'numbers'      => array( __( 'Números da empresa', 'imobiliaria-tema' ), array( 'numbers_title', 'numbers_text' ) ),
-		'launch'       => array( __( 'Lançamentos', 'imobiliaria-tema' ), array( 'launch_title', 'launch_text', 'launch_tipo' ) ),
-		'form'         => array( __( 'Formulário de interesse', 'imobiliaria-tema' ), array( 'form_eyebrow', 'form_title', 'form_text' ) ),
-		'condo'        => array( __( 'Casas em condomínio', 'imobiliaria-tema' ), array( 'condo_title', 'condo_text', 'condo_tipo' ) ),
-		'blog'         => array( __( 'Blog', 'imobiliaria-tema' ), array( 'blog_title', 'blog_text' ) ),
-		'testimonials' => array( __( 'Depoimentos', 'imobiliaria-tema' ), array( 'testimonials_title', 'testimonials_text' ) ),
-	);
-
-	// Etapas do processo e números entram nas respectivas seções.
-	for ( $i = 1; $i <= 5; $i++ ) {
-		array_push( $sections['process'][1], "step_{$i}_label", "step_{$i}_title", "step_{$i}_text", "step_{$i}_image" );
-	}
-	for ( $i = 1; $i <= 6; $i++ ) {
-		array_push( $sections['numbers'][1], "number_{$i}_icon", "number_{$i}_value", "number_{$i}_label" );
-	}
-
-	$labels = array(
-		'launch_tipo' => __( 'Slug do tipo de imóvel exibido (ex.: lancamento)', 'imobiliaria-tema' ),
-		'condo_tipo'  => __( 'Slug do tipo de imóvel exibido (ex.: casa-em-condominio)', 'imobiliaria-tema' ),
-	);
-
-	foreach ( $sections as $section_id => $section ) {
-		$wp_customize->add_section(
-			'imob_home_' . $section_id,
-			array(
-				'title' => $section[0],
-				'panel' => 'imob_home_panel',
-			)
-		);
-
-		foreach ( $section[1] as $key ) {
-			$is_image = ( 'hero_image' === $key || preg_match( '/^step_\d_image$/', $key ) );
-			$is_long  = ( preg_match( '/_text$/', $key ) );
-
-			$wp_customize->add_setting(
-				'imob_home_' . $key,
-				array(
-					'default'           => isset( $defaults[ $key ] ) ? $defaults[ $key ] : '',
-					'sanitize_callback' => $is_image ? 'absint' : ( $is_long ? 'sanitize_textarea_field' : 'sanitize_text_field' ),
-				)
-			);
-
-			if ( $is_image ) {
-				$wp_customize->add_control(
-					new WP_Customize_Media_Control(
-						$wp_customize,
-						'imob_home_' . $key,
-						array(
-							'label'     => imob_home_label( $key ),
-							'section'   => 'imob_home_' . $section_id,
-							'mime_type' => 'image',
-						)
-					)
-				);
-			} else {
-				$wp_customize->add_control(
-					'imob_home_' . $key,
-					array(
-						'label'       => isset( $labels[ $key ] ) ? $labels[ $key ] : imob_home_label( $key ),
-						'description' => preg_match( '/^number_\d_icon$/', $key ) ? __( 'Nome do ícone do Google Material Symbols (ex.: home, person, calendar_month).', 'imobiliaria-tema' ) : '',
-						'section'     => 'imob_home_' . $section_id,
-						'type'        => $is_long ? 'textarea' : 'text',
-					)
-				);
-			}
-		}
-	}
-}
-add_action( 'customize_register', 'imob_home_customize_register' );
-
-/**
- * Rótulo legível para uma chave de opção.
- *
- * @param string $key Chave.
- * @return string
- */
-function imob_home_label( $key ) {
-	if ( preg_match( '/^step_(\d)_(label|title|text|image)$/', $key, $m ) ) {
-		$parts = array(
-			'label' => 'Etiqueta',
-			'title' => 'Título',
-			'text'  => 'Texto',
-			'image' => 'Imagem',
-		);
-		return sprintf( 'Etapa %d: %s', $m[1], $parts[ $m[2] ] );
-	}
-	if ( preg_match( '/^number_(\d)_(icon|value|label)$/', $key, $m ) ) {
-		$parts = array(
-			'icon'  => 'Ícone',
-			'value' => 'Número',
-			'label' => 'Descrição',
-		);
-		return sprintf( 'Número %d: %s', $m[1], $parts[ $m[2] ] );
-	}
-	$map = array(
-		'eyebrow' => 'Chamada superior',
-		'title'   => 'Título',
-		'text'    => 'Texto',
-		'image'   => 'Imagem',
-	);
-	$suffix = substr( $key, strrpos( $key, '_' ) + 1 );
-	if ( 'construtoras_title' === $key ) {
-		return 'Texto das construtoras';
-	}
-	return isset( $map[ $suffix ] ) ? $map[ $suffix ] : $key;
-}
-
-/**
  * URL de WhatsApp geral do site (Opções do Tema).
  *
  * @return string
@@ -265,85 +138,11 @@ function imob_home_whatsapp_icon() {
 }
 
 /**
- * Carrega CSS e JS da home somente na página inicial.
- */
-function imob_home_assets() {
-	if ( ! is_front_page() ) {
-		return;
-	}
-	$dir = get_template_directory();
-	$uri = get_template_directory_uri();
-	wp_enqueue_style( 'imob-home', $uri . '/assets/css/home.css', array( 'imob-theme-style' ), (string) filemtime( $dir . '/assets/css/home.css' ) );
-	wp_enqueue_script( 'imob-home', $uri . '/assets/js/home.js', array(), (string) filemtime( $dir . '/assets/js/home.js' ), true );
-}
-add_action( 'wp_enqueue_scripts', 'imob_home_assets', 20 );
-
-/**
- * Pré-carrega a imagem do hero (LCP).
- */
-function imob_home_preload_hero() {
-	if ( ! is_front_page() ) {
-		return;
-	}
-	$id = (int) imob_home_mod( 'hero_image' );
-	if ( $id ) {
-		$src = wp_get_attachment_image_url( $id, 'full' );
-		if ( $src ) {
-			echo '<link rel="preload" as="image" href="' . esc_url( $src ) . '" fetchpriority="high">' . "\n";
-		}
-	}
-}
-add_action( 'wp_head', 'imob_home_preload_hero', 2 );
-
-/**
- * Faz a home do tema (front-page.php) prevalecer sobre o modelo de página do Elementor
- * definido na página inicial. Pode ser desligado em Personalizar > Página Inicial > Topo.
- *
- * @param string $template Template escolhido.
- * @return string
- */
-function imob_home_force_template( $template ) {
-	if ( is_front_page() && ! is_home() && get_theme_mod( 'imob_home_use_theme', true ) && ! isset( $_GET['elementor-preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-		$front = locate_template( 'front-page.php' );
-		if ( $front ) {
-			return $front;
-		}
-	}
-	return $template;
-}
-add_filter( 'template_include', 'imob_home_force_template', 100 );
-
-/**
- * Chave para voltar à home antiga do Elementor.
- *
- * @param WP_Customize_Manager $wp_customize Gerenciador do Customizer.
- */
-function imob_home_customize_toggle( $wp_customize ) {
-	$wp_customize->add_setting(
-		'imob_home_use_theme',
-		array(
-			'default'           => true,
-			'sanitize_callback' => 'rest_sanitize_boolean',
-		)
-	);
-	$wp_customize->add_control(
-		'imob_home_use_theme',
-		array(
-			'label'       => __( 'Usar a home do tema (layout novo)', 'imobiliaria-tema' ),
-			'description' => __( 'Desmarque para voltar a exibir a página inicial montada no Elementor.', 'imobiliaria-tema' ),
-			'section'     => 'imob_home_hero',
-			'type'        => 'checkbox',
-			'priority'    => 1,
-		)
-	);
-}
-add_action( 'customize_register', 'imob_home_customize_toggle', 20 );
-
-/**
- * Imagens padrão (ilustrações do tema) das etapas do processo.
+ * Ilustração padrão (do tema) de cada etapa do processo de compra.
+ * Usada quando nenhuma imagem foi enviada para a etapa.
  *
  * @param int $i Número da etapa (1 a 5).
- * @return string URL da ilustração.
+ * @return string URL da ilustração ou vazio.
  */
 function imob_home_step_default_image( $i ) {
 	$files = array(
@@ -355,78 +154,3 @@ function imob_home_step_default_image( $i ) {
 	);
 	return isset( $files[ $i ] ) ? get_template_directory_uri() . '/assets/images/etapas/' . $files[ $i ] : '';
 }
-
-/**
- * Quantidade de etapas por linha (1 a 5).
- *
- * @return int
- */
-function imob_home_process_columns() {
-	$cols = (int) get_theme_mod( 'imob_home_process_columns', 5 );
-	return ( $cols >= 1 && $cols <= 5 ) ? $cols : 5;
-}
-
-/**
- * Controles extras: colunas das etapas e botão de WhatsApp dos depoimentos.
- *
- * @param WP_Customize_Manager $wp_customize Gerenciador do Customizer.
- */
-function imob_home_customize_extra( $wp_customize ) {
-	$wp_customize->add_setting(
-		'imob_home_process_columns',
-		array(
-			'default'           => 5,
-			'sanitize_callback' => 'absint',
-		)
-	);
-	$wp_customize->add_control(
-		'imob_home_process_columns',
-		array(
-			'label'       => __( 'Etapas por linha', 'imobiliaria-tema' ),
-			'description' => __( 'Quantidade de etapas exibidas lado a lado em telas grandes. Em tablets e celulares o layout se ajusta automaticamente.', 'imobiliaria-tema' ),
-			'section'     => 'imob_home_process',
-			'type'        => 'select',
-			'priority'    => 5,
-			'choices'     => array(
-				1 => __( '1 por linha', 'imobiliaria-tema' ),
-				2 => __( '2 por linha', 'imobiliaria-tema' ),
-				3 => __( '3 por linha', 'imobiliaria-tema' ),
-				4 => __( '4 por linha', 'imobiliaria-tema' ),
-				5 => __( '5 por linha', 'imobiliaria-tema' ),
-			),
-		)
-	);
-
-	$wp_customize->add_setting(
-		'imob_home_testimonials_whatsapp',
-		array(
-			'default'           => true,
-			'sanitize_callback' => 'rest_sanitize_boolean',
-		)
-	);
-	$wp_customize->add_control(
-		'imob_home_testimonials_whatsapp',
-		array(
-			'label'       => __( 'Exibir botão do WhatsApp', 'imobiliaria-tema' ),
-			'description' => __( 'Mostra o botão "Realize o seu sonho" abaixo dos depoimentos.', 'imobiliaria-tema' ),
-			'section'     => 'imob_home_testimonials',
-			'type'        => 'checkbox',
-		)
-	);
-	$wp_customize->add_setting(
-		'imob_home_testimonials_whatsapp_label',
-		array(
-			'default'           => __( 'Realize o seu sonho', 'imobiliaria-tema' ),
-			'sanitize_callback' => 'sanitize_text_field',
-		)
-	);
-	$wp_customize->add_control(
-		'imob_home_testimonials_whatsapp_label',
-		array(
-			'label'   => __( 'Texto do botão do WhatsApp', 'imobiliaria-tema' ),
-			'section' => 'imob_home_testimonials',
-			'type'    => 'text',
-		)
-	);
-}
-add_action( 'customize_register', 'imob_home_customize_extra', 25 );
