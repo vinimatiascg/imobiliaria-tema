@@ -4,11 +4,14 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.3.9`
+## 🚀 Versão Atual: `1.4.0`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.3.9** (Atualização Recente)
+#### **Versão 1.4.0** (Atualização Recente)
+- **Páginas Sobre e Avaliação de Imóveis encaixotadas (`template-parts/sections/split.php`, `template-parts/sections/pillars.php`, `assets/css/sections.css`)**: as seções "Apresentação" (título + quadro) e "Blocos coloridos" (Missão/Visão/Valores, Tipos/Métodos/Outros serviços) agora ficam dentro do container de 1320px como as demais páginas, com cantos arredondados; texto da "Trajetória e formação" alinhado ao container e fundo uniforme na chamada "Entre em contato".
+
+#### **Versão 1.3.9**
 - **1. Bairro nas listagens (`functions.php`)**: no site os bairros estão no mesmo nível da cidade (não são filhos de "Campina Grande"), e vários imóveis têm a cidade como termo primário no Yoast. Agora cidades (lista em **Personalizar > Imóveis: localidades**, padrão `campina-grande, joao-pessoa`, e qualquer localidade com filhos) nunca aparecem como bairro quando há um bairro marcado; o termo primário vale entre os bairros. A cidade só aparece quando o imóvel não tem bairro.
 - **2. Etapas do processo na home**: o CSS do Elementor (`.elementor img { height: auto }`) esticava as ilustrações sobre o texto. Seletores reforçados e `overflow: hidden` na imagem; a mesma proteção foi aplicada ao slider e ao topo. Nova ilustração para a 6ª etapa (Entrega).
 - **3. Redes sociais no rodapé**: ícones de Facebook, Instagram e WhatsApp (dados de Opções do Tema) na coluna 1 e novo widget **Imobiliária - Redes sociais**; o widget "Marca do rodapé" ganhou a opção de mostrar os ícones.

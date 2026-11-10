@@ -72,18 +72,15 @@
 }
 
 /* ---------- Apresentação (título + quadro) ---------- */
+/* Encaixotado no container de 1320px, como as demais seções do site. */
 .hm-split-section { padding: 72px 0 56px; }
 .hm-split {
 	display: grid;
 	grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
 	gap: 56px;
 	align-items: center;
-	/* O quadro vai até a borda da tela; o texto segue o alinhamento do container (1320px). */
-	max-width: none;
-	margin: 0;
-	padding-left: max(24px, calc((100vw - 1320px) / 2 + 24px));
 }
-.hm-split-head { padding: 8px 0 8px 64px; }
+.hm-split-head { padding: 8px 0; }
 .hm-split-title {
 	margin: 0 0 18px;
 	font-size: clamp(2rem, 3.4vw, 3rem);
@@ -95,9 +92,9 @@
 .hm-split--large .hm-split-title { font-size: clamp(2.4rem, 4.4vw, 3.9rem); }
 .hm-split-subtitle { margin: 0 0 26px; font-size: 1.3rem; line-height: 1.4; color: var(--hm-ink); max-width: 18em; }
 .hm-split-panel {
-	padding: 40px 56px 40px 48px;
+	padding: 40px 48px;
 	background: #F2F4F8;
-	border-radius: 24px 0 0 24px;
+	border-radius: 24px;
 	color: var(--hm-ink);
 	font-size: 1.08rem;
 	line-height: 1.6;
@@ -107,13 +104,9 @@
 .hm-split-panel strong { font-weight: 700; }
 
 /* Invertido: quadro à esquerda, título alinhado à direita */
-.hm-split--reverse {
-	grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
-	padding-left: 0;
-	padding-right: max(24px, calc((100vw - 1320px) / 2 + 24px));
-}
-.hm-split--reverse .hm-split-panel { order: -1; border-radius: 0 24px 24px 0; padding: 40px 48px 40px max(24px, calc((100vw - 1320px) / 2 + 64px)); }
-.hm-split--reverse .hm-split-head { padding: 8px 64px 8px 0; text-align: right; }
+.hm-split--reverse { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); }
+.hm-split--reverse .hm-split-panel { order: -1; }
+.hm-split--reverse .hm-split-head { text-align: right; }
 .hm-split--reverse .hm-split-subtitle { margin-left: auto; }
 .hm-split--reverse .hm-actions { justify-content: flex-end; }
 
@@ -134,21 +127,23 @@
 .hm-split-divider { margin-top: 40px; }
 
 /* ---------- Blocos coloridos ---------- */
-.hm-pillars-head { padding-top: 64px; }
-.hm-pillars { display: flex; flex-wrap: wrap; }
-.hm-pillar { flex: 1 1 100%; color: #fff; }
+/* Encaixotados no container, com cantos arredondados no conjunto. */
+.hm-pillars-section { padding: 24px 0 72px; }
+.hm-pillars-head { padding-top: 48px; }
+.hm-pillars {
+	display: flex;
+	flex-wrap: wrap;
+	border-radius: 24px;
+	overflow: hidden;
+	box-shadow: 0 14px 34px rgba(14, 26, 43, .14);
+}
+.hm-pillar { display: flex; flex: 1 1 100%; color: #fff; }
 .hm-pillar--half { flex-basis: 50%; }
 .hm-pillar--third { flex-basis: 33.333%; }
 .hm-pillar--mid { background: #2D4A70; }
 .hm-pillar--deep { background: var(--hm-navy-2); }
 .hm-pillar--steel { background: #4A6386; }
-.hm-pillar { display: flex; }
-.hm-pillar-inner { padding: 44px 48px 48px; max-width: 760px; width: 100%; }
-.hm-pillar--half:nth-child(odd) .hm-pillar-inner,
-.hm-pillar--full .hm-pillar-inner,
-.hm-pillar--third:first-child .hm-pillar-inner { margin-left: auto; margin-right: 0; padding-left: max(48px, calc((100vw - 1320px) / 2 + 64px)); max-width: none; }
-.hm-pillar--full .hm-pillar-inner { margin-left: 0; }
-.hm-pillar--half:nth-child(even) .hm-pillar-inner { padding-right: max(48px, calc((100vw - 1320px) / 2 + 64px)); }
+.hm-pillar-inner { width: 100%; padding: 40px 44px 44px; }
 .hm-pillar-icon { display: block; margin-bottom: 6px; font-size: 34px; color: var(--hm-gold); font-variation-settings: 'FILL' 1; }
 .hm-pillar-title { margin: 0 0 12px; font-size: 1.9rem; font-weight: 700; line-height: 1.15; color: #fff; }
 .hm-pillar-text { font-size: 1rem; line-height: 1.55; color: rgba(255, 255, 255, .92); max-width: 46em; }
@@ -164,7 +159,7 @@
 	background: var(--hm-light);
 }
 .hm-checklist { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 0; align-items: center; }
-.hm-checklist-intro { padding: 0 56px 0 40px; color: var(--hm-ink); font-size: 1.12rem; line-height: 1.55; }
+.hm-checklist-intro { padding: 0 56px 0 0; color: var(--hm-ink); font-size: 1.12rem; line-height: 1.55; }
 .hm-checklist-intro p { margin: 0 0 1.1em; }
 .hm-checklist-intro p:last-child { margin-bottom: 0; }
 .hm-checklist-intro .hm-lead-line { font-size: 1.3rem; line-height: 1.4; }
@@ -215,7 +210,7 @@
 .hm-section--dark .hm-feature-icon { background: var(--hm-gold); color: #fff; }
 
 /* ---------- Chamada para contato ---------- */
-.hm-cta-section { padding: 72px 0; background: linear-gradient(to bottom, #F4F6FA 0, #F4F6FA 50%, var(--hm-light) 50%); }
+.hm-cta-section { padding: 72px 0; background: transparent; }
 .hm-cta {
 	position: relative;
 	overflow: hidden;
@@ -253,22 +248,16 @@
 	.hm-hero--portrait .hm-hero-media { height: 380px; }
 
 	.hm-split,
-	.hm-split--reverse { grid-template-columns: 1fr; gap: 28px; padding: 0 24px; }
-	.hm-split-head,
-	.hm-split--reverse .hm-split-head { padding: 0; text-align: left; }
+	.hm-split--reverse { grid-template-columns: 1fr; gap: 28px; }
+	.hm-split--reverse .hm-split-head { text-align: left; }
 	.hm-split--reverse .hm-split-subtitle { margin-left: 0; }
 	.hm-split--reverse .hm-actions { justify-content: flex-start; }
 	.hm-split--reverse .hm-split-panel { order: 0; }
-	.hm-split-panel,
-	.hm-split--reverse .hm-split-panel { border-radius: 20px; padding: 28px; }
+	.hm-split-panel { border-radius: 20px; padding: 28px; }
 
 	.hm-pillar--half,
 	.hm-pillar--third { flex-basis: 100%; }
-	.hm-pillar .hm-pillar-inner,
-	.hm-pillar--half:nth-child(odd) .hm-pillar-inner,
-	.hm-pillar--half:nth-child(even) .hm-pillar-inner,
-	.hm-pillar--full .hm-pillar-inner,
-	.hm-pillar--third:first-child .hm-pillar-inner { padding: 32px 24px; margin: 0; max-width: none; }
+	.hm-pillar-inner { padding: 32px 28px; }
 
 	.hm-checklist { grid-template-columns: 1fr; gap: 36px; }
 	.hm-checklist-intro { padding: 0; }
@@ -280,16 +269,10 @@
 
 @media (max-width: 640px) {
 	.hm-split-section { padding: 52px 0 40px; }
-	.hm-split,
-	.hm-split--reverse { padding: 0 16px; }
-	.hm-split-panel,
-	.hm-split--reverse .hm-split-panel { padding: 22px; font-size: 1rem; }
+	.hm-split-panel { padding: 22px; font-size: 1rem; }
 	.hm-split-subtitle { font-size: 1.1rem; }
-	.hm-pillar .hm-pillar-inner,
-	.hm-pillar--half:nth-child(odd) .hm-pillar-inner,
-	.hm-pillar--half:nth-child(even) .hm-pillar-inner,
-	.hm-pillar--full .hm-pillar-inner,
-	.hm-pillar--third:first-child .hm-pillar-inner { padding: 28px 16px; }
+	.hm-pillars { border-radius: 18px; }
+	.hm-pillar-inner { padding: 28px 20px; }
 	.hm-hero--portrait .hm-hero-media { height: 300px; }
 	.hm-features { grid-template-columns: 1fr; }
 	.hm-checklist-section { padding: 52px 0; }

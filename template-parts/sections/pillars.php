@@ -16,7 +16,8 @@ if ( ! $args['items'] ) {
 			<?php imob_section_head( $args['title'], $args['text'] ); ?>
 		</div>
 	<?php endif; ?>
-	<div class="hm-pillars">
+	<div class="hm-container">
+	<div class="hm-pillars hm-pillars--<?php echo (int) count( $args['items'] ); ?>">
 		<?php foreach ( $args['items'] as $item ) : ?>
 			<div class="hm-pillar hm-pillar--<?php echo esc_attr( $item['width'] ); ?> hm-pillar--<?php echo esc_attr( $item['tone'] ); ?>">
 				<div class="hm-pillar-inner">
@@ -30,5 +31,6 @@ if ( ! $args['items'] ) {
 				</div>
 			</div>
 		<?php endforeach; ?>
+	</div>
 	</div>
 </section>

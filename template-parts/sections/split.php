@@ -6,7 +6,7 @@
  * @var array $args
  */
 
-$classes = array( 'hm-split' );
+$classes = array( 'hm-container', 'hm-split' );
 if ( $args['reverse'] ) {
 	$classes[] = 'hm-split--reverse';
 }
