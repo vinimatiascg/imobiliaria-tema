@@ -106,6 +106,7 @@ get_header(); ?>
 		<?php endif; ?>
 
 	</div>
+	<?php imob_contact_cta(); ?>
 </main>
 
 <?php

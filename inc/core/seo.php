@@ -428,6 +428,8 @@ function imob_get_seo_context() {
 		$raw_excerpt        = wp_strip_all_tags( strip_shortcodes( get_post_field( 'post_content', $page_id ) ) );
 		if ( ! empty( $raw_excerpt ) ) {
 			$ctx['description'] = wp_trim_words( $raw_excerpt, 28 );
+		} elseif ( function_exists( 'imob_blog_description' ) && ( 'template-blog.php' === get_page_template_slug( $page_id ) || 'nosso-blog' === get_post_field( 'post_name', $page_id ) ) ) {
+			$ctx['description'] = imob_blog_description();
 		}
 		$img_id = get_post_thumbnail_id( $page_id );
 		if ( $img_id ) {

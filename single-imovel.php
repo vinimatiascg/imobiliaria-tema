@@ -711,6 +711,7 @@ get_header(); ?>
 	<?php
 	endwhile; // End of the loop.
 	?>
+	<?php imob_contact_cta( ! empty( $whatsapp_link ) ? array( 'btn1_url' => $whatsapp_link ) : array() ); ?>
 </main>
 
 <?php

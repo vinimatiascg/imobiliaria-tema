@@ -380,6 +380,7 @@ $current_page_url = get_permalink();
 		</div>
 
 	</div>
+	<?php imob_contact_cta(); ?>
 </main>
 
 <?php

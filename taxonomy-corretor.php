@@ -139,6 +139,7 @@ $foto_url = $foto ? wp_get_attachment_image_url( $foto, 'medium' ) : 'https://vi
 			<?php endif; ?>
 		</div>
 	</div>
+	<?php imob_contact_cta(); ?>
 </main>
 
 <?php get_footer(); ?>

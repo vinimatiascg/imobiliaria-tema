@@ -4,7 +4,7 @@ Theme URI:
 Author: Antigravity
 Author URI: 
 Description: Tema customizado para Imobiliárias com alta performance, suporte a Elementor e otimizado para SEO técnico.
-Version: 1.4.4
+Version: 1.4.5
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: imobiliaria-tema
@@ -2482,5 +2482,6 @@ ul.page-numbers li {
 .imob-blog-grid .imob-card-thumb { aspect-ratio: 16 / 9; height: auto; }
 .imob-blog-grid .imob-card-thumb a { display: block; height: 100%; }
 .imob-blog-grid .imob-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.imob-blog-page .hm-cta-section { padding: 24px 0 72px; }
-.imob-blog-page .hm-cta-section .hm-container { max-width: 1200px; padding: 0 15px; }
+/* CTA de contato (blog, listagens e imóvel): mesma largura do .container do tema */
+.imob-contact-cta .hm-cta-section { padding: 24px 0 72px; }
+.imob-contact-cta .hm-cta-section .hm-container { max-width: 1200px; padding: 0 20px; }

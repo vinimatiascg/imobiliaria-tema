@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.4.4' );
+define( 'IMOB_THEME_VERSION', '1.4.5' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -54,6 +54,7 @@ $imob_includes = [
 	'inc/sections/layouts.php',
 	'inc/core/theme-updater.php',
 	'inc/core/footer.php',
+	'inc/core/contact-cta.php',
 	'inc/blog/post-cta.php',
 	'inc/landing/black-friday.php',
 	'inc/content/seed-content.php',

@@ -4,11 +4,15 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.4.4`
+## 🚀 Versão Atual: `1.4.5`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.4.4** (Atualização Recente)
+#### **Versão 1.4.5** (Atualização Recente)
+- **CTA de contato reutilizável (`inc/core/contact-cta.php`)**: o mesmo quadro do blog agora aparece no fim das listagens de imóveis (todos os imóveis, páginas de filtro, localidade, tipo, estágio da obra, corretor e empreendimentos) e da página de cada imóvel. Na página do imóvel, o botão do WhatsApp envia a mensagem com o nome e a referência do imóvel. Textos e exibição em **Personalizar > Chamada para contato (CTA)**.
+- **Descrição da página do blog editável**: **Personalizar > Blog > Descrição da página do blog**, renderizada direto no HTML e usada também como meta descrição da página quando não houver outra.
+
+#### **Versão 1.4.4**
 - **Página do blog (`template-blog.php`)**: 6 posts por página em 3 colunas (2 no tablet e 1 no celular), independente da opção "posts por página" do WordPress (filtro `imob_blog_posts_per_page`); capas em 16:9 sem cortar as laterais; nova chamada (CTA) no fim da página com WhatsApp e "Ver imóveis", alinhada à grade do blog.
 
 #### **Versão 1.4.3**

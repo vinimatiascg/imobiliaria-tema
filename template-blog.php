@@ -33,7 +33,7 @@ $blog_query = new WP_Query( array(
 			</h1>
 			
 			<p style="max-width: 650px; margin: 0 auto; color: var(--text-light); font-size: 1.05rem; line-height: 1.6;">
-				<?php _e( 'Acompanhe as principais tendências, análises do mercado imobiliário e dicas exclusivas para morar bem e investir com segurança.', 'imobiliaria-tema' ); ?>
+				<?php echo esc_html( imob_blog_description() ); ?>
 			</p>
 		</header>
 
@@ -124,23 +124,8 @@ $blog_query = new WP_Query( array(
 
 	</div>
 
-	<!-- CTA -->
-	<?php
-	if ( function_exists( 'imob_render_section' ) ) {
-		imob_render_section(
-			'cta',
-			array(
-				'eyebrow'   => __( 'Fale com um corretor', 'imobiliaria-tema' ),
-				'title'     => __( 'Quer comprar o seu imóvel em Campina Grande com condições especiais?', 'imobiliaria-tema' ),
-				'content'   => '<p>' . __( 'Entre em contato conosco: tiramos suas dúvidas sobre financiamento, Minha Casa Minha Vida e uso do FGTS, e apresentamos os imóveis que cabem no seu bolso.', 'imobiliaria-tema' ) . '</p>',
-				'btn1_text' => __( 'Falar no WhatsApp', 'imobiliaria-tema' ),
-				'btn1_url'  => '{whatsapp}',
-				'btn2_text' => __( 'Ver imóveis', 'imobiliaria-tema' ),
-				'btn2_url'  => '{imoveis}',
-			)
-		);
-	}
-	?>
+	<!-- CTA (Personalizar > Chamada para contato) -->
+	<?php imob_contact_cta(); ?>
 </main>
 
 <?php

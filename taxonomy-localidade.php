@@ -102,6 +102,7 @@ $term = get_queried_object();
 			<p style="text-align: center; color: var(--text-light);"><?php _e( 'Nenhum imóvel encontrado nesta localidade.', 'imobiliaria-tema' ); ?></p>
 		<?php endif; ?>
 	</div>
+	<?php imob_contact_cta(); ?>
 </main>
 
 <?php get_footer(); ?>

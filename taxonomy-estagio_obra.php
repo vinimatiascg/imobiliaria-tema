@@ -117,6 +117,7 @@ $term = get_queried_object();
 			</div>
 		<?php endif; ?>
 	</div>
+	<?php imob_contact_cta(); ?>
 </main>
 
 <?php get_footer(); ?>
