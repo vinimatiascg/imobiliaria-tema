@@ -804,7 +804,7 @@ function imob_sections_enqueue() {
  * (evita o conteúdo aparecer sem estilo antes do CSS chegar).
  */
 function imob_sections_maybe_enqueue() {
-	if ( is_front_page() ) {
+	if ( is_front_page() || is_page_template( 'template-blog.php' ) || is_page( 'nosso-blog' ) ) {
 		imob_sections_enqueue();
 		return;
 	}

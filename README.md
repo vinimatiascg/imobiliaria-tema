@@ -4,11 +4,14 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.4.3`
+## 🚀 Versão Atual: `1.4.4`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.4.3** (Atualização Recente)
+#### **Versão 1.4.4** (Atualização Recente)
+- **Página do blog (`template-blog.php`)**: 6 posts por página em 3 colunas (2 no tablet e 1 no celular), independente da opção "posts por página" do WordPress (filtro `imob_blog_posts_per_page`); capas em 16:9 sem cortar as laterais; nova chamada (CTA) no fim da página com WhatsApp e "Ver imóveis", alinhada à grade do blog.
+
+#### **Versão 1.4.3**
 - **Página de links da bio (estilo Linktree)**: novo widget Elementor **"Links (estilo Linktree)"** (`template-parts/sections/linkbio.php`, `assets/css/linkbio.css`) com foto/logo, nome, descrição e redes sociais; botão principal do WhatsApp com mensagem própria; destaque da Black Friday com dias restantes (some sozinho quando a campanha acaba); **últimos imóveis cadastrados** (foto, bairro, quartos, preço e selo "Novo") e **últimos posts** carregados automaticamente; links extras configuráveis; marcação UTM (`utm_source=instagram&utm_medium=linkbio`) para medir no Google Analytics; barra fixa de WhatsApp que aparece ao rolar.
 - A página **/links/** é criada automaticamente no Elementor (modelo Tela Cheia, sem cabeçalho e rodapé) na primeira visita de um administrador ao painel, e fica fora do Google (`noindex`).
 

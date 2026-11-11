@@ -12,7 +12,8 @@ $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : ( ( get_query
 $blog_query = new WP_Query( array(
 	'post_type'      => 'post',
 	'post_status'    => 'publish',
-	'posts_per_page' => get_option( 'posts_per_page', 9 ),
+	// 6 por página = 2 linhas completas de 3 (filtro imob_blog_posts_per_page para mudar).
+	'posts_per_page' => (int) apply_filters( 'imob_blog_posts_per_page', 6 ),
 	'paged'          => $paged,
 ) );
 ?>
@@ -38,7 +39,7 @@ $blog_query = new WP_Query( array(
 
 		<!-- GRID DE POSTS -->
 		<?php if ( $blog_query->have_posts() ) : ?>
-			<div class="imob-elementor-imovel-grid imob-elementor-post-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;">
+			<div class="imob-elementor-imovel-grid imob-elementor-post-grid imob-blog-grid">
 				<?php 
 				while ( $blog_query->have_posts() ) : $blog_query->the_post(); 
 					$post_categories = get_the_category();
@@ -50,7 +51,8 @@ $blog_query = new WP_Query( array(
 							<a href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
 								<?php
 								if ( has_post_thumbnail() ) {
-									the_post_thumbnail( 'imob_thumb' );
+									// Imagem inteira em 16:9 (o recorte 4:3 cortava as laterais das capas dos posts).
+									the_post_thumbnail( 'imob_large', array( 'sizes' => '(max-width: 640px) 100vw, (max-width: 992px) 50vw, 380px' ) );
 								} else {
 									echo '<div class="imob-card-placeholder" style="display:flex; align-items:center; justify-content:center; background:#f0f2f5;">';
 									echo '<span class="material-symbols-outlined" style="font-size: 44px; color: #b0b7c3;">article</span>';
@@ -121,7 +123,25 @@ $blog_query = new WP_Query( array(
 		<?php endif; ?>
 
 	</div>
+
+	<!-- CTA -->
+	<?php
+	if ( function_exists( 'imob_render_section' ) ) {
+		imob_render_section(
+			'cta',
+			array(
+				'eyebrow'   => __( 'Fale com um corretor', 'imobiliaria-tema' ),
+				'title'     => __( 'Quer comprar o seu imóvel em Campina Grande com condições especiais?', 'imobiliaria-tema' ),
+				'content'   => '<p>' . __( 'Entre em contato conosco: tiramos suas dúvidas sobre financiamento, Minha Casa Minha Vida e uso do FGTS, e apresentamos os imóveis que cabem no seu bolso.', 'imobiliaria-tema' ) . '</p>',
+				'btn1_text' => __( 'Falar no WhatsApp', 'imobiliaria-tema' ),
+				'btn1_url'  => '{whatsapp}',
+				'btn2_text' => __( 'Ver imóveis', 'imobiliaria-tema' ),
+				'btn2_url'  => '{imoveis}',
+			)
+		);
+	}
+	?>
 </main>
 
-<?php 
+<?php
 get_footer();
