@@ -131,6 +131,10 @@ function imob_sections_layouts() {
 			),
 		),
 
+		'links'     => array(
+			array( 'linkbio', array() ),
+		),
+
 		'avaliacao' => array(
 			array(
 				'hero',

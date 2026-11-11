@@ -110,6 +110,49 @@ function imob_sections_schema() {
 				)
 			),
 		),
+		'linkbio'      => array(
+			'title'  => 'Links (estilo Linktree)',
+			'icon'   => 'eicon-link',
+			'fields' => array(
+				'avatar'         => array( 'image', 'Foto ou logo (vazio = logo do site)', 0 ),
+				'name'           => array( 'text', 'Nome', 'Vinicius Matias' ),
+				'bio'            => array( 'textarea', 'Descrição', 'Corretor de imóveis em Campina Grande - PB | CRECI-PB 9972-F. Encontre o seu imóvel com quem entende do assunto.' ),
+				'show_social'    => array( 'switcher', 'Mostrar ícones das redes sociais', 'yes' ),
+				'wa_text'        => array( 'text', 'Botão principal (WhatsApp): texto', 'Falar com o corretor no WhatsApp' ),
+				'wa_message'     => array( 'textarea', 'Mensagem do WhatsApp', 'Olá! Vim pelo Instagram e quero ajuda para encontrar um imóvel.' ),
+				'bf_show'        => array( 'switcher', 'Mostrar destaque da Black Friday (some sozinho quando a campanha acaba)', 'yes' ),
+				'bf_text'        => array( 'text', 'Black Friday: texto', 'Black Friday: R$ 1.000 de desconto extra' ),
+				'imoveis_count'  => array( 'number', 'Quantidade de últimos imóveis', 4 ),
+				'imoveis_title'  => array( 'text', 'Título dos imóveis', 'Últimos imóveis cadastrados' ),
+				'imoveis_tipo'   => array( 'text', 'Tipo de imóvel (slug; vazio = todos)', '' ),
+				'all_text'       => array( 'text', 'Botão "ver todos": texto', 'Ver todos os imóveis' ),
+				'posts_count'    => array( 'number', 'Quantidade de últimos posts', 3 ),
+				'posts_title'    => array( 'text', 'Título dos posts', 'Últimas do blog' ),
+				'links'          => array(
+					'repeater',
+					'Links extras',
+					array(
+						array(
+							'text' => 'Imóveis Minha Casa Minha Vida',
+							'url'  => '/imoveis-minha-casa-minha-vida-em-campina-grande/',
+							'icon' => 'family_home',
+						),
+						array(
+							'text' => 'Quanto vale o seu imóvel? Peça uma avaliação',
+							'url'  => '/avaliacao-de-imoveis/',
+							'icon' => 'request_quote',
+						),
+					),
+					array(
+						'text' => array( 'text', 'Texto', '' ),
+						'url'  => array( 'url', 'Link ({imoveis}, {whatsapp} ou URL)', '' ),
+						'icon' => array( 'text', 'Ícone (Material Symbols, ex.: home, sell, chat)', 'link' ),
+					),
+				),
+				'utm'            => array( 'switcher', 'Marcar links para o Google Analytics (utm_source=instagram)', 'yes' ),
+				'footer_text'    => array( 'text', 'Rodapé', 'IS22 Imóveis · Campina Grande - PB' ),
+			),
+		),
 		'slider'       => array(
 			'title'  => 'Slider (largura total)',
 			'icon'   => 'eicon-slides',
@@ -737,6 +780,7 @@ function imob_sections_register_assets() {
 	wp_register_style( 'imob-home', $uri . '/assets/css/home.css', array( 'imob-theme-style' ), (string) filemtime( $dir . '/assets/css/home.css' ) );
 	wp_register_style( 'imob-hero-offer', $uri . '/assets/css/hero-offer.css', array( 'imob-home' ), (string) filemtime( $dir . '/assets/css/hero-offer.css' ) );
 	wp_register_style( 'imob-sections', $uri . '/assets/css/sections.css', array( 'imob-home', 'imob-hero-offer' ), (string) filemtime( $dir . '/assets/css/sections.css' ) );
+	wp_register_style( 'imob-linkbio', $uri . '/assets/css/linkbio.css', array( 'imob-sections' ), (string) filemtime( $dir . '/assets/css/linkbio.css' ) );
 	wp_register_style( 'imob-slider', $uri . '/assets/css/slider.css', array( 'imob-sections' ), (string) filemtime( $dir . '/assets/css/slider.css' ) );
 	wp_register_script( 'imob-home', $uri . '/assets/js/home.js', array(), (string) filemtime( $dir . '/assets/js/home.js' ), true );
 	wp_register_script( 'imob-hero-offer', $uri . '/assets/js/hero-offer.js', array(), (string) filemtime( $dir . '/assets/js/hero-offer.js' ), true );
@@ -768,6 +812,9 @@ function imob_sections_maybe_enqueue() {
 		$data = get_post_meta( get_queried_object_id(), '_elementor_data', true );
 		if ( is_string( $data ) && false !== strpos( $data, 'imob_sec_' ) ) {
 			imob_sections_enqueue();
+		}
+		if ( is_string( $data ) && false !== strpos( $data, 'imob_sec_linkbio' ) ) {
+			wp_enqueue_style( 'imob-linkbio' );
 		}
 		if ( is_string( $data ) && false !== strpos( $data, 'imob_sec_slider' ) ) {
 			wp_enqueue_style( 'imob-slider' );

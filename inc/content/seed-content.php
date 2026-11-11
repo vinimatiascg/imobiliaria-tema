@@ -290,3 +290,80 @@ function imob_seed_content_notice() {
 	echo '</ul></div>';
 }
 add_action( 'admin_notices', 'imob_seed_content_notice' );
+
+/**
+ * Cria a página de links da bio (/links/) montada no Elementor com o widget
+ * "Links (estilo Linktree)", no modelo "Elementor Tela Cheia" (sem cabeçalho e rodapé).
+ * Roda uma vez, quando um administrador acessa o painel com o Elementor ativo.
+ */
+function imob_seed_links_page() {
+	if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) || get_option( 'imob_seed_links_page' ) ) {
+		return;
+	}
+	if ( ! class_exists( '\\Elementor\\Plugin' ) || ! function_exists( 'imob_sections_layout_to_elementor' ) || ! function_exists( 'imob_sections_layouts' ) ) {
+		return; // Tenta de novo quando o Elementor estiver ativo.
+	}
+	update_option( 'imob_seed_links_page', 1, false );
+
+	$page = imob_seed_find( 'links', 'page' );
+	if ( $page ) {
+		$data = get_post_meta( $page->ID, '_elementor_data', true );
+		if ( is_string( $data ) && false !== strpos( $data, 'imob_sec_linkbio' ) ) {
+			return; // Já existe.
+		}
+		if ( $data ) {
+			return; // Existe uma página /links/ com outro conteúdo: não mexe.
+		}
+		$page_id = $page->ID;
+	} else {
+		$page_id = wp_insert_post(
+			array(
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_name'    => 'links',
+				'post_title'   => 'Links',
+				'post_content' => '',
+				'post_author'  => get_current_user_id(),
+			),
+			true
+		);
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	$layouts = imob_sections_layouts();
+	$data    = imob_sections_layout_to_elementor( $layouts['links'] );
+	update_post_meta( $page_id, '_elementor_data', wp_slash( wp_json_encode( $data ) ) );
+	update_post_meta( $page_id, '_elementor_edit_mode', 'builder' );
+	update_post_meta( $page_id, '_elementor_template_type', 'wp-page' );
+	update_post_meta( $page_id, '_wp_page_template', 'elementor_canvas' );
+	if ( defined( 'ELEMENTOR_VERSION' ) ) {
+		update_post_meta( $page_id, '_elementor_version', ELEMENTOR_VERSION );
+	}
+	\Elementor\Plugin::$instance->files_manager->clear_cache();
+
+	$report   = (array) get_transient( 'imob_seed_content_report' );
+	$report[] = (int) $page_id;
+	set_transient( 'imob_seed_content_report', array_filter( $report ), DAY_IN_SECONDS );
+}
+add_action( 'admin_init', 'imob_seed_links_page', 20 );
+
+/**
+ * A página de links não precisa aparecer no Google (evita conteúdo duplicado).
+ *
+ * @param array $robots Diretivas.
+ * @return array
+ */
+function imob_links_page_robots( $robots ) {
+	if ( is_page() ) {
+		$data = get_post_meta( get_queried_object_id(), '_elementor_data', true );
+		if ( is_string( $data ) && false !== strpos( $data, 'imob_sec_linkbio' ) ) {
+			$robots['noindex'] = true;
+			$robots['follow']  = true;
+			unset( $robots['index'] );
+		}
+	}
+	return $robots;
+}
+add_filter( 'wp_robots', 'imob_links_page_robots', 30 );
