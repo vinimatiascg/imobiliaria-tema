@@ -325,22 +325,16 @@ get_header(); ?>
 									$lng = trim(str_replace(',16', '', $lng));
 									$lng = trim(str_replace(',14', '', $lng));
 									?>
-									<div id="imob-map" style="width:100%; height: 400px; border-radius: 10px;"></div>
-									<script>
-									function initImobMap() {
-										var location = { lat: <?php echo esc_attr($lat); ?>, lng: <?php echo esc_attr($lng); ?> };
-										var map = new google.maps.Map(document.getElementById('imob-map'), {
-											zoom: 18,
-											center: location,
-											mapTypeId: 'satellite'
-										});
-										var marker = new google.maps.Marker({
-											position: location,
-											map: map
-										});
-									}
-									window.addEventListener('load', initImobMap);
-									</script>
+									<?php
+									$imob_map_opts = array(
+										'lat'   => (float) $lat,
+										'lng'   => (float) $lng,
+										'zoom'  => 18,
+										'type'  => 'satellite',
+										'title' => get_the_title(),
+									);
+									?>
+									<div id="imob-map" data-imob-map="<?php echo esc_attr( wp_json_encode( $imob_map_opts ) ); ?>" style="width:100%; height: 400px; border-radius: 10px; background: #e2e8f0;"></div>
 								<?php } else { ?>
 									<img src="https://via.placeholder.com/800x300.png?text=Mapa+do+Im%C3%B3vel+(API+Key+necess%C3%A1ria)" style="width:100%; display:block; border-radius: 10px;" alt="Mapa">
 								<?php } ?>
@@ -472,7 +466,7 @@ get_header(); ?>
 												<a href="https://instagram.com/<?php echo esc_attr(str_replace('@', '', $instagram)); ?>" target="_blank" class="social-icon" title="Instagram"><span class="material-symbols-outlined">photo_camera</span></a>
 											<?php endif; ?>
 											<?php if ( $email ) : ?>
-												<a href="mailto:<?php echo esc_attr($email); ?>" class="social-icon" title="E-mail"><span class="material-symbols-outlined">mail</span></a>
+												<a href="<?php echo imob_email_href( $email ); ?>" class="social-icon" title="E-mail"><span class="material-symbols-outlined">mail</span></a>
 											<?php endif; ?>
 										</div>
 									</div>
@@ -521,7 +515,7 @@ get_header(); ?>
 												<a href="https://instagram.com/<?php echo esc_attr(str_replace('@', '', $user_contact['instagram'])); ?>" target="_blank" class="social-icon" title="Instagram"><span class="material-symbols-outlined">photo_camera</span></a>
 											<?php endif; ?>
 											<?php if ( ! empty( $user_contact['email'] ) ) : ?>
-												<a href="mailto:<?php echo esc_attr($user_contact['email']); ?>?subject=<?php echo urlencode('Interesse no imóvel: ' . get_the_title()); ?>" class="social-icon" title="E-mail"><span class="material-symbols-outlined">mail</span></a>
+												<a href="<?php echo imob_email_href( $user_contact['email'] ); ?>?subject=<?php echo urlencode('Interesse no imóvel: ' . get_the_title()); ?>" class="social-icon" title="E-mail"><span class="material-symbols-outlined">mail</span></a>
 											<?php endif; ?>
 										</div>
 									</div>

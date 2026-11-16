@@ -124,6 +124,11 @@ class Imob_Elementor_Widget_imovel_map extends \Elementor\Widget_Base {
 			wp_reset_postdata();
 		}
 
+		if ( function_exists( 'imob_register_maps_lazy' ) ) {
+			imob_register_maps_lazy();
+			wp_enqueue_script( 'imob-maps-lazy' );
+		}
+
 		$map_id = 'imob-global-map-' . uniqid();
 		$zoom = intval( $settings['map_zoom'] );
 		?>
@@ -135,13 +140,18 @@ class Imob_Elementor_Widget_imovel_map extends \Elementor\Widget_Base {
 			var imobLocations = <?php echo wp_json_encode($locations); ?>;
 			var mapElement = document.getElementById('<?php echo esc_js($map_id); ?>');
 			
-			if (typeof google === 'undefined') {
-				// Script might be loaded asynchronously, wait for it
+			if ( window.imobWatchMap && window.imobLoadGoogleMaps ) {
+				// Só baixa o Maps quando o mapa se aproxima da tela (melhora o INP no celular).
+				window.imobWatchMap( mapElement, function () {
+					window.imobLoadGoogleMaps( renderMap );
+				} );
+			} else if (typeof google === 'undefined') {
 				window.initGlobalMap = function() {
 					renderMap();
 				};
 				var script = document.createElement('script');
-				script.src = "https://maps.googleapis.com/maps/api/js?key=<?php echo esc_js($gmaps_key); ?>&callback=initGlobalMap";
+				script.src = "https://maps.googleapis.com/maps/api/js?key=<?php echo esc_js($gmaps_key); ?>&loading=async&callback=initGlobalMap";
+				script.async = true;
 				document.head.appendChild(script);
 			} else {
 				renderMap();

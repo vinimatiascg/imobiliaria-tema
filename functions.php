@@ -21,6 +21,7 @@ define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 $imob_includes = [
 	'inc/core/setup.php',
 	'inc/core/enqueue.php',
+	'inc/core/email-protect.php',
 	'inc/core/search-logic.php',
 	'inc/core/theme-options.php',
 	'inc/core/user-profile.php',

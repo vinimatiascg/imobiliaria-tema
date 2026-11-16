@@ -67,8 +67,8 @@ get_header();
 					<div class="imob-contact-card">
 						<span class="material-symbols-outlined imob-contact-card-icon">mail</span>
 						<h3><?php _e( 'E-mail de Atendimento', 'imobiliaria-tema' ); ?></h3>
-						<p><?php echo esc_html( $contact_email ); ?></p>
-						<a href="mailto:<?php echo esc_attr( $contact_email ); ?>" class="imob-btn-relation">
+						<p><?php echo imob_email_text( $contact_email ); ?></p>
+						<a href="<?php echo imob_email_href( $contact_email ); ?>" class="imob-btn-relation">
 							<span class="material-symbols-outlined">send</span>
 							<?php _e( 'Enviar E-mail', 'imobiliaria-tema' ); ?>
 						</a>

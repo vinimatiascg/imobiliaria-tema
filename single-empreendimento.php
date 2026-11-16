@@ -346,23 +346,16 @@ $gmaps_key = get_option( 'imob_gmaps_key' );
 					<?php endif; ?>
 
 					<?php if ( $gmaps_key && ! empty( $lat ) && ! empty( $lng ) ) : ?>
-						<div id="imob-emp-single-map" style="width: 100%; height: 420px; border-radius: 10px; border: 1px solid #e2e8f0;"></div>
-						<script>
-							function initEmpMap() {
-								var loc = { lat: <?php echo floatval( $lat ); ?>, lng: <?php echo floatval( $lng ); ?> };
-								var map = new google.maps.Map(document.getElementById('imob-emp-single-map'), {
-									zoom: 16,
-									center: loc,
-									mapTypeId: 'roadmap'
-								});
-								var marker = new google.maps.Marker({
-									position: loc,
-									map: map,
-									title: '<?php echo esc_js( get_the_title() ); ?>'
-								});
-							}
-							window.addEventListener('load', initEmpMap);
-						</script>
+						<?php
+						$imob_emp_map_opts = array(
+							'lat'   => (float) $lat,
+							'lng'   => (float) $lng,
+							'zoom'  => 16,
+							'type'  => 'roadmap',
+							'title' => get_the_title(),
+						);
+						?>
+						<div id="imob-emp-single-map" data-imob-map="<?php echo esc_attr( wp_json_encode( $imob_emp_map_opts ) ); ?>" style="width: 100%; height: 420px; border-radius: 10px; border: 1px solid #e2e8f0; background: #e2e8f0;"></div>
 					<?php else : 
 						// Fallback dinâmico com OpenStreetMap ou Google Maps Search Embed para nunca quebrar
 						$map_query = ( ! empty( $lat ) && ! empty( $lng ) ) ? $lat . ',' . $lng : urlencode( $endereco );

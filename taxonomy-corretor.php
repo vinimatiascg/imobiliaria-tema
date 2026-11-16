@@ -44,7 +44,7 @@ $foto_url = $foto ? wp_get_attachment_image_url( $foto, 'medium' ) : 'https://vi
 					<a href="https://instagram.com/<?php echo esc_attr(str_replace('@', '', $instagram)); ?>" target="_blank" class="btn-contato" style="background: var(--bg-light); padding: 10px 20px; border-radius: 4px; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 500;"><span class="material-symbols-outlined">photo_camera</span> Instagram</a>
 				<?php endif; ?>
 				<?php if ( $email ) : ?>
-					<a href="mailto:<?php echo esc_attr($email); ?>" class="btn-contato" style="background: var(--bg-light); padding: 10px 20px; border-radius: 4px; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 500;"><span class="material-symbols-outlined">mail</span> E-mail</a>
+					<a href="<?php echo imob_email_href( $email ); ?>" class="btn-contato" style="background: var(--bg-light); padding: 10px 20px; border-radius: 4px; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 500;"><span class="material-symbols-outlined">mail</span> E-mail</a>
 				<?php endif; ?>
 			</div>
 		</header>
