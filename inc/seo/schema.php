@@ -564,7 +564,7 @@ function imob_generate_schema_json() {
 				'@type'    => 'ListItem',
 				'position' => 2,
 				'name'     => 'Blog',
-				'item'     => home_url( '/nosso-blog/' ),
+				'item'     => imob_get_blog_url(),
 			);
 			$crumbs[] = array(
 				'@type'    => 'ListItem',
@@ -598,6 +598,51 @@ function imob_generate_schema_json() {
 	echo '<script type="application/ld+json" class="imob-schema-graph">' . wp_json_encode( $schema_payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
 }
 add_action( 'wp_head', 'imob_generate_schema_json', 10 );
+
+/**
+ * Evita schema duplicado com o Yoast SEO.
+ *
+ * O tema já imprime Organization (#organization), WebSite (#website), o artigo dos posts (#article)
+ * e o BreadcrumbList (#breadcrumb) das páginas internas. O Yoast gerava as mesmas entidades, com os
+ * mesmos @id e dados diferentes. Aqui ficam só as peças do Yoast que o tema não gera (WebPage,
+ * imagem principal e autor); as referências delas a esses @id continuam válidas porque os nós do
+ * tema estão na mesma página.
+ *
+ * @param array $pieces Peças do grafo do Yoast.
+ * @return array
+ */
+function imob_filter_yoast_schema_pieces( $pieces ) {
+	if ( ! is_array( $pieces ) ) {
+		return $pieces;
+	}
+
+	$remove = array(
+		'Yoast\WP\SEO\Generators\Schema\Organization',
+		'Yoast\WP\SEO\Generators\Schema\Website',
+	);
+	if ( is_singular( 'post' ) ) {
+		$remove[] = 'Yoast\WP\SEO\Generators\Schema\Article';
+	}
+	// O tema só imprime breadcrumb fora da home, em conteúdos singulares.
+	if ( ! is_front_page() && is_singular( array( 'imovel', 'empreendimento', 'construtora', 'post', 'page' ) ) ) {
+		$remove[] = 'Yoast\WP\SEO\Generators\Schema\Breadcrumb';
+	}
+
+	return array_values(
+		array_filter(
+			$pieces,
+			static function ( $piece ) use ( $remove ) {
+				foreach ( $remove as $class ) {
+					if ( $piece instanceof $class ) {
+						return false;
+					}
+				}
+				return true;
+			}
+		)
+	);
+}
+add_filter( 'wpseo_schema_graph_pieces', 'imob_filter_yoast_schema_pieces', 20 );
 
 /**
  * 3. Renderiza o Sitemap XML Oficial do Google News (/sitemap-news.xml)
@@ -692,7 +737,7 @@ function imob_get_llms_txt_content() {
 	echo "- **Empreendimentos**: " . $home . "/empreendimentos/\n";
 	echo "- **Construtoras Parceiras**: " . $home . "/construtoras/\n";
 	echo "- **Avaliação de Imóveis**: " . $home . "/avaliacao-de-imoveis/\n";
-	echo "- **Blog e Artigos do Mercado Imobiliário**: " . $home . "/nosso-blog/\n\n";
+	echo "- **Blog e Artigos do Mercado Imobiliário**: " . imob_get_blog_url() . "\n\n";
 
 	echo "## Categorias Principais de Imóveis em Campina Grande\n";
 	echo "- [Todos os Imóveis](" . $home . "/imoveis/)\n";

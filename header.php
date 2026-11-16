@@ -47,7 +47,7 @@
 						<li><a href="<?php echo esc_url( home_url( '/sobre/' ) ); ?>">Sobre</a></li>
 						<li class="menu-item-has-children"><a href="<?php echo esc_url( home_url( '/imoveis/' ) ); ?>">Imóveis</a></li>
 						<li><a href="<?php echo esc_url( home_url( '/avaliacao-de-imoveis/' ) ); ?>">Avaliações</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/nosso-blog/' ) ); ?>">Blog</a></li>
+						<li><a href="<?php echo esc_url( imob_get_blog_url() ); ?>">Blog</a></li>
 					</ul>
 				<?php endif; ?>
 			</nav><!-- #site-navigation -->

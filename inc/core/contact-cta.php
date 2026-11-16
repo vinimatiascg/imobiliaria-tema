@@ -47,6 +47,48 @@ function imob_blog_description() {
 }
 
 /**
+ * Página do blog: a de slug "nosso-blog" ou, se não existir, a primeira com o modelo template-blog.php
+ * (em produção é /artigos-e-noticias/).
+ *
+ * @return int ID da página ou 0.
+ */
+function imob_get_blog_page_id() {
+	static $page_id = null;
+	if ( null !== $page_id ) {
+		return $page_id;
+	}
+	$page = get_page_by_path( 'nosso-blog' );
+	if ( $page && 'publish' === $page->post_status ) {
+		$page_id = (int) $page->ID;
+		return $page_id;
+	}
+	$ids     = get_posts(
+		array(
+			'post_type'      => 'page',
+			'post_status'    => 'publish',
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+			'meta_key'       => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'meta_value'     => 'template-blog.php', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+		)
+	);
+	$page_id = $ids ? (int) $ids[0] : 0;
+	return $page_id;
+}
+
+/**
+ * URL da página do blog.
+ *
+ * @return string
+ */
+function imob_get_blog_url() {
+	$page_id = imob_get_blog_page_id();
+	return $page_id ? get_permalink( $page_id ) : home_url( '/nosso-blog/' );
+}
+
+/**
  * Lê um texto do CTA.
  *
  * @param string $key Chave.

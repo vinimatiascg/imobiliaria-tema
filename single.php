@@ -23,8 +23,7 @@ get_header();
 			$word_count   = str_word_count( $raw_content );
 			$reading_time = max( 1, (int) ceil( $word_count / 200 ) );
 
-			$blog_page    = get_page_by_path( 'nosso-blog' );
-			$blog_url     = $blog_page ? get_permalink( $blog_page->ID ) : home_url( '/nosso-blog/' );
+			$blog_url     = imob_get_blog_url();
 			$share_url    = rawurlencode( get_permalink() );
 			$share_title  = rawurlencode( get_the_title() );
 			?>

@@ -376,11 +376,12 @@ function imob_footer_menu_html() {
 		'/avaliacao-de-imoveis/' => 'Avaliação de imóveis',
 		'/faq/'                 => 'Perguntas frequentes',
 		'/termos-e-condicoes/'  => 'Termos e condições',
-		'/nosso-blog/'          => 'Nosso blog',
+		imob_get_blog_url()     => 'Nosso blog',
 	);
 	echo '<ul>';
 	foreach ( $links as $path => $label ) {
-		echo '<li><a href="' . esc_url( home_url( $path ) ) . '">' . esc_html( $label ) . '</a></li>';
+		$url = 0 === strpos( $path, 'http' ) ? $path : home_url( $path );
+		echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a></li>';
 	}
 	echo '</ul>';
 }
