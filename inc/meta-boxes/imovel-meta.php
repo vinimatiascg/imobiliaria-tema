@@ -630,110 +630,178 @@ function imob_imovel_meta_box_callback( $post ) {
 			});
 		});
 
-		// --- 3. Google Maps Interativo (Campina Grande - PB) ---
-		var mapElement = document.getElementById('imob_admin_map');
-		if ( mapElement && typeof google !== 'undefined' && google.maps ) {
-			var campinaGrande = { lat: -7.2247, lng: -35.8816 };
-			var currentLat = $('#imob_lat').val() ? parseFloat($('#imob_lat').val()) : null;
-			var currentLng = $('#imob_lng').val() ? parseFloat($('#imob_lng').val()) : null;
-			var initialCenter = (currentLat && currentLng) ? { lat: currentLat, lng: currentLng } : campinaGrande;
-			var initialZoom = (currentLat && currentLng) ? 17 : 13;
+		// --- 3. Localização: busca de endereço + mapa (Campina Grande - PB) ---
+		// A busca tenta o Google Geocoder e, se ele falhar ou só achar algo aproximado,
+		// usa o OpenStreetMap (via AJAX do próprio site). Funciona mesmo sem o mapa carregado.
+		var geoNonce = '<?php echo esc_js( wp_create_nonce( 'imob_geocode_nonce' ) ); ?>';
+		var campinaGrande = { lat: -7.2247, lng: -35.8816 };
+		var currentLat = parseFloat( $('#imob_lat').val() );
+		var currentLng = parseFloat( $('#imob_lng').val() );
+		var hasCoords = ! isNaN( currentLat ) && ! isNaN( currentLng ) && ( currentLat !== 0 || currentLng !== 0 );
+		var initialCenter = hasCoords ? { lat: currentLat, lng: currentLng } : campinaGrande;
 
-			var map = new google.maps.Map(mapElement, {
+		var mapElement = document.getElementById('imob_admin_map');
+		var hasGoogle = typeof google !== 'undefined' && google.maps && google.maps.Map;
+		var map = null, marker = null, geocoder = null;
+		var $status = $('<p class="description" id="imob_map_status" style="margin:-4px 0 10px;"></p>');
+		$('#imob_map_search').closest('div').after($status);
+
+		function setStatus(msg, isError) {
+			$status.text(msg || '').css('color', isError ? '#b32d2e' : '#2271b1');
+		}
+
+		if ( mapElement && hasGoogle ) {
+			map = new google.maps.Map(mapElement, {
 				center: initialCenter,
-				zoom: initialZoom,
+				zoom: hasCoords ? 17 : 13,
 				mapTypeId: 'roadmap',
 				streetViewControl: false,
 				mapTypeControl: true
 			});
-
-			var geocoder = new google.maps.Geocoder();
-			var marker = new google.maps.Marker({
+			geocoder = new google.maps.Geocoder();
+			marker = new google.maps.Marker({
 				position: initialCenter,
 				map: map,
 				draggable: true,
 				title: 'Localização do Imóvel'
 			});
 
-			function updatePositionAndAddress(latLng, shouldGeocode) {
-				var lat = latLng.lat().toFixed(6);
-				var lng = latLng.lng().toFixed(6);
-				$('#imob_lat').val(lat);
-				$('#imob_lng').val(lng);
-
-				if ( shouldGeocode !== false ) {
-					geocoder.geocode({ location: latLng }, function(results, status) {
-						if ( status === 'OK' && results[0] ) {
-							$('#imob_endereco').val(results[0].formatted_address);
-							if ( ! $('#imob_map_search').val() ) {
-								$('#imob_map_search').val(results[0].formatted_address);
-							}
-						}
-					});
-				}
+			// No editor de blocos a caixa é montada depois; recentra quando o mapa ganha tamanho.
+			if ( window.ResizeObserver ) {
+				new ResizeObserver(function(){
+					google.maps.event.trigger(map, 'resize');
+					map.setCenter(marker.getPosition());
+				}).observe(mapElement);
 			}
 
-			// Se já tinha coordenadas salvas, não sobrescreve endereço salvo
-			if ( currentLat && currentLng ) {
-				marker.setPosition(initialCenter);
-			}
-
-			// Clique no mapa
 			google.maps.event.addListener(map, 'click', function(e) {
 				marker.setPosition(e.latLng);
-				updatePositionAndAddress(e.latLng, true);
+				setCoords(e.latLng.lat(), e.latLng.lng());
+				reverseGeocode(e.latLng.lat(), e.latLng.lng());
 			});
-
-			// Arrastar marcador
 			google.maps.event.addListener(marker, 'dragend', function(e) {
-				updatePositionAndAddress(e.latLng, true);
+				setCoords(e.latLng.lat(), e.latLng.lng());
+				reverseGeocode(e.latLng.lat(), e.latLng.lng());
 			});
+		}
 
-			// Busca de endereço no mapa
-			function searchAddressOnMap() {
-				var query = $('#imob_map_search').val().trim();
-				if ( ! query ) {
-					query = $('#imob_endereco').val().trim();
-				}
-				if ( ! query ) {
-					alert('Digite um endereço para buscar no mapa.');
-					return;
-				}
+		function setCoords(lat, lng) {
+			$('#imob_lat').val( Number(lat).toFixed(6) );
+			$('#imob_lng').val( Number(lng).toFixed(6) );
+		}
 
-				// Adiciona contexto de Campina Grande se não informado estado/cidade
-				var searchAddress = query;
-				if ( searchAddress.toLowerCase().indexOf('campina grande') === -1 ) {
-					searchAddress += ', Campina Grande - PB';
-				}
+		function placeMarker(lat, lng) {
+			setCoords(lat, lng);
+			if ( map && marker ) {
+				var pos = { lat: Number(lat), lng: Number(lng) };
+				marker.setPosition(pos);
+				map.setCenter(pos);
+				map.setZoom(18);
+			}
+		}
 
-				geocoder.geocode({ address: searchAddress }, function(results, status) {
-					if ( status === 'OK' && results[0] ) {
-						var location = results[0].geometry.location;
-						map.setCenter(location);
-						map.setZoom(17);
-						marker.setPosition(location);
-						updatePositionAndAddress(location, false);
-						if ( ! $('#imob_endereco').val() ) {
-							$('#imob_endereco').val(results[0].formatted_address);
-						}
-					} else {
-						alert('Endereço não localizado no Google Maps. Tente clicar diretamente no mapa.');
+		function serverGeocode(params) {
+			params.action = 'imob_geocode';
+			params.nonce = geoNonce;
+			return $.post(ajaxurl, params);
+		}
+
+		function reverseGeocode(lat, lng) {
+			var useServer = function(){
+				serverGeocode({ lat: lat, lng: lng }).done(function(res){
+					if ( res && res.success && res.data.address ) {
+						$('#imob_endereco').val(res.data.address);
 					}
 				});
-			}
-
-			$('#imob_btn_search_map').on('click', function(e){
-				e.preventDefault();
-				searchAddressOnMap();
-			});
-
-			$('#imob_map_search').on('keypress', function(e){
-				if ( e.which === 13 ) {
-					e.preventDefault();
-					searchAddressOnMap();
+			};
+			if ( ! geocoder ) { useServer(); return; }
+			geocoder.geocode({ location: { lat: lat, lng: lng } }, function(results, status) {
+				if ( status === 'OK' && results[0] ) {
+					$('#imob_endereco').val(results[0].formatted_address);
+				} else {
+					useServer();
 				}
 			});
 		}
+
+		function searchAddressOnMap() {
+			var query = $.trim( $('#imob_map_search').val() ) || $.trim( $('#imob_endereco').val() );
+			if ( ! query ) {
+				setStatus('Digite um endereço para buscar no mapa.', true);
+				return;
+			}
+			var searchAddress = query;
+			if ( searchAddress.toLowerCase().indexOf('campina grande') === -1 && ! /\b[A-Z]{2}\b\s*$/.test(searchAddress) ) {
+				searchAddress += ', Campina Grande - PB';
+			}
+
+			var $btn = $('#imob_btn_search_map').prop('disabled', true);
+			setStatus('Buscando endereço...');
+
+			var applyResult = function(lat, lng, address, source) {
+				placeMarker(lat, lng);
+				if ( address ) {
+					$('#imob_endereco').val(address);
+				}
+				setStatus('Marcador posicionado (' + source + '). Se precisar, arraste para o ponto exato.');
+				$btn.prop('disabled', false);
+			};
+
+			var useServer = function(googleFallback) {
+				serverGeocode({ q: searchAddress }).done(function(res){
+					if ( res && res.success ) {
+						applyResult(res.data.lat, res.data.lng, res.data.address, 'OpenStreetMap');
+					} else if ( googleFallback ) {
+						applyResult(googleFallback.lat, googleFallback.lng, googleFallback.address, 'Google, aproximado');
+					} else {
+						setStatus('Endereço não localizado. Confira o nome da rua ou clique direto no mapa.', true);
+						$btn.prop('disabled', false);
+					}
+				}).fail(function(){
+					if ( googleFallback ) {
+						applyResult(googleFallback.lat, googleFallback.lng, googleFallback.address, 'Google, aproximado');
+					} else {
+						setStatus('Erro ao buscar o endereço. Tente novamente.', true);
+						$btn.prop('disabled', false);
+					}
+				});
+			};
+
+			if ( ! geocoder ) { useServer(null); return; }
+
+			geocoder.geocode({
+				address: searchAddress,
+				region: 'br',
+				componentRestrictions: { country: 'BR' }
+			}, function(results, status) {
+				if ( status === 'OK' && results[0] ) {
+					var r = results[0];
+					var loc = r.geometry.location;
+					var found = { lat: loc.lat(), lng: loc.lng(), address: r.formatted_address };
+					// Resultado só de bairro/cidade: tenta achar a rua no OpenStreetMap antes.
+					if ( r.geometry.location_type === 'APPROXIMATE' || r.partial_match ) {
+						useServer(found);
+					} else {
+						applyResult(found.lat, found.lng, found.address, 'Google');
+					}
+				} else {
+					if ( window.console ) { console.warn('Google Geocoder: ' + status); }
+					useServer(null);
+				}
+			});
+		}
+
+		$('#imob_btn_search_map').on('click', function(e){
+			e.preventDefault();
+			searchAddressOnMap();
+		});
+
+		$('#imob_map_search').on('keydown', function(e){
+			if ( e.key === 'Enter' ) {
+				e.preventDefault();
+				searchAddressOnMap();
+			}
+		});
 	});
 	</script>
 	<?php
@@ -878,3 +946,75 @@ function imob_ajax_quick_create_relation() {
 	) );
 }
 add_action( 'wp_ajax_imob_quick_create_relation', 'imob_ajax_quick_create_relation' );
+
+/**
+ * AJAX: geocodificação pelo OpenStreetMap (Nominatim), usada como reserva quando
+ * o Google Geocoder falha ou só retorna um resultado aproximado.
+ * Recebe "q" (endereço → coordenadas) ou "lat"/"lng" (coordenadas → endereço).
+ */
+function imob_ajax_geocode() {
+	check_ajax_referer( 'imob_geocode_nonce', 'nonce' );
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		wp_send_json_error( __( 'Permissão negada.', 'imobiliaria-tema' ), 403 );
+	}
+
+	$q   = isset( $_POST['q'] ) ? sanitize_text_field( wp_unslash( $_POST['q'] ) ) : '';
+	$lat = isset( $_POST['lat'] ) ? (float) $_POST['lat'] : null;
+	$lng = isset( $_POST['lng'] ) ? (float) $_POST['lng'] : null;
+
+	if ( $q !== '' ) {
+		$url = add_query_arg(
+			array(
+				'format'          => 'jsonv2',
+				'q'               => $q,
+				'countrycodes'    => 'br',
+				'viewbox'         => '-36.05,-7.10,-35.75,-7.40', // Campina Grande e entorno (preferência, não limite).
+				'addressdetails'  => 0,
+				'limit'           => 1,
+				'accept-language' => 'pt-BR',
+			),
+			'https://nominatim.openstreetmap.org/search'
+		);
+	} elseif ( null !== $lat && null !== $lng && ( $lat || $lng ) ) {
+		$url = add_query_arg(
+			array(
+				'format'          => 'jsonv2',
+				'lat'             => $lat,
+				'lon'             => $lng,
+				'zoom'            => 18,
+				'accept-language' => 'pt-BR',
+			),
+			'https://nominatim.openstreetmap.org/reverse'
+		);
+	} else {
+		wp_send_json_error( __( 'Informe um endereço.', 'imobiliaria-tema' ) );
+	}
+
+	$cache_key = 'imob_geo_' . md5( $url );
+	$data      = get_transient( $cache_key );
+
+	if ( false === $data ) {
+		$response = wp_remote_get( $url, array( 'timeout' => 10 ) );
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			wp_send_json_error( __( 'Serviço de endereços indisponível no momento.', 'imobiliaria-tema' ) );
+		}
+		$data = json_decode( wp_remote_retrieve_body( $response ), true );
+		set_transient( $cache_key, $data, WEEK_IN_SECONDS );
+	}
+
+	// Busca devolve uma lista; reverso devolve um objeto.
+	$place = ( $q !== '' ) ? ( is_array( $data ) && ! empty( $data[0] ) ? $data[0] : null ) : $data;
+
+	if ( empty( $place['lat'] ) || empty( $place['lon'] ) ) {
+		wp_send_json_error( __( 'Endereço não localizado.', 'imobiliaria-tema' ) );
+	}
+
+	wp_send_json_success(
+		array(
+			'lat'     => (float) $place['lat'],
+			'lng'     => (float) $place['lon'],
+			'address' => isset( $place['display_name'] ) ? sanitize_text_field( $place['display_name'] ) : '',
+		)
+	);
+}
+add_action( 'wp_ajax_imob_geocode', 'imob_ajax_geocode' );

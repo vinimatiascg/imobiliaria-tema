@@ -4,11 +4,15 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.4.5`
+## 🚀 Versão Atual: `1.4.6`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.4.5** (Atualização Recente)
+#### **Versão 1.4.6** (Atualização Recente)
+- **Busca de endereço no cadastro do imóvel**: o campo "Buscar no Mapa" agora posiciona o marcador no endereço digitado (Enter ou botão). Usa o Google Geocoder e, quando ele falha ou só acha o bairro/cidade, busca no OpenStreetMap pelo próprio site (`wp_ajax_imob_geocode`). Funciona mesmo sem a chave do Google (preenche latitude/longitude e endereço) e mostra o resultado abaixo do campo.
+- **Duplicar imóvel (`inc/post-types/imovel-duplicate.php`)**: link "Duplicar" na lista de imóveis e caixa "Duplicar Imóvel" na tela de edição. A cópia sai como rascunho com todos os campos, taxonomias, galeria, imagem destacada e relações; recebe um novo código de referência.
+
+#### **Versão 1.4.5**
 - **CTA de contato reutilizável (`inc/core/contact-cta.php`)**: o mesmo quadro do blog agora aparece no fim das listagens de imóveis (todos os imóveis, páginas de filtro, localidade, tipo, estágio da obra, corretor e empreendimentos) e da página de cada imóvel. Na página do imóvel, o botão do WhatsApp envia a mensagem com o nome e a referência do imóvel. Textos e exibição em **Personalizar > Chamada para contato (CTA)**.
 - **Descrição da página do blog editável**: **Personalizar > Blog > Descrição da página do blog**, renderizada direto no HTML e usada também como meta descrição da página quando não houver outra.
 

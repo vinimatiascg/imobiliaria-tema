@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.4.5' );
+define( 'IMOB_THEME_VERSION', '1.4.6' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -36,6 +36,7 @@ $imob_includes = [
 	'inc/taxonomies/status_imovel.php',
 	'inc/taxonomies/corretor.php',
 	'inc/post-types/imovel.php',
+	'inc/post-types/imovel-duplicate.php',
 	'inc/post-types/construtora.php',
 	'inc/post-types/proprietario.php',
 	'inc/post-types/empreendimento.php',
