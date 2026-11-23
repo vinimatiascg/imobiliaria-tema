@@ -12,7 +12,8 @@ $tipo_sel       = isset( $_GET['tipo'] ) ? sanitize_text_field( $_GET['tipo'] ) 
 $localidade_sel = isset( $_GET['localidade'] ) ? sanitize_text_field( $_GET['localidade'] ) : ( isset( $_GET['bairro'] ) ? sanitize_text_field( $_GET['bairro'] ) : '' );
 $finalidade_sel = isset( $_GET['finalidade'] ) ? sanitize_text_field( $_GET['finalidade'] ) : '';
 $estagio_sel    = isset( $_GET['estagio'] ) ? sanitize_text_field( $_GET['estagio'] ) : '';
-$has_filter     = ! empty( $tipo_sel ) || ! empty( $localidade_sel ) || ! empty( $finalidade_sel ) || ! empty( $estagio_sel );
+$termo_sel      = function_exists( 'imob_get_search_term' ) ? imob_get_search_term() : '';
+$has_filter     = ! empty( $tipo_sel ) || ! empty( $localidade_sel ) || ! empty( $finalidade_sel ) || ! empty( $estagio_sel ) || '' !== $termo_sel;
 
 // Termos para os filtros
 $termos_tipo = get_terms( array(
@@ -44,8 +45,8 @@ $termos_estagio = get_terms( array(
 		<header class="page-header" style="margin-bottom: 25px; text-align: center;">
 			<h1 class="page-title" style="font-size: 2.4rem; color: var(--primary-color); font-weight: 800; margin: 0 0 10px;">
 				<?php 
-				if ( is_search() ) {
-					printf( esc_html__( 'Resultados da busca para: %s', 'imobiliaria-tema' ), '<span>' . esc_html( get_search_query() ) . '</span>' );
+				if ( '' !== $termo_sel ) {
+					printf( esc_html__( 'Resultados da busca para: %s', 'imobiliaria-tema' ), '<span>' . esc_html( $termo_sel ) . '</span>' );
 				} else {
 					_e( 'Nossos Imóveis', 'imobiliaria-tema' );
 				}
@@ -61,6 +62,14 @@ $termos_estagio = get_terms( array(
 			<form method="get" action="<?php echo esc_url( get_post_type_archive_link( 'imovel' ) ); ?>" class="imob-filters-form">
 				
 				<div class="imob-filters-grid">
+					<!-- BUSCA POR TERMO -->
+					<div class="imob-filter-group imob-filter-group--termo">
+						<label for="filter-termo">
+							<span class="material-symbols-outlined">search</span>
+							<?php _e( 'Buscar', 'imobiliaria-tema' ); ?>
+						</label>
+						<input type="search" name="termo" id="filter-termo" class="imob-filter-input" value="<?php echo esc_attr( $termo_sel ); ?>" placeholder="<?php esc_attr_e( 'Bairro, rua, código, condomínio, característica...', 'imobiliaria-tema' ); ?>" maxlength="100" autocomplete="off">
+					</div>
 					<!-- FILTRO POR TIPO -->
 					<div class="imob-filter-group">
 						<label for="filter-tipo">
