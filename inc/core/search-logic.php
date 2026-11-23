@@ -13,9 +13,13 @@ function imob_advanced_search_query( $query ) {
 				$query->set( 'post_type', 'imovel' );
 			}
 
-			// Handle Text Search
-			if ( isset( $_GET['s'] ) && ! empty( $_GET['s'] ) ) {
-				$query->set( 's', sanitize_text_field( $_GET['s'] ) );
+			// Busca por termo (campo "termo" dos filtros ou "s" dos widgets de busca).
+			// A busca nativa do WP olha só título/conteúdo; aqui ela é trocada pela
+			// busca ampliada (código, endereço, bairro, tipo, características).
+			$termo = imob_get_search_term();
+			if ( '' !== $termo ) {
+				$query->set( 's', '' );
+				$query->set( 'imob_termo', $termo );
 			}
 
 			$tax_query = (array) $query->get( 'tax_query' );
@@ -105,6 +109,83 @@ function imob_advanced_search_query( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'imob_advanced_search_query' );
+
+/**
+ * Termo digitado na busca de imóveis (parâmetro "termo" ou, por compatibilidade, "s").
+ *
+ * @return string
+ */
+function imob_get_search_term() {
+	$raw = '';
+	if ( isset( $_GET['termo'] ) && '' !== $_GET['termo'] ) {
+		$raw = $_GET['termo'];
+	} elseif ( isset( $_GET['s'] ) && '' !== $_GET['s'] ) {
+		$raw = $_GET['s'];
+	}
+	if ( ! is_string( $raw ) ) {
+		return '';
+	}
+	$termo = trim( sanitize_text_field( wp_unslash( $raw ) ) );
+	return function_exists( 'mb_substr' ) ? mb_substr( $termo, 0, 100 ) : substr( $termo, 0, 100 );
+}
+
+/**
+ * Busca ampliada de imóveis pela query var "imob_termo".
+ *
+ * Cada palavra do termo precisa aparecer em algum destes lugares: título, conteúdo,
+ * resumo, código de referência, endereço ou nome de localidade, tipo e característica.
+ * Funciona na query principal (arquivo/busca) e em WP_Query próprias (template-imoveis.php)
+ * que passem 'imob_termo' => '...'.
+ *
+ * @param array    $clauses Cláusulas SQL.
+ * @param WP_Query $query   Query.
+ * @return array
+ */
+function imob_termo_posts_clauses( $clauses, $query ) {
+	$termo = (string) $query->get( 'imob_termo' );
+	if ( '' === $termo ) {
+		return $clauses;
+	}
+
+	global $wpdb;
+
+	$words = preg_split( '/\s+/u', $termo, -1, PREG_SPLIT_NO_EMPTY );
+	$words = array_slice( array_unique( $words ), 0, 8 );
+
+	foreach ( $words as $word ) {
+		$like = '%' . $wpdb->esc_like( $word ) . '%';
+
+		$clauses['where'] .= $wpdb->prepare(
+			" AND (
+				{$wpdb->posts}.post_title LIKE %s
+				OR {$wpdb->posts}.post_content LIKE %s
+				OR {$wpdb->posts}.post_excerpt LIKE %s
+				OR EXISTS (
+					SELECT 1 FROM {$wpdb->postmeta} imob_pm
+					WHERE imob_pm.post_id = {$wpdb->posts}.ID
+					AND imob_pm.meta_key IN ( '_imob_ref', '_imob_endereco' )
+					AND imob_pm.meta_value LIKE %s
+				)
+				OR EXISTS (
+					SELECT 1 FROM {$wpdb->term_relationships} imob_tr
+					INNER JOIN {$wpdb->term_taxonomy} imob_tt ON imob_tt.term_taxonomy_id = imob_tr.term_taxonomy_id
+					INNER JOIN {$wpdb->terms} imob_t ON imob_t.term_id = imob_tt.term_id
+					WHERE imob_tr.object_id = {$wpdb->posts}.ID
+					AND imob_tt.taxonomy IN ( 'localidade', 'tipo_imovel', 'caracteristica' )
+					AND imob_t.name LIKE %s
+				)
+			)",
+			$like,
+			$like,
+			$like,
+			$like,
+			$like
+		);
+	}
+
+	return $clauses;
+}
+add_filter( 'posts_clauses', 'imob_termo_posts_clauses', 10, 2 );
 
 /**
  * Retorna filtros padrão para páginas de listagem de imóveis baseadas no slug da página

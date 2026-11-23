@@ -4,11 +4,16 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.4.6`
+## 🚀 Versão Atual: `1.4.7`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.4.6** (Atualização Recente)
+#### **Versão 1.4.7** (Atualização Recente)
+- **Campo de busca por termo nas listagens de imóveis** (`archive-imovel.php` e `template-imoveis.php`): novo campo "Buscar" acima dos filtros (parâmetro `termo`). Cada palavra digitada precisa aparecer no título, descrição, código de referência, endereço ou nome do bairro/localidade, tipo ou característica do imóvel. Combina com os demais filtros e é mantido na paginação. A busca dos widgets (parâmetro `s`) passa a usar a mesma lógica (`imob_termo_posts_clauses()` em `inc/core/search-logic.php`).
+- **Mover categorias filhas em lote (`inc/admin/term-hierarchy.php`)**: nova ação em lote **"Mover para a categoria pai…"** nas telas de Tipos de Imóvel, Localidades, Status, Estágio da Obra, Finalidade e Categorias do blog. Marque os filhos, escolha a ação, selecione o pai (ou "Nível raiz") e clique em Aplicar. Termos que gerariam ciclo (pai dentro do próprio filho) são ignorados.
+- **Restaurar hierarquia do RealHomes**: a importação criava tipos, localidades e status sem pai. Em **Ferramentas > Importar do RealHomes**, o botão **"Restaurar hierarquia do RealHomes"** lê a estrutura original ainda salva no banco e move cada filho para o pai correspondente, casando pelo nome. A importação também faz isso automaticamente ao terminar.
+
+#### **Versão 1.4.6**
 - **Busca de endereço no cadastro do imóvel**: o campo "Buscar no Mapa" agora posiciona o marcador no endereço digitado (Enter ou botão). Usa o Google Geocoder e, quando ele falha ou só acha o bairro/cidade, busca no OpenStreetMap pelo próprio site (`wp_ajax_imob_geocode`). Funciona mesmo sem a chave do Google (preenche latitude/longitude e endereço) e mostra o resultado abaixo do campo.
 - **Duplicar imóvel (`inc/post-types/imovel-duplicate.php`)**: link "Duplicar" na lista de imóveis e caixa "Duplicar Imóvel" na tela de edição. A cópia sai como rascunho com todos os campos, taxonomias, galeria, imagem destacada e relações; recebe um novo código de referência.
 

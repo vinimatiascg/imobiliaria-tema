@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'IMOB_THEME_VERSION', '1.4.6' );
+define( 'IMOB_THEME_VERSION', '1.4.7' );
 define( 'IMOB_THEME_DIR', trailingslashit( get_template_directory() ) );
 define( 'IMOB_THEME_URL', trailingslashit( get_template_directory_uri() ) );
 
@@ -50,6 +50,7 @@ $imob_includes = [
 	'inc/seo/schema.php',
 	'inc/api/xml-feed.php',
 	'inc/importers/realhomes-importer.php',
+	'inc/admin/term-hierarchy.php',
 	'inc/home/home-options.php',
 	'inc/home/lead-form.php',
 	'inc/sections/sections.php',

@@ -22,6 +22,11 @@ function imob_render_importer_page() {
 		<p>Esta ferramenta irá migrar imóveis do tema RealHomes para o novo formato do tema Imobiliária.</p>
 		<button id="imob-start-import" class="button button-primary">Iniciar Importação</button>
 		<div id="imob-import-log" style="margin-top: 20px; background: #fff; border: 1px solid #ccc; padding: 15px; height: 300px; overflow-y: auto; display: none;"></div>
+		<?php
+		if ( function_exists( 'imob_render_hierarchy_restore_box' ) ) {
+			imob_render_hierarchy_restore_box();
+		}
+		?>
 	</div>
 	<script>
 		document.getElementById('imob-start-import').addEventListener('click', function() {
@@ -97,7 +102,18 @@ function imob_run_import_batch() {
 	$properties = get_posts($args);
 	
 	if ( empty( $properties ) ) {
-		wp_send_json_success( array( 'has_more' => false, 'message' => "Nenhum imóvel pendente de migração restante." ) );
+		$message = 'Nenhum imóvel pendente de migração restante.';
+
+		// Os termos são criados pelo nome, sem pai: refaz a hierarquia original.
+		if ( function_exists( 'imob_restore_realhomes_hierarchy' ) ) {
+			$moved = 0;
+			foreach ( imob_restore_realhomes_hierarchy() as $stats ) {
+				$moved += $stats['moved'];
+			}
+			$message .= " Hierarquia das categorias restaurada: $moved termos movidos para dentro do pai.";
+		}
+
+		wp_send_json_success( array( 'has_more' => false, 'message' => $message ) );
 	}
 
 	$count = 0;
@@ -166,7 +182,8 @@ function imob_run_import_batch() {
 	$next_offset = $offset + $batch_size;
 	
 	wp_send_json_success( array( 
-		'has_more' => ( count($properties) == $batch_size ),
+		// Sempre pede mais um lote: o lote vazio do final restaura a hierarquia das categorias.
+		'has_more' => true,
 		'next_offset' => $next_offset,
 		'message' => "Lote processado: $count imóveis migrados com sucesso." 
 	) );
