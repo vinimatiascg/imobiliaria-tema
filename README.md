@@ -4,11 +4,16 @@ Tema profissional para imobiliárias, corretores e portais imobiliários desenvo
 
 ---
 
-## 🚀 Versão Atual: `1.4.7`
+## 🚀 Versão Atual: `1.4.8`
 
 ### 📋 Histórico de Alterações (Changelog)
 
-#### **Versão 1.4.7** (Atualização Recente)
+#### **Versão 1.4.8** (Atualização Recente)
+- **Imagens dos imóveis só em JPG 1280px + miniatura**: no upload feito para um imóvel ou empreendimento a foto é convertida para JPG (PNG/WebP/GIF/AVIF/HEIC, transparência vira fundo branco), girada pelo EXIF, reduzida para no máximo 1280px e recebe a marca d'água; fica só esse arquivo e a miniatura 400x300. O original e as outras resoluções não ficam no disco.
+- **Marca d'água em todas as fotos**: antes só era aplicada no upload feito de dentro do imóvel (fotos importadas do RealHomes ou escolhidas da biblioteca ficavam sem) e falhava sem aviso em fotos grandes por falta de memória. Agora é aplicada na imagem já reduzida, uma única vez por foto (meta `_imob_watermarked`, sem marca dupla), e ao salvar um imóvel as fotos ainda não processadas entram na fila automaticamente.
+- **Otimizar imagens e limpar órfãs em segundo plano**: as duas ferramentas de **Opções do Tema** rodam no servidor em lotes (loopback + WP-Cron de reserva), com progresso, log e botão de cancelar; a página pode ser fechada. O otimizador também converte para JPG. A limpeza agora considera galerias em qualquer formato, fotos de corretor (termmeta) e confere se a imagem aparece no conteúdo/Elementor antes de apagar.
+
+#### **Versão 1.4.7**
 - **Campo de busca por termo nas listagens de imóveis** (`archive-imovel.php` e `template-imoveis.php`): novo campo "Buscar" acima dos filtros (parâmetro `termo`). Cada palavra digitada precisa aparecer no título, descrição, código de referência, endereço ou nome do bairro/localidade, tipo ou característica do imóvel. Combina com os demais filtros e é mantido na paginação. A busca dos widgets (parâmetro `s`) passa a usar a mesma lógica (`imob_termo_posts_clauses()` em `inc/core/search-logic.php`).
 - **Mover categorias filhas em lote (`inc/admin/term-hierarchy.php`)**: nova ação em lote **"Mover para a categoria pai…"** nas telas de Tipos de Imóvel, Localidades, Status, Estágio da Obra, Finalidade e Categorias do blog. Marque os filhos, escolha a ação, selecione o pai (ou "Nível raiz") e clique em Aplicar. Termos que gerariam ciclo (pai dentro do próprio filho) são ignorados.
 - **Restaurar hierarquia do RealHomes**: a importação criava tipos, localidades e status sem pai. Em **Ferramentas > Importar do RealHomes**, o botão **"Restaurar hierarquia do RealHomes"** lê a estrutura original ainda salva no banco e move cada filho para o pai correspondente, casando pelo nome. A importação também faz isso automaticamente ao terminar.

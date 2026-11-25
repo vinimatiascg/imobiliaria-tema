@@ -156,57 +156,69 @@ function imob_theme_options_html() {
 
 		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 25px;">
 			<!-- CARD 1: OTIMIZADOR DE IMAGENS DE IMÓVEIS -->
-			<div class="card" style="padding: 20px; border-radius: 8px; border: 1px solid #ccd0d4; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+			<div class="card imob-bg-card" data-type="optimize" style="padding: 20px; border-radius: 8px; border: 1px solid #ccd0d4; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
 				<h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
 					<span class="dashicons dashicons-format-gallery" style="color: #2271b1;"></span>
 					Otimizar Imagens dos Imóveis
 				</h3>
 				<p style="color: #555; line-height: 1.5; font-size: 13px;">
-					Esta ferramenta varre todas as imagens de todos os imóveis cadastrados, aplica a marca d'água configurada na imagem original, gera apenas as 2 resoluções oficiais (<strong>1280px</strong> para detalhes e <strong>400x300</strong> para miniatura) e <strong>apaga do disco</strong> todas as outras resoluções antigas não utilizadas.
+					Varre todas as imagens dos imóveis e empreendimentos, <strong>converte para JPG</strong> com no máximo <strong>1280px</strong>, aplica a marca d'água nas que ainda não têm, gera só a miniatura <strong>400x300</strong> e <strong>apaga do disco</strong> o arquivo original e todas as outras resoluções.
 				</p>
-				<div style="margin: 20px 0;">
-					<button type="button" id="btn-start-imovel-optimizer" class="button button-primary button-large" style="display: inline-flex; align-items: center; gap: 6px;">
+				<p style="color: #555; line-height: 1.5; font-size: 13px;">
+					Roda <strong>em segundo plano</strong>: pode fechar esta página que o processo continua no servidor. Fotos que já têm marca d'água não recebem outra.
+				</p>
+				<div style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+					<button type="button" class="button button-primary button-large imob-bg-start" style="display: inline-flex; align-items: center; gap: 6px;">
 						<span class="dashicons dashicons-update"></span> Iniciar Otimização das Imagens
 					</button>
+					<button type="button" class="button button-large imob-bg-cancel" style="display: none; align-items: center; gap: 6px;">
+						<span class="dashicons dashicons-no"></span> Cancelar
+					</button>
 				</div>
-				<div id="imovel-optimizer-progress-wrap" style="display: none; margin-top: 15px;">
-					<div style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 6px; font-size: 13px;">
-						<span id="imovel-opt-status">Iniciando...</span>
-						<span id="imovel-opt-percent">0%</span>
+				<div class="imob-bg-progress" style="display: none; margin-top: 15px;">
+					<div style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 6px; font-size: 13px; gap: 10px;">
+						<span class="imob-bg-status">Iniciando...</span>
+						<span class="imob-bg-percent">0%</span>
 					</div>
 					<div style="background: #e2e4e7; height: 16px; border-radius: 8px; overflow: hidden;">
-						<div id="imovel-opt-bar" style="background: #2271b1; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+						<div class="imob-bg-bar" style="background: #2271b1; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
 					</div>
-					<div id="imovel-opt-log" style="margin-top: 15px; max-height: 160px; overflow-y: auto; background: #1e1e1e; color: #a6e22e; font-family: monospace; font-size: 11px; padding: 10px; border-radius: 4px; line-height: 1.5;"></div>
+					<div class="imob-bg-log" style="margin-top: 15px; max-height: 200px; overflow-y: auto; background: #1e1e1e; color: #a6e22e; font-family: monospace; font-size: 11px; padding: 10px; border-radius: 4px; line-height: 1.5;"></div>
 				</div>
 			</div>
 
 			<!-- CARD 2: LIMPEZA DE IMAGENS ÓRFÃS -->
-			<div class="card" style="padding: 20px; border-radius: 8px; border: 1px solid #ccd0d4; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+			<div class="card imob-bg-card" data-type="orphans" style="padding: 20px; border-radius: 8px; border: 1px solid #ccd0d4; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
 				<h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
 					<span class="dashicons dashicons-trash" style="color: #d63638;"></span>
 					Limpeza de Imagens Órfãs
 				</h3>
 				<p style="color: #555; line-height: 1.5; font-size: 13px;">
-					Localiza e apaga permanentemente arquivos de imagem na biblioteca de mídia que <strong>não pertencem a nenhum imóvel</strong>, construtora, empreendimento, proprietário, avatar de corretor, logo ou página do site.
+					Localiza e apaga permanentemente imagens da biblioteca de mídia que <strong>não pertencem a nenhum imóvel</strong>, construtora, empreendimento, proprietário, corretor, logo ou página do site. Antes de apagar cada uma, confere de novo se ela não aparece no conteúdo das páginas (Elementor, blocos) ou nas configurações.
 				</p>
-				<div style="margin: 20px 0; display: flex; gap: 10px;">
+				<p style="color: #555; line-height: 1.5; font-size: 13px;">
+					A exclusão roda <strong>em segundo plano</strong>: pode fechar esta página que o processo continua no servidor.
+				</p>
+				<div style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
 					<button type="button" id="btn-scan-orphans" class="button button-secondary button-large" style="display: inline-flex; align-items: center; gap: 6px;">
 						<span class="dashicons dashicons-search"></span> Verificar Imagens Órfãs
 					</button>
-					<button type="button" id="btn-delete-orphans" class="button button-link-delete button-large" style="display: none; align-items: center; gap: 6px; background: #d63638; color: #fff; border: none; padding: 0 15px; border-radius: 4px; cursor: pointer;">
+					<button type="button" class="button button-link-delete button-large imob-bg-start" style="display: none; align-items: center; gap: 6px; background: #d63638; color: #fff; border: none; padding: 0 15px; border-radius: 4px; cursor: pointer;">
 						<span class="dashicons dashicons-trash"></span> Excluir Imagens Órfãs (<span id="orphan-count-label">0</span>)
 					</button>
+					<button type="button" class="button button-large imob-bg-cancel" style="display: none; align-items: center; gap: 6px;">
+						<span class="dashicons dashicons-no"></span> Cancelar
+					</button>
 				</div>
-				<div id="orphan-progress-wrap" style="display: none; margin-top: 15px;">
-					<div style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 6px; font-size: 13px;">
-						<span id="orphan-status">Analisando...</span>
-						<span id="orphan-percent">0%</span>
+				<div class="imob-bg-progress" style="display: none; margin-top: 15px;">
+					<div style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 6px; font-size: 13px; gap: 10px;">
+						<span class="imob-bg-status">Analisando...</span>
+						<span class="imob-bg-percent">0%</span>
 					</div>
 					<div style="background: #e2e4e7; height: 16px; border-radius: 8px; overflow: hidden;">
-						<div id="orphan-bar" style="background: #d63638; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+						<div class="imob-bg-bar" style="background: #d63638; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
 					</div>
-					<div id="orphan-log" style="margin-top: 15px; max-height: 160px; overflow-y: auto; background: #1e1e1e; color: #f92672; font-family: monospace; font-size: 11px; padding: 10px; border-radius: 4px; line-height: 1.5;"></div>
+					<div class="imob-bg-log" style="margin-top: 15px; max-height: 200px; overflow-y: auto; background: #1e1e1e; color: #e6db74; font-family: monospace; font-size: 11px; padding: 10px; border-radius: 4px; line-height: 1.5;"></div>
 				</div>
 			</div>
 		</div>
@@ -243,212 +255,165 @@ function imob_theme_options_html() {
 		});
 
 		// -------------------------------------------------------------
-		// OTIMIZAÇÃO DE IMAGENS DE IMÓVEIS (AJAX)
+		// TAREFAS EM SEGUNDO PLANO (otimização e limpeza de órfãs)
+		// O servidor processa a fila; aqui só iniciamos e acompanhamos.
 		// -------------------------------------------------------------
 		var optimizerNonce = '<?php echo esc_js( $optimizer_nonce ); ?>';
+		var pollTimers = {};
 
-		$('#btn-start-imovel-optimizer').on('click', function() {
-			var $btn = $(this);
-			if ( $btn.hasClass('disabled') ) return;
+		function escHtml(str) {
+			return $('<div>').text(str == null ? '' : String(str)).html();
+		}
 
-			if ( ! confirm('Deseja iniciar a otimização de todas as imagens de imóveis? Este processo aplicará a marca d\'água configurada, criará os tamanhos de 1280px e 400x300, e removerá os tamanhos antigos desnecessários.') ) {
+		function cardFor(type) {
+			return $('.imob-bg-card[data-type="' + type + '"]');
+		}
+
+		function renderJob(type, job) {
+			var $card = cardFor(type);
+			if ( ! job || job.status === 'idle' ) {
 				return;
 			}
 
-			$btn.addClass('disabled').prop('disabled', true);
-			$('#imovel-optimizer-progress-wrap').slideDown();
-			$('#imovel-opt-log').empty();
-			$('#imovel-opt-status').text('Carregando lista de imagens dos imóveis...');
-			$('#imovel-opt-bar').css('width', '0%');
-			$('#imovel-opt-percent').text('0%');
+			var total = parseInt(job.total, 10) || 0;
+			var done  = parseInt(job.done, 10) || 0;
+			var pct   = total ? Math.round((done / total) * 100) : 100;
+			var running = job.status === 'running';
 
-			function logMsg(msg, isErr) {
-				var color = isErr ? '#f92672' : '#a6e22e';
-				$('#imovel-opt-log').append('<div style="color:'+color+';">[' + new Date().toLocaleTimeString() + '] ' + msg + '</div>');
-				var logElem = document.getElementById('imovel-opt-log');
-				if (logElem) logElem.scrollTop = logElem.scrollHeight;
+			$card.find('.imob-bg-progress').show();
+			$card.find('.imob-bg-bar').css('width', pct + '%');
+			$card.find('.imob-bg-percent').text(pct + '%');
+
+			var status;
+			if ( running ) {
+				status = 'Em segundo plano: ' + done + ' de ' + total + ' processadas' + (job.source === 'auto' ? ' (fila automática)' : '') + '...';
+			} else if ( job.status === 'cancelled' ) {
+				status = 'Cancelada: ' + done + ' de ' + total + ' processadas.';
+			} else {
+				status = 'Concluída: ' + (job.ok || 0) + ' processadas, ' + (job.skipped || 0) + ' sem alteração, ' + (job.errors || 0) + ' com erro.';
+			}
+			$card.find('.imob-bg-status').text(status);
+
+			var html = '';
+			$.each(job.log || [], function(i, line) {
+				var color = line.e ? '#f92672' : (type === 'orphans' ? '#e6db74' : '#a6e22e');
+				html += '<div style="color:' + color + ';">[' + escHtml(line.t) + '] ' + escHtml(line.m) + '</div>';
+			});
+			var $log = $card.find('.imob-bg-log');
+			var atBottom = $log[0].scrollHeight - $log.scrollTop() - $log.outerHeight() < 30;
+			$log.html(html);
+			if ( atBottom ) {
+				$log.scrollTop($log[0].scrollHeight);
 			}
 
-			$.post(ajaxurl, {
-				action: 'imob_get_imovel_image_ids',
-				nonce: optimizerNonce
-			}, function(response) {
-				if ( ! response.success || ! response.data.ids || response.data.ids.length === 0 ) {
-					$('#imovel-opt-status').text('Nenhuma imagem encontrada.');
-					logMsg('Nenhuma imagem associada a imóveis foi encontrada para otimizar.');
-					$btn.removeClass('disabled').prop('disabled', false);
-					return;
+			$card.find('.imob-bg-cancel').css('display', running ? 'inline-flex' : 'none');
+			$card.find('.imob-bg-start').prop('disabled', running).toggleClass('disabled', running);
+			if ( type === 'orphans' ) {
+				$('#btn-scan-orphans').prop('disabled', running).toggleClass('disabled', running);
+				if ( running ) {
+					$card.find('.imob-bg-start').hide();
 				}
+			}
 
-				var ids = response.data.ids;
-				var total = ids.length;
-				var current = 0;
-				logMsg('Encontradas ' + total + ' imagens para processar.');
+			clearTimeout(pollTimers[type]);
+			if ( running ) {
+				pollTimers[type] = setTimeout(function() { poll(type); }, 3000);
+			}
+		}
 
-				function processNext() {
-					if ( current >= total ) {
-						$('#imovel-opt-status').text('Concluído com sucesso!');
-						$('#imovel-opt-bar').css('width', '100%');
-						$('#imovel-opt-percent').text('100%');
-						logMsg('✔ Todas as ' + total + ' imagens foram processadas com sucesso!');
-						$btn.removeClass('disabled').prop('disabled', false);
-						return;
-					}
-
-					var attId = ids[current];
-					$('#imovel-opt-status').text('Processando imagem ' + (current + 1) + ' de ' + total + ' (ID #' + attId + ')...');
-
-					$.post(ajaxurl, {
-						action: 'imob_optimize_single_image',
-						attachment_id: attId,
-						nonce: optimizerNonce
-					}, function(res) {
-						current++;
-						var pct = Math.round((current / total) * 100);
-						$('#imovel-opt-bar').css('width', pct + '%');
-						$('#imovel-opt-percent').text(pct + '%');
-
-						if ( res.success ) {
-							var wtmTxt = res.data.watermark ? ' com marca d\'água' : '';
-							logMsg('Imagem #' + attId + ' (' + res.data.title + ') otimizada' + wtmTxt + ' (' + res.data.deleted_old_sizes + ' resoluções antigas removidas).');
-						} else {
-							var errMsg = (res.data && res.data.message) ? res.data.message : 'Falha ao processar';
-							logMsg('Erro na imagem #' + attId + ': ' + errMsg, true);
-						}
-
-						processNext();
-					}).fail(function() {
-						current++;
-						logMsg('Erro de conexão ao processar imagem #' + attId, true);
-						processNext();
-					});
+		function poll(type) {
+			$.post(ajaxurl, { action: 'imob_bg_status', type: type, nonce: optimizerNonce }, function(res) {
+				if ( res && res.success ) {
+					renderJob(type, res.data);
 				}
-
-				processNext();
 			}).fail(function() {
-				$('#imovel-opt-status').text('Erro na requisição inicial.');
-				logMsg('Falha ao comunicar com o servidor.', true);
-				$btn.removeClass('disabled').prop('disabled', false);
+				clearTimeout(pollTimers[type]);
+				pollTimers[type] = setTimeout(function() { poll(type); }, 6000);
 			});
+		}
+
+		function startJob(type) {
+			var $card = cardFor(type);
+			$card.find('.imob-bg-progress').show();
+			$card.find('.imob-bg-status').text('Montando a fila...');
+			$card.find('.imob-bg-start').prop('disabled', true).addClass('disabled');
+
+			$.post(ajaxurl, { action: 'imob_bg_start', type: type, nonce: optimizerNonce }, function(res) {
+				if ( res && res.success ) {
+					renderJob(type, res.data);
+				} else {
+					$card.find('.imob-bg-status').text('Erro: ' + ((res && res.data && res.data.message) || 'falha ao iniciar'));
+					$card.find('.imob-bg-start').prop('disabled', false).removeClass('disabled');
+				}
+			}).fail(function() {
+				$card.find('.imob-bg-status').text('Falha de conexão com o servidor.');
+				$card.find('.imob-bg-start').prop('disabled', false).removeClass('disabled');
+			});
+		}
+
+		cardFor('optimize').find('.imob-bg-start').on('click', function() {
+			if ( $(this).prop('disabled') ) return;
+			if ( ! confirm('Iniciar a otimização de todas as imagens dos imóveis?\n\nAs imagens serão convertidas para JPG com no máximo 1280px, receberão a marca d\'água (se ainda não tiverem) e o arquivo original e as outras resoluções serão APAGADOS do disco. Não dá para desfazer.') ) {
+				return;
+			}
+			startJob('optimize');
 		});
 
-		// -------------------------------------------------------------
-		// LIMPEZA DE IMAGENS ÓRFÃS (AJAX)
-		// -------------------------------------------------------------
-		var orphanIdsList = [];
+		cardFor('orphans').find('.imob-bg-start').on('click', function() {
+			if ( $(this).prop('disabled') ) return;
+			var total = $('#orphan-count-label').text();
+			if ( ! confirm('ATENÇÃO: Deseja realmente excluir permanentemente até ' + total + ' imagens órfãs? Os arquivos serão removidos do disco e não dá para desfazer. Cada imagem é conferida de novo antes de ser apagada.') ) {
+				return;
+			}
+			startJob('orphans');
+		});
+
+		$('.imob-bg-cancel').on('click', function() {
+			var type = $(this).closest('.imob-bg-card').data('type');
+			$(this).prop('disabled', true);
+			var $btn = $(this);
+			$.post(ajaxurl, { action: 'imob_bg_cancel', type: type, nonce: optimizerNonce }, function(res) {
+				$btn.prop('disabled', false);
+				if ( res && res.success ) {
+					renderJob(type, res.data);
+				}
+			}).fail(function() { $btn.prop('disabled', false); });
+		});
 
 		$('#btn-scan-orphans').on('click', function() {
 			var $btn = $(this);
-			$btn.addClass('disabled').prop('disabled', true);
-			$('#orphan-progress-wrap').slideDown();
-			$('#orphan-log').empty();
-			$('#orphan-status').text('Buscando imagens sem vínculo...');
-			$('#btn-delete-orphans').hide();
+			var $card = cardFor('orphans');
+			$btn.prop('disabled', true).addClass('disabled');
+			$card.find('.imob-bg-start').hide();
+			$card.find('.imob-bg-progress').show();
+			$card.find('.imob-bg-bar').css('width', '0%');
+			$card.find('.imob-bg-percent').text('');
+			$card.find('.imob-bg-log').empty();
+			$card.find('.imob-bg-status').text('Buscando imagens sem vínculo...');
 
-			function logOrphan(msg, isErr) {
-				var color = isErr ? '#f92672' : '#e6db74';
-				$('#orphan-log').append('<div style="color:'+color+';">[' + new Date().toLocaleTimeString() + '] ' + msg + '</div>');
-				var logElem = document.getElementById('orphan-log');
-				if (logElem) logElem.scrollTop = logElem.scrollHeight;
-			}
-
-			$.post(ajaxurl, {
-				action: 'imob_get_orphan_image_ids',
-				nonce: optimizerNonce
-			}, function(response) {
-				$btn.removeClass('disabled').prop('disabled', false);
-
-				if ( ! response.success ) {
-					$('#orphan-status').text('Erro ao buscar imagens órfãs.');
-					logOrphan('Erro: ' + (response.data || 'Falha na resposta'), true);
+			$.post(ajaxurl, { action: 'imob_get_orphan_image_ids', nonce: optimizerNonce }, function(res) {
+				$btn.prop('disabled', false).removeClass('disabled');
+				if ( ! res || ! res.success ) {
+					$card.find('.imob-bg-status').text('Erro ao buscar imagens órfãs.');
 					return;
 				}
-
-				orphanIdsList = response.data.ids || [];
-				var total = orphanIdsList.length;
-
+				var total = res.data.total || 0;
 				if ( total === 0 ) {
-					$('#orphan-status').text('Nenhuma imagem órfã encontrada. A biblioteca está limpa!');
-					logOrphan('✔ Parabéns! Nenhuma imagem órfã foi detectada.');
+					$card.find('.imob-bg-status').text('Nenhuma imagem órfã encontrada. A biblioteca está limpa!');
 				} else {
-					$('#orphan-status').text('Encontradas ' + total + ' imagens órfãs.');
+					$card.find('.imob-bg-status').text('Encontradas ' + total + ' imagens sem vínculo.');
 					$('#orphan-count-label').text(total);
-					$('#btn-delete-orphans').css('display', 'inline-flex');
-					logOrphan('Encontradas ' + total + ' imagens órfãs sem nenhum vínculo no site.');
+					$card.find('.imob-bg-start').css('display', 'inline-flex').prop('disabled', false).removeClass('disabled');
 				}
 			}).fail(function() {
-				$btn.removeClass('disabled').prop('disabled', false);
-				$('#orphan-status').text('Erro de conexão ao buscar imagens.');
-				logOrphan('Falha de conexão com o servidor.', true);
+				$btn.prop('disabled', false).removeClass('disabled');
+				$card.find('.imob-bg-status').text('Erro de conexão ao buscar imagens.');
 			});
 		});
 
-		$('#btn-delete-orphans').on('click', function() {
-			var $btn = $(this);
-			if ( orphanIdsList.length === 0 ) return;
-
-			if ( ! confirm('ATENÇÃO: Deseja realmente excluir permanentemente ' + orphanIdsList.length + ' imagens órfãs? Esta ação removerá os arquivos físicos do disco e não pode ser desfeita.') ) {
-				return;
-			}
-
-			$btn.addClass('disabled').prop('disabled', true);
-			$('#btn-scan-orphans').addClass('disabled').prop('disabled', true);
-
-			var total = orphanIdsList.length;
-			var current = 0;
-			var deletedCount = 0;
-
-			function logOrphan(msg, isErr) {
-				var color = isErr ? '#f92672' : '#a6e22e';
-				$('#orphan-log').append('<div style="color:'+color+';">[' + new Date().toLocaleTimeString() + '] ' + msg + '</div>');
-				var logElem = document.getElementById('orphan-log');
-				if (logElem) logElem.scrollTop = logElem.scrollHeight;
-			}
-
-			logOrphan('Iniciando exclusão permanente de ' + total + ' imagens...');
-
-			function deleteNext() {
-				if ( current >= total ) {
-					$('#orphan-status').text('Limpeza concluída! ' + deletedCount + ' imagens excluídas.');
-					$('#orphan-bar').css('width', '100%');
-					$('#orphan-percent').text('100%');
-					logOrphan('✔ Limpeza finalizada! Total de ' + deletedCount + ' imagens excluídas do disco e do banco.');
-					$('#btn-delete-orphans').hide();
-					$('#btn-scan-orphans').removeClass('disabled').prop('disabled', false);
-					orphanIdsList = [];
-					return;
-				}
-
-				var attId = orphanIdsList[current];
-				$('#orphan-status').text('Excluindo imagem ' + (current + 1) + ' de ' + total + ' (ID #' + attId + ')...');
-
-				$.post(ajaxurl, {
-					action: 'imob_delete_single_orphan',
-					attachment_id: attId,
-					nonce: optimizerNonce
-				}, function(res) {
-					current++;
-					var pct = Math.round((current / total) * 100);
-					$('#orphan-bar').css('width', pct + '%');
-					$('#orphan-percent').text(pct + '%');
-
-					if ( res.success ) {
-						deletedCount++;
-						logOrphan('Imagem #' + attId + ' (' + res.data.title + ') excluída permanentemente.');
-					} else {
-						logOrphan('Falha ao excluir anexo #' + attId, true);
-					}
-
-					deleteNext();
-				}).fail(function() {
-					current++;
-					logOrphan('Erro ao requisitar exclusão da imagem #' + attId, true);
-					deleteNext();
-				});
-			}
-
-			deleteNext();
-		});
+		// Ao abrir a página, mostra tarefas em andamento ou a última executada.
+		poll('optimize');
+		poll('orphans');
 	});
 	</script>
 	<?php
