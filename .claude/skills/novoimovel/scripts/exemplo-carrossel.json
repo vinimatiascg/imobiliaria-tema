@@ -51,6 +51,7 @@
     {
       "tipo": "planta",
       "imagem": "material/planta-3q.png",
+      "titulo": "Planta 3 quartos",
       "texto": "78 m² privativos"
     },
     {

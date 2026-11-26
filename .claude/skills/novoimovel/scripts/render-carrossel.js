@@ -16,13 +16,19 @@ const CONTATO = {
 	instagram: '@viniciusmatiascorretor',
 };
 
+const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp' };
+
+const ASSETS = path.join(__dirname, '..', 'assets');
+const LOGO = {
+	branca: imgData(ASSETS, 'logo-branca.png'),
+	escura: imgData(ASSETS, 'logo-escura.png'),
+};
+
 const W = 1080;
 const H = 1350;
 
 const esc = (s) =>
 	String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp' };
 
 function imgData(base, rel) {
 	if (!rel) return '';
@@ -46,8 +52,7 @@ body { width:${W}px; height:${H}px; font-family:'Inter',sans-serif; background:v
 .grad-b { position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,26,43,0) 35%, rgba(14,26,43,.75) 62%, rgba(14,26,43,.97) 100%); }
 .grad-t { position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,26,43,.7) 0%, rgba(14,26,43,0) 22%); }
 .topo { position:absolute; top:56px; left:72px; right:72px; display:flex; justify-content:space-between; align-items:center; font-size:24px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; }
-.topo .marca { color:#fff; }
-.topo .marca b { color:var(--dourado); font-weight:700; }
+.topo .logo { height:44px; width:auto; opacity:.88; display:block; }
 .topo .pg { color:rgba(255,255,255,.75); font-weight:500; letter-spacing:.06em; }
 .base { position:absolute; left:72px; right:72px; bottom:110px; }
 .chamada { display:inline-block; background:var(--dourado); color:var(--azul); font-weight:700; font-size:28px; letter-spacing:.12em; text-transform:uppercase; padding:14px 26px; border-radius:6px; margin-bottom:30px; }
@@ -68,7 +73,6 @@ h2 { font-size:68px; line-height:1.08; font-weight:800; letter-spacing:-.015em; 
 .ficha .row span { color:rgba(255,255,255,.7); font-weight:500; }
 .ficha .row b { text-align:right; font-weight:700; }
 .dark { background:var(--claro); color:var(--azul); }
-.dark .topo .marca { color:var(--azul); }
 .dark .topo .pg { color:rgba(14,26,43,.6); }
 .dark .txt { color:rgba(14,26,43,.8); }
 .planta { position:absolute; top:150px; left:72px; right:72px; height:840px; background:#fff; border-radius:18px; box-shadow:0 20px 50px rgba(14,26,43,.12); display:flex; align-items:center; justify-content:center; padding:30px; }
@@ -87,8 +91,9 @@ h2 { font-size:68px; line-height:1.08; font-weight:800; letter-spacing:-.015em; 
 .contato .legal b { color:#fff; font-weight:600; }
 `;
 
-function topo(cfg, i, n) {
-	return `<div class="topo"><div class="marca">Vinicius <b>Matias</b></div><div class="pg">${i}/${n}</div></div>`;
+function topo(cfg, i, n, claro = false) {
+	const logo = claro ? LOGO.escura : LOGO.branca;
+	return `<div class="topo"><img class="logo" src="${logo}" alt="IS22 Imóveis | Vinicius Matias"><div class="pg">${i}/${n}</div></div>`;
 }
 
 function rodape(cfg) {
@@ -148,7 +153,7 @@ function slideHtml(s, cfg, base, i, n) {
 			</div>`;
 		case 'planta':
 			return `<div class="slide dark">
-				${topo(cfg, i, n)}
+				${topo(cfg, i, n, true)}
 				<div class="planta"><img src="${bg}"></div>
 				<div class="planta-txt">
 					<h2>${esc(s.titulo)}</h2>

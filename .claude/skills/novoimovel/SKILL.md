@@ -99,6 +99,8 @@ Boas práticas do carrossel:
 
 Cores da marca (iguais às do site): azul escuro `#0E1A2B`, dourado `#B2915A`, azul `#2F80ED`. Fonte Inter. O script já aplica tudo isso; não mude sem o usuário pedir.
 
+**Logo obrigatória**: todo slide leva a logo "IS22 Imóveis | Vinicius Matias" de forma sutil no canto superior esquerdo (44 px de altura, levemente transparente). O script coloca sozinho: a versão branca (`assets/logo-branca.png`) nos slides escuros ou com foto e a versão escura (`assets/logo-escura.png`) no slide claro da planta. Na conferência, verifique se a logo está legível; se a parte de cima da foto for muito clara e a logo branca sumir, troque o enquadramento (`posicao`) ou a foto.
+
 ### 4. Legenda do Instagram
 
 Grave em `entregas/<slug>/legenda-instagram.txt`. Estrutura:
