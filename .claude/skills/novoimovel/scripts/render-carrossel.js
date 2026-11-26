@@ -64,7 +64,7 @@ h2 { font-size:68px; line-height:1.08; font-weight:800; letter-spacing:-.015em; 
 .rodape { position:absolute; left:72px; right:72px; bottom:44px; display:flex; justify-content:space-between; font-size:20px; color:rgba(255,255,255,.6); }
 .dark .rodape { color:rgba(14,26,43,.55); }
 .metade { position:absolute; top:0; left:0; right:0; height:600px; background-size:cover; background-position:center; }
-.metade::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,26,43,.55) 0%, rgba(14,26,43,0) 30%, rgba(14,26,43,0) 70%, var(--azul) 100%); }
+.metade::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,26,43,.8) 0%, rgba(14,26,43,.35) 14%, rgba(14,26,43,0) 32%, rgba(14,26,43,0) 70%, var(--azul) 100%); }
 .lista { list-style:none; margin-top:10px; }
 .lista li { position:relative; padding-left:58px; font-size:38px; line-height:1.3; margin-bottom:24px; font-weight:500; }
 .lista li::before { content:''; position:absolute; left:0; top:10px; width:30px; height:30px; border-radius:50%; background:var(--dourado); box-shadow: inset 0 0 0 8px var(--azul), 0 0 0 0; }
