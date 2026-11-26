@@ -1,0 +1,63 @@
+{
+  "empreendimento": "Residencial Exemplo",
+  "construtora": "Construtora Exemplo",
+  "slides": [
+    {
+      "tipo": "capa",
+      "imagem": "material/fachada.jpg",
+      "chamada": "Lançamento",
+      "titulo": "Residencial Exemplo",
+      "subtitulo": "Altiplano, João Pessoa - PB"
+    },
+    {
+      "tipo": "foto",
+      "imagem": "material/lazer.jpg",
+      "titulo": "Lazer completo",
+      "texto": "Piscina com deck, academia equipada e espaço gourmet."
+    },
+    {
+      "tipo": "lista",
+      "imagem": "material/interior.jpg",
+      "titulo": "Diferenciais",
+      "itens": [
+        "2 e 3 quartos com suíte",
+        "Varanda gourmet",
+        "Até 2 vagas de garagem",
+        "Fechadura digital"
+      ]
+    },
+    {
+      "tipo": "ficha",
+      "titulo": "Ficha técnica",
+      "itens": [
+        [
+          "Tipologia",
+          "2 e 3 quartos"
+        ],
+        [
+          "Área privativa",
+          "56 a 78 m²"
+        ],
+        [
+          "Vagas",
+          "1 ou 2"
+        ],
+        [
+          "Entrega",
+          "Dez/2028"
+        ]
+      ]
+    },
+    {
+      "tipo": "planta",
+      "imagem": "material/planta-3q.png",
+      "texto": "78 m² privativos"
+    },
+    {
+      "tipo": "contato",
+      "imagem": "material/fachada.jpg",
+      "titulo": "Agende sua visita",
+      "ri": "R-1 da matrícula 12.345 do 1º Registro de Imóveis de João Pessoa"
+    }
+  ]
+}
