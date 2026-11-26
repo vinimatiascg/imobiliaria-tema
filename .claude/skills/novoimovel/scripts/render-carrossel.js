@@ -81,7 +81,7 @@ h2 { font-size:68px; line-height:1.08; font-weight:800; letter-spacing:-.015em; 
 .planta-txt h2 { font-size:56px; }
 .planta-txt .txt { margin-top:12px; }
 .contato .card { position:absolute; left:60px; right:60px; bottom:60px; background:rgba(14,26,43,.94); border:2px solid rgba(178,145,90,.6); border-radius:22px; padding:52px 56px 40px; }
-.contato h2 { font-size:64px; }
+.contato h2 { font-size:60px; line-height:1.1; }
 .contato .nome { margin-top:26px; font-size:40px; font-weight:800; }
 .contato .cargo { font-size:28px; color:var(--dourado); font-weight:600; margin-top:4px; }
 .contato .reg { font-size:26px; color:rgba(255,255,255,.75); margin-top:6px; }
@@ -166,8 +166,7 @@ function slideHtml(s, cfg, base, i, n) {
 				${bg ? `<div class="bg" style="background-image:url('${bg}');background-position:${pos}"></div><div class="grad-t"></div>` : ''}
 				${topo(cfg, i, n)}
 				<div class="card">
-					<h2>${esc(s.titulo || 'Agende sua visita')}</h2>
-					${s.texto ? `<div class="txt" style="margin-top:14px;font-size:30px">${esc(s.texto)}</div>` : ''}
+					<h2>Faça sua simulação<br>sem compromisso</h2>
 					<div class="nome">${CONTATO.nome}</div>
 					<div class="cargo">${CONTATO.cargo}</div>
 					<div class="reg">${CONTATO.registro}</div>
@@ -178,6 +177,7 @@ function slideHtml(s, cfg, base, i, n) {
 					</div>
 					<div class="legal">
 						${s.ri ? `<b>RI:</b> ${esc(s.ri)}<br>` : ''}
+						${s.aviso ? `${esc(s.aviso)}<br>` : ''}
 						Imagens meramente ilustrativas.
 					</div>
 				</div>

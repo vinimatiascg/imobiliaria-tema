@@ -29,7 +29,7 @@ Instagram: @viniciusmatiascorretor
 Imagens meramente ilustrativas.
 ```
 
-- O último slide do carrossel também traz o RI (se houver), os dados de contato e "Imagens meramente ilustrativas.".
+- O último slide do carrossel é **sempre** o mesmo modelo: título "Faça sua simulação sem compromisso" (fixo no script, não muda), os dados de contato do corretor, o RI (se houver) e "Imagens meramente ilustrativas.". Não coloque outro título nem parágrafo de texto nele.
 - Use **apenas** informações que estão no material. Não invente metragem, preço, prazo de entrega, número de unidades, itens de lazer ou endereço. Se um dado útil não está no material, deixe de fora e cite na resposta final o que faltou.
 - Preço, condições de pagamento e tabela só entram se estiverem no material; nesse caso acrescente "Valores e condições sujeitos a alteração sem aviso prévio." antes do bloco do RI.
 
@@ -78,7 +78,7 @@ Formato do JSON (veja `scripts/exemplo-carrossel.json`):
     { "tipo": "lista", "imagem": "material/img-012.jpg", "titulo": "Diferenciais", "itens": ["2 e 3 quartos", "Varanda gourmet", "2 vagas"] },
     { "tipo": "ficha", "titulo": "Ficha técnica", "itens": [["Tipologia", "2 e 3 quartos"], ["Área", "56 a 78 m²"], ["Entrega", "Dez/2028"]] },
     { "tipo": "planta", "imagem": "material/img-020.png", "titulo": "Planta 3 quartos", "texto": "78 m² privativos" },
-    { "tipo": "contato", "imagem": "material/img-003.jpg", "titulo": "Agende sua visita", "ri": "R-1 da matrícula 12.345 do 1º Cartório de Registro de Imóveis de João Pessoa" }
+    { "tipo": "contato", "imagem": "material/img-003.jpg", "ri": "R-1 da matrícula 12.345 do 1º Cartório de Registro de Imóveis de João Pessoa", "aviso": "Valores e condições sujeitos a alteração sem aviso prévio." }
   ]
 }
 ```
@@ -89,7 +89,7 @@ Tipos de slide:
 - `lista`: foto no topo e até 6 itens com marcador.
 - `ficha`: pares rótulo/valor (até 8) em fundo da marca. `imagem` é opcional.
 - `planta`: planta baixa sobre fundo claro (a imagem não é cortada).
-- `contato`: sempre o último. Mostra o CTA, os dados do corretor, o RI (campo `ri`, omita se não houver) e "Imagens meramente ilustrativas.".
+- `contato`: sempre o último. O título é fixo ("Faça sua simulação sem compromisso"), e os campos `titulo` e `texto` são ignorados. Mostra os dados de contato do corretor e, em letras pequenas no rodapé do cartão, o RI (campo `ri`, omita se não houver), o aviso de valores (campo `aviso`, só quando houver preço no material) e "Imagens meramente ilustrativas.".
 
 Boas práticas do carrossel:
 - 6 a 10 slides: capa → 2 a 4 slides de fotos/lazer → diferenciais ou ficha → planta(s) → localização (se houver) → contato.
