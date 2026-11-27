@@ -158,7 +158,24 @@ O texto da página:
 - Seções com H2: Sobre o empreendimento, Plantas e tipologias, Lazer e diferenciais, Localização, Ficha técnica (lista), Fale com o corretor.
 - Termine com: "Valores e condições sujeitos a alteração sem aviso prévio." (se houver preço) → `Registro de Incorporação: <RI>` (se houver) → bloco de assinatura obrigatório.
 
-### 6. Entrega
+### 6. Publicação no site e no Instagram (só quando o usuário pedir)
+
+O site `viniciusmatias.com.br` é WordPress com o tema `imobiliaria-tema`; a API REST (`/wp-json/wp/v2/`) aceita escrita quando a sessão tem acesso autenticado. O Instagram @viniciusmatiascorretor pode ser publicado pela ação `create_carousel_post` do Windsor.ai (imagens JPEG com URL pública).
+
+**Todo empreendimento é cadastrado duas vezes**, seguindo o modelo do Eleve Park Home e do Residencial Aurora:
+1. **Empreendimento** (`/wp/v2/empreendimento`): título = nome do empreendimento, texto do site, foto de destaque, `estagio_obra`.
+2. **Imóvel** (`/wp/v2/imovel`): título no padrão "Apartamentos de 2 quartos no Residencial X em <Bairro>", mesmo texto, mesma foto de destaque, e as taxonomias:
+   - `tipo_imovel`: Apartamento + "Apartamentos de N Quartos" (ou com suíte) + Lançamento + Residencial + Oportunidade!; MCMV e "Zero de Entrada" quando o material falar disso.
+   - `localidade`: a cidade (Campina Grande = 631) + o bairro como filho da cidade. Se o bairro não existir, crie o termo com `parent` da cidade.
+   - `caracteristica`: marque tudo que o material cita (lazer, gás encanado, energia solar, pré-instalação de ar, guarita etc.), além de "Lançamento" e "Imóvel na Planta" quando for o caso. Consulte os termos existentes antes; não crie características novas sem perguntar.
+   - `estagio_obra`: Lançamento e/ou Na Planta / Em Construção, conforme o material.
+   - `status_imovel`: A Venda.
+3. Yoast: título e descrição pela ação `yoast-seo/update-post-seo-data` (`/wp-json/wp-abilities/v1/abilities/yoast-seo/update-post-seo-data/run`).
+4. Fotos do site: envie com `?post=<id do empreendimento>` (o tema aplica a marca d'água). Slides do Instagram: envie **sem** `post`, para não ganharem marca d'água, e confira que a URL pública é igual ao arquivo local.
+5. Os campos internos do tema (`_imob_*`: preço, área, quartos, suítes, vagas, endereço, construtora, vínculo com o empreendimento, galeria, RI) não estão liberados na API. Avise o usuário para preenchê-los no painel e diga quais valores usar.
+6. Se a publicação no Instagram passar do tempo limite, **não reenvie**: confira primeiro se o post saiu (por exemplo, pelo `media_count` do perfil), para não duplicar.
+
+### 7. Entrega
 
 Na resposta final ao usuário:
 - Entregue as imagens do carrossel (todas, em ordem) e os dois arquivos de texto como arquivos para o usuário baixar: no Claude Code, com `SendUserFile`; no claude.ai, gravando em `/mnt/user-data/outputs/` (ou na pasta de saídas do ambiente) e também um `.zip` com o carrossel inteiro para facilitar o download no celular.
