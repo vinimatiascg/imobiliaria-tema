@@ -35,7 +35,7 @@ Instagram: @viniciusmatiascorretor
 Imagens meramente ilustrativas.
 ```
 
-- **WhatsApp é sempre (83) 99926-7089** (link: `https://wa.me/5583999267089`), em artes, legendas, textos e botões. Nunca use o telefone da construtora, de outro corretor ou qualquer número que venha no material do empreendimento.
+- **Contato é sempre o do Vinicius**, em artes, legendas, textos e botões: WhatsApp **(83) 99926-7089** (link `https://wa.me/5583999267089`), Instagram **@viniciusmatiascorretor**, site **www.viniciusmatias.com.br**. Nunca use telefone, @ do Instagram, site ou e-mail da construtora, de outro corretor ou de qualquer contato que venha no material do empreendimento.
 - O último slide do carrossel é **sempre** o mesmo modelo: título "Faça sua simulação sem compromisso" (fixo no script, não muda), os dados de contato do corretor, o RI (se houver) e "Imagens meramente ilustrativas.". Não coloque outro título nem parágrafo de texto nele.
 - Use **apenas** informações que estão no material. Não invente metragem, preço, prazo de entrega, número de unidades, itens de lazer ou endereço. Se um dado útil não está no material, deixe de fora e cite na resposta final o que faltou.
 - Preço, condições de pagamento e tabela só entram se estiverem no material; nesse caso acrescente "Valores e condições sujeitos a alteração sem aviso prévio." antes do bloco do RI.
