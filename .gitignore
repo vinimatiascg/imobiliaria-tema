@@ -6,3 +6,6 @@
 
 # Claude Code (pessoal)
 .claude/settings.local.json
+
+# Entregas da skill /novoimovel (imagens e materiais)
+entregas/
